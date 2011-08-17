@@ -1019,8 +1019,12 @@ public class ZumaCanvas extends GameCanvas implements Runnable {
             if ( Number[z] != -1 )  length++;
             else break;
         }
-        ranA = getRand( 0, length );
-        return ( Number[ranA]);
+        if ( length > 0 ) {
+            ranA = getRand( 0, length );
+            return ( Number[ranA]);
+        } else {
+            return 0;
+        }
     }
 
 //////////////////////////////////////////////////////////////////////////////////
