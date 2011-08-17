@@ -55,34 +55,37 @@ public class Ball {
     }
 
     public void resetBall(){
-        // Hiện lại bóng để bắn, các biến liên quan đến việc bắn về lại trị số ban đầu
-        ShootDistance = 15;
-        Ball.setPosition((int)(116 + 15*Math.cos((zumaCanvas.iCount/180)*Math.PI-Math.PI/2)),
-                        (int)(160 - 15*Math.sin((zumaCanvas.iCount/180)*Math.PI-Math.PI/2)));
-        /*System.out.print( "Color " );
-        for ( int u = 0; u < 10; u++ ) {
-            System.out.print( zumaCanvas.Color[u] + "\t");
-        }
-        System.out.print( "\n " );*/
-        zumaCanvas.getColor();
-       /* System.out.print( "Color " );
-        for ( int u = 0; u < 10; u++ ) {
-            System.out.print( zumaCanvas.Color[u] + "\t");
-        }
-        System.out.print( "\n " );*/
-        Ball.setFrame(zumaCanvas.getRandAmong(zumaCanvas.Color));
-        //Ball = null;
-        //ranColor = zumaCanvas.getRand(0, 2);
-        /*try {
-            if ( ranColor == 0)
-                Ball = new Sprite(Image.createImage("/picture/bong_do.png"), 16, 16);
-            else if ( ranColor == 1 )
-                Ball = new Sprite(Image.createImage("/picture/bong_xanh2.png"), 16, 16);
-            
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }*/
+        System.out.println("resetBall " + zumaCanvas.Part );
+        if ( zumaCanvas.Part != 0 || ( zumaCanvas.Part == 1 && zumaCanvas.vBall[0].BVector.size() == 0 )) {
+            // Hiện lại bóng để bắn, các biến liên quan đến việc bắn về lại trị số ban đầu
+            ShootDistance = 15;
+            Ball.setPosition((int)(116 + 15*Math.cos((zumaCanvas.iCount/180)*Math.PI-Math.PI/2)),
+                            (int)(160 - 15*Math.sin((zumaCanvas.iCount/180)*Math.PI-Math.PI/2)));
+            /*System.out.print( "Color " );
+            for ( int u = 0; u < 10; u++ ) {
+                System.out.print( zumaCanvas.Color[u] + "\t");
+            }
+            System.out.print( "\n " );*/
+            zumaCanvas.getColor();
+           /* System.out.print( "Color " );
+            for ( int u = 0; u < 10; u++ ) {
+                System.out.print( zumaCanvas.Color[u] + "\t");
+            }
+            System.out.print( "\n " );*/
+            Ball.setFrame(zumaCanvas.getRandAmong(zumaCanvas.Color));
+            //Ball = null;
+            //ranColor = zumaCanvas.getRand(0, 2);
+            /*try {
+                if ( ranColor == 0)
+                    Ball = new Sprite(Image.createImage("/picture/bong_do.png"), 16, 16);
+                else if ( ranColor == 1 )
+                    Ball = new Sprite(Image.createImage("/picture/bong_xanh2.png"), 16, 16);
 
-        Ball.setVisible(true);
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }*/
+
+            Ball.setVisible(true);
+        }
     }
 }
