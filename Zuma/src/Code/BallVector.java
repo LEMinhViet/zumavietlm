@@ -25,18 +25,18 @@ public class BallVector {
     int Begin, End;
     //int[] ballSeq = { 0, 1, 2, 3, 4, 5, 6, 7 };
     int[] ballSeq = { 0, 1, 2, 3 };
-    //int[] Level = new int [100];
-    int[] Level = { 2, 2, 2, 2, 2, 1, 1,
-                    2, 2, 2, 2, 2, //2, 0, 0, 0, 0,
-                    0, 0, 0, 0, 0, 0, 0, 0, //0, 0,
-                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                    1, 1, 1, 1, 1, 1, 1, 1, 2, 2,
-                    1, 1, 1, 0, 0, 0, 0, 0, 0, 0, //1, 1, 1, 1, 1, 1, 1,
+    int[] Level = new int [100];
+//    int[] Level = { 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1,
+//                    //2, 2, 2, 2, 2, //2, 0, 0, 0, 0,
+//                    0, 0, 0, 0, 0, 0, 0, 0, //0, 0,
 //                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-//                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-//                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-//                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                } ;
+//                    1, 1, 1, 1, 1, 1, 1//, 2, 2,
+////                    1, 1, 1, 0, 0, 0, 0, 0, 0, 0, //1, 1, 1, 1, 1, 1, 1,
+////                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+////                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+////                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+////                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+//                } ;
     Sprite Sball;
     Vector BVector = new Vector ( NumOfBall, 1 );
     int iColliTemp;
@@ -60,7 +60,7 @@ public class BallVector {
             }
             ((Sprite)BVector.elementAt(j)).setFrameSequence(ballSeq);
             zumaCanvas.lm.append((Sprite)BVector.elementAt(j));
-            ((Sprite)BVector.elementAt(j)).setPosition(1 - 8, 65 - 8);
+            ((Sprite)BVector.elementAt(j)).setPosition(1 - 8 - 16, 65 - 8);
             ((Sprite)BVector.elementAt(j)).setFrame(Level[j]);
         }
     }
@@ -70,7 +70,9 @@ public class BallVector {
         NumOfBall++;
         // Insert vào đầu vector
         iColliTemp = iColli;
+        System.out.println("a");
         if ( iColli == 0 && zumaCanvas.headInsert ) {
+            System.out.println("1");
             if ( zumaCanvas.InsertTime == 0 ) {
                 ColliX = Sball.getX();
                 ColliY = Sball.getY();
@@ -87,6 +89,7 @@ public class BallVector {
             }
 
             //System.out.println("InserT : Begin " + Begin + " SumOfInsert " + zumaCanvas.sumOfInsert + " " + Distance );
+            System.out.println("SumOfInsert " + zumaCanvas.sumOfInsert);
             x = zumaCanvas.lv[zumaCanvas.ite-16*Begin-zumaCanvas.sumOfInsert][0];
             y = zumaCanvas.lv[zumaCanvas.ite-16*Begin-zumaCanvas.sumOfInsert][1];
             ///////////////////////////////////////////////////////////////////////////////
@@ -109,7 +112,7 @@ public class BallVector {
             zumaCanvas.InsertTime++;
         // Insert vào giữa
         } else {
-            //System.out.println("Colli " + iColli+ " Size "+ BVector.size());
+            System.out.println("Colli " + iColli+ " Size "+ BVector.size());
             if( iColli != 0 && Sball.collidesWith(((Sprite)BVector.elementAt(iColli - 1)), true)) {
                 iColliTemp = iColli - 1;
             }
@@ -274,72 +277,88 @@ public class BallVector {
                 System.out.println("Break at first bV");
             }*/
 
-            //System.out.println("endBreak " + endBreak + " beginBreadk " + beginBreak + " size " + BVector.size());
-            //System.out.println("ite " + zumaCanvas.ite);
-            //System.out.println("end+be " + (endBreak+Begin)*16);
+            System.out.println("endBreak " + endBreak + " beginBreadk " + beginBreak + " size " + BVector.size());
+            System.out.println("ite " + zumaCanvas.ite);
+            System.out.println("end+be " + (endBreak+Begin)*16);
 
             /////////////////////////////////////////////////////////////////////////////////////////////////
             // Nếu insert vào đoạn bóng đang ra 
-            if ((endBreak+Begin)*16 >= zumaCanvas.ite - 8 && (endBreak+Begin)*16 <= zumaCanvas.ite ) {
-                //System.out.println("IN");
+            if ((endBreak+Begin)*16 >= zumaCanvas.ite - 16 && (endBreak+Begin)*16 <= zumaCanvas.ite ) {
+                System.out.println("IN");
                 zumaCanvas.State3 = true;
                 zumaCanvas.State2 = false;
                 zumaCanvas.State1 = false;
+                for ( j = beginBreak; j <  endBreak; j++ ) {
+                    BVector.removeElementAt(beginBreak);
+                    zumaCanvas.NumB -= 16;
+                    if ( beginBreak == 0 )  zumaCanvas.ite -= 16;
+                    End--;
+                }
 
             /////////////////////////////////////////////////////////////////////////////////////////////////
             // Nếu break cả đoạn bóng
             } else if (endBreak == BVector.size() - 1 && beginBreak == 0) {
-                if ( zumaCanvas.partColli >= 1 && zumaCanvas.partColli < zumaCanvas.Part) {
-                    //Xóa đoạn
-                    zumaCanvas.Part--;
-                    for ( j = beginBreak; j <= endBreak; j++ ) {
-                        BVector.removeElementAt(beginBreak);
-                        zumaCanvas.NumB -= 16;
+                
+                System.out.println("Break All");
+                //System.out.println("1");
+                //Xóa đoạn
+                zumaCanvas.Part--;
+                for ( j = beginBreak; j <= endBreak; j++ ) {
+                    BVector.removeElementAt(beginBreak);
+                    zumaCanvas.NumB -= 16;
+                    if ( zumaCanvas.partColli >= 1 )
                         zumaCanvas.vBall[zumaCanvas.partColli-1].Distance += 16;
-                        for ( int e = 0; e < zumaCanvas.partColli; e++ ) {
-                            zumaCanvas.vBall[e].Begin --;
-                            zumaCanvas.vBall[e].End --;
-                        }
+                    for ( int e = 0; e < zumaCanvas.partColli; e++ ) {
+                        zumaCanvas.vBall[e].Begin --;
+                        zumaCanvas.vBall[e].End --;
                     }
-                    if ( zumaCanvas.Part == 1 ) {
-                        zumaCanvas.ite -= zumaCanvas.vBall[0].Distance;
-                        zumaCanvas.vBall[0].Distance = 0;
-                    } else zumaCanvas.vBall[zumaCanvas.partColli-1].Distance += zumaCanvas.vBall[zumaCanvas.partColli].Distance;
-                    // Lùi các đoạn trước lại
+                }
+                if ( zumaCanvas.Part == 1 ) {
+                    zumaCanvas.ite -= zumaCanvas.vBall[0].Distance;
+                    zumaCanvas.vBall[0].Distance = 0;
+                } else if (  zumaCanvas.Part > 1 )
+                    zumaCanvas.vBall[zumaCanvas.partColli-1].Distance += zumaCanvas.vBall[zumaCanvas.partColli].Distance;
+                // Lùi các đoạn trước lại
+                if ( zumaCanvas.partColli < zumaCanvas.Part ) {
                     for ( j = zumaCanvas.Part-1; j >= zumaCanvas.partColli+1; j-- ) {
                         zumaCanvas.vBall[j-1].copyBallVector(zumaCanvas.vBall[j]);
                     }
+                }
 
-                    System.out.println("So Part = " + zumaCanvas.Part);
-                    for ( int i = 0; i < zumaCanvas.Part; i++ ) {
-                        System.out.println("Vector so " + i + " Begin " + zumaCanvas.vBall[i].Begin + " End " + zumaCanvas.vBall[i].End );
-                        System.out.println("Vector so " + i + " Size " + zumaCanvas.vBall[i].BVector.size() + " Distance " + zumaCanvas.vBall[i].Distance );
-                    }
+                System.out.println("So Part = " + zumaCanvas.Part);
+                for ( int i = 0; i < zumaCanvas.Part; i++ ) {
+                    System.out.println("Vector so " + i + " Begin " + zumaCanvas.vBall[i].Begin + " End " + zumaCanvas.vBall[i].End );
+                    System.out.println("Vector so " + i + " Size " + zumaCanvas.vBall[i].BVector.size() + " Distance " + zumaCanvas.vBall[i].Distance );
+                }
 
-                    if ( zumaCanvas.Part > 1 ) {
-                        if (((Sprite)zumaCanvas.vBall[zumaCanvas.partColli-1].BVector.elementAt(0)).getFrame()
-                                == ((Sprite)zumaCanvas.vBall[zumaCanvas.partColli].BVector.elementAt(zumaCanvas.vBall[zumaCanvas.partColli].BVector.size()-1)).getFrame()) {
-                            zumaCanvas.iColli = zumaCanvas.vBall[zumaCanvas.partColli-1].End;
-                            if ( !zumaCanvas.State2 )
-                                zumaCanvas.partColliBack = zumaCanvas.partColli;
-                            System.out.println("ColliBack " + zumaCanvas.partColliBack);
-                            zumaCanvas.State1 = false;
-                            zumaCanvas.State2 = true;
-                            zumaCanvas.State3 = false;
-
-                        } else {
-                            zumaCanvas.State1 = false;
-                            zumaCanvas.State2 = false;
-                            zumaCanvas.State3 = true;
-
-                        }
-                    } else if ( zumaCanvas.Part == 1 ) {
-                        zumaCanvas.State1 = true;
-                        zumaCanvas.State2 = false;
+                if ( zumaCanvas.Part > 1 && zumaCanvas.partColli >= 1) {
+                    if (((Sprite)zumaCanvas.vBall[zumaCanvas.partColli-1].BVector.elementAt(0)).getFrame()
+                            == ((Sprite)zumaCanvas.vBall[zumaCanvas.partColli].BVector.elementAt(zumaCanvas.vBall[zumaCanvas.partColli].BVector.size()-1)).getFrame()) {
+                        zumaCanvas.iColli = zumaCanvas.vBall[zumaCanvas.partColli-1].End;
+                        if ( !zumaCanvas.State2 )
+                            zumaCanvas.partColliBack = zumaCanvas.partColli;
+                        System.out.println("ColliBack " + zumaCanvas.partColliBack);
+                        zumaCanvas.State1 = false;
+                        zumaCanvas.State2 = true;
                         zumaCanvas.State3 = false;
-                        System.out.println("back to state1");
-                        
+
+                    } else {
+                        zumaCanvas.State1 = false;
+                        zumaCanvas.State2 = false;
+                        zumaCanvas.State3 = true;
+
                     }
+                } else if ( zumaCanvas.Part == 1 ) {
+                    zumaCanvas.State1 = true;
+                    zumaCanvas.State2 = false;
+                    zumaCanvas.State3 = false;
+                    System.out.println("back to state1");
+
+                } else if ( zumaCanvas.Part == 0 ) {
+                    System.out.println("End Of level");
+                    zumaCanvas.State1 = true;
+                    zumaCanvas.State2 = false;
+                    zumaCanvas.State3 = false;
                 }
                     
             /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -349,21 +368,20 @@ public class BallVector {
                 //System.out.println("ColliBack1 " + zumaCanvas.partColli);
 
                 if ( zumaCanvas.Part == 1 && !zumaCanvas.OutOfBalls 
-                        && ((Sprite)BVector.elementAt(j)).getX() == 1 - 8 &&((Sprite)BVector.elementAt(j)).getY() == 65 - 8) {
+                        && ((Sprite)BVector.elementAt(BVector.size()-1)).getX() != zumaCanvas.lv[1][0] 
+                        && ((Sprite)BVector.elementAt(BVector.size()-1)).getY() != zumaCanvas.lv[1][1]) {
                     zumaCanvas.Part ++;
                     zumaCanvas.vBall[0].copyBallVector(zumaCanvas.vBall[1]);
 
                     ///////////////////////////////////////////////////////////////////////////////////////////////////
-                    /////////
-                    /////
-                    ///
-                    //
+                    zumaCanvas.vBall[0].Begin = zumaCanvas.vBall[1].End + 1;
+                    zumaCanvas.vBall[0].End = zumaCanvas.Number;
                     /////////////////////////
                     
                     zumaCanvas.State1 = false;
                     zumaCanvas.State2 = false;
                     zumaCanvas.State3 = true;
-                } else  if (zumaCanvas.partColli > 1) {
+                } else  if (zumaCanvas.partColli >= 1) {
                     if (((Sprite)zumaCanvas.vBall[zumaCanvas.partColli-1].BVector.elementAt(0)).getFrame() == ((Sprite)BVector.elementAt(beginBreak-1)).getFrame()) {
                         zumaCanvas.iColli = End;
                         if ( !zumaCanvas.State2 )
@@ -399,9 +417,10 @@ public class BallVector {
             /////////////////////////////////////////////////////////////////////////////////////////////////
             // Nếu ở đầu đoàn bóng
             } else if ( beginBreak == 0 ) {
-
+                System.out.println("0");
                 //System.out.println("ColliBack2 " + zumaCanvas.partColli);
                 if ( zumaCanvas.partColli < zumaCanvas.Part - 1 ) {
+                    System.out.println("1");
                     //System.out.println("size "  +(zumaCanvas.vBall[zumaCanvas.partColli+1].BVector.size() - 1));
                     if (((Sprite)zumaCanvas.vBall[zumaCanvas.partColli+1].BVector.elementAt(zumaCanvas.vBall[zumaCanvas.partColli+1].BVector.size() - 1)).getFrame()
                         == ((Sprite)BVector.elementAt(endBreak+1)).getFrame()) {
@@ -430,18 +449,20 @@ public class BallVector {
                     
                     Distance += 16*(endBreak-beginBreak+1);
                 } else if ( zumaCanvas.Part == 1) {
+                    System.out.println("2");
                     zumaCanvas.State1 = true;
                     zumaCanvas.State2 = false;
                     zumaCanvas.State3 = false;
                     for ( int t = beginBreak; t <= endBreak; t++ ) {
                         try {
-                            zumaCanvas.vBall[zumaCanvas.partColliBack].BVector.removeElementAt(zumaCanvas.vBall[zumaCanvas.partColliBack].beginBreak);
+                            zumaCanvas.vBall[0].BVector.removeElementAt(0);
                         } catch ( ArrayIndexOutOfBoundsException n ) {
                             System.out.println("Bvector " + zumaCanvas.partColliBack + " " + zumaCanvas.vBall[zumaCanvas.partColliBack].BVector.size() +
                                  " " + zumaCanvas.vBall[zumaCanvas.partColliBack].beginBreak  );
                         }
                         zumaCanvas.ite -= 16;
                         zumaCanvas.NumB -= 16;
+                        End--;
                     }
                 }
             /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -485,18 +506,25 @@ public class BallVector {
     }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
-// Hàm tạo đoàn bóng cho lv1
+// Hàm tạo đoàn bóng cho lv1 và lv3
 /////////////////////////////////////////////////////////////////////////////////////////////////
     public void createLv1 () {
         int ranlv1, duplv1;
-        /*for ( int i = 0; i < 100; ++i ) {
-            ranlv1 = zumaCanvas.getRand( 0, 2);
+        for ( int i = 0; i < 100; ++i ) {
+            ranlv1 = zumaCanvas.getRand( 0, 3);
             duplv1 = zumaCanvas.getRand(0, 5);
             for ( int j = 0; j < duplv1; ++j ) {
                 if ( i + j < 100 )  Level[i+j] = ranlv1;
             }
             if ( duplv1 != 0 )  i += duplv1 - 1;
-        }*/
+        }
 
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////
+    // Hàm tạo đoàn bóng cho lv1 và lv3
+    /////////////////////////////////////////////////////////////////////////////////////////////////
+    public void createLv2 () {
+        
     }
 }

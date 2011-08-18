@@ -31,7 +31,6 @@ public class Ball {
     }
 
     public void initBall() {
-        ranColor = zumaCanvas.getRand(0, 2);
         try {
             /*if ( ranColor == 0)
                 Ball = new Sprite(Image.createImage("/picture/bong_do.png"), 16, 16);
@@ -46,7 +45,9 @@ public class Ball {
         zumaCanvas.lm.insert(Ball, 0);
         zumaCanvas.lm.insert(Pixel, 0);
         Ball.setPosition( 116, 160);
-        Ball.setFrame(zumaCanvas.getRand(0, 3));
+        zumaCanvas.getColor();
+        Ball.setFrame(zumaCanvas.getRandAmong(zumaCanvas.Color));
+        
     }
 
     public void shootBall( float ShootAngle ){
@@ -55,7 +56,7 @@ public class Ball {
     }
 
     public void resetBall(){
-        System.out.println("resetBall " + zumaCanvas.Part );
+        //System.out.println("resetBall " + zumaCanvas.Part );
         if ( zumaCanvas.Part != 0 || ( zumaCanvas.Part == 1 && zumaCanvas.vBall[0].BVector.size() == 0 )) {
             // Hiện lại bóng để bắn, các biến liên quan đến việc bắn về lại trị số ban đầu
             ShootDistance = 15;
