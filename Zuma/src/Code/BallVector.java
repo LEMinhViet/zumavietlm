@@ -25,18 +25,20 @@ public class BallVector {
     int Begin, End;
     //int[] ballSeq = { 0, 1, 2, 3, 4, 5, 6, 7 };
     int[] ballSeq = { 0, 1, 2, 3 };
-    int[] Level = new int [100];
-//    int[] Level = { 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1,
-//                    //2, 2, 2, 2, 2, //2, 0, 0, 0, 0,
-//                    0, 0, 0, 0, 0, 0, 0, 0, //0, 0,
+    //int[] Level = new int [100];
+    int[] Level = { 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                    1, 1, 1, 1, 1,
+                    //2, 2, 2, 2, 2, //2, 0, 0, 0, 0,
+                    2, 2, 2, 2, 2, 2, 2, 2, 0, 0, 0,  //0, 0,
+                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+                    //, 2, 2,
+//                    1, 1, 1, 0, 0, 0, 0, 0, 0, 0, //1, 1, 1, 1, 1, 1, 1,
 //                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-//                    1, 1, 1, 1, 1, 1, 1//, 2, 2,
-////                    1, 1, 1, 0, 0, 0, 0, 0, 0, 0, //1, 1, 1, 1, 1, 1, 1,
-////                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-////                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-////                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-////                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-//                } ;
+//                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+//                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+//                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                } ;
     Sprite Sball;
     Vector BVector = new Vector ( NumOfBall, 1 );
     int iColliTemp;
@@ -60,9 +62,10 @@ public class BallVector {
             }
             ((Sprite)BVector.elementAt(j)).setFrameSequence(ballSeq);
             zumaCanvas.lm.append((Sprite)BVector.elementAt(j));
-            ((Sprite)BVector.elementAt(j)).setPosition(1 - 8 - 16, 65 - 8);
+            ((Sprite)BVector.elementAt(j)).setPosition(-16, -16);
             ((Sprite)BVector.elementAt(j)).setFrame(Level[j]);
         }
+       
     }
 
     public void InsertBall( int iColli, int partColli ) {
@@ -70,9 +73,7 @@ public class BallVector {
         NumOfBall++;
         // Insert vào đầu vector
         iColliTemp = iColli;
-        System.out.println("a");
         if ( iColli == 0 && zumaCanvas.headInsert ) {
-            System.out.println("1");
             if ( zumaCanvas.InsertTime == 0 ) {
                 ColliX = Sball.getX();
                 ColliY = Sball.getY();
@@ -89,7 +90,6 @@ public class BallVector {
             }
 
             //System.out.println("InserT : Begin " + Begin + " SumOfInsert " + zumaCanvas.sumOfInsert + " " + Distance );
-            System.out.println("SumOfInsert " + zumaCanvas.sumOfInsert);
             x = zumaCanvas.lv[zumaCanvas.ite-16*Begin-zumaCanvas.sumOfInsert][0];
             y = zumaCanvas.lv[zumaCanvas.ite-16*Begin-zumaCanvas.sumOfInsert][1];
             ///////////////////////////////////////////////////////////////////////////////
@@ -302,7 +302,7 @@ public class BallVector {
                 System.out.println("Break All");
                 //System.out.println("1");
                 //Xóa đoạn
-                zumaCanvas.Part--;
+                //System.out.println("be "+ beginBreak + "en " + endBreak);
                 for ( j = beginBreak; j <= endBreak; j++ ) {
                     BVector.removeElementAt(beginBreak);
                     zumaCanvas.NumB -= 16;
@@ -313,18 +313,21 @@ public class BallVector {
                         zumaCanvas.vBall[e].End --;
                     }
                 }
-                if ( zumaCanvas.Part == 1 ) {
+                if ( zumaCanvas.partColli >= 1 )
+                        zumaCanvas.vBall[zumaCanvas.partColli-1].Distance -= 16;
+                if ( zumaCanvas.Part == 2 ) {
                     zumaCanvas.ite -= zumaCanvas.vBall[0].Distance;
                     zumaCanvas.vBall[0].Distance = 0;
-                } else if (  zumaCanvas.Part > 1 )
+                } else if (  zumaCanvas.Part > 2 )
                     zumaCanvas.vBall[zumaCanvas.partColli-1].Distance += zumaCanvas.vBall[zumaCanvas.partColli].Distance;
                 // Lùi các đoạn trước lại
                 if ( zumaCanvas.partColli < zumaCanvas.Part ) {
                     for ( j = zumaCanvas.Part-1; j >= zumaCanvas.partColli+1; j-- ) {
-                        zumaCanvas.vBall[j-1].copyBallVector(zumaCanvas.vBall[j]);
+                        zumaCanvas.vBall[j].copyBallVectorTo(zumaCanvas.vBall[j-1]);
                     }
                 }
-
+                zumaCanvas.Part--;
+                
                 System.out.println("So Part = " + zumaCanvas.Part);
                 for ( int i = 0; i < zumaCanvas.Part; i++ ) {
                     System.out.println("Vector so " + i + " Begin " + zumaCanvas.vBall[i].Begin + " End " + zumaCanvas.vBall[i].End );
@@ -371,7 +374,7 @@ public class BallVector {
                         && ((Sprite)BVector.elementAt(BVector.size()-1)).getX() != zumaCanvas.lv[1][0] 
                         && ((Sprite)BVector.elementAt(BVector.size()-1)).getY() != zumaCanvas.lv[1][1]) {
                     zumaCanvas.Part ++;
-                    zumaCanvas.vBall[0].copyBallVector(zumaCanvas.vBall[1]);
+                    zumaCanvas.vBall[0].copyBallVectorTo(zumaCanvas.vBall[1]);
 
                     ///////////////////////////////////////////////////////////////////////////////////////////////////
                     zumaCanvas.vBall[0].Begin = zumaCanvas.vBall[1].End + 1;
@@ -493,7 +496,7 @@ public class BallVector {
 /////////////////////////////////////////////////////////////////////////////////////////////////
 // Copy vector từ vector này sang vector ballVector
 /////////////////////////////////////////////////////////////////////////////////////////////////
-    public void copyBallVector( BallVector ballVector ) {
+    public void copyBallVectorTo( BallVector ballVector ) {
         for ( j = 0; j < this.BVector.size(); j++ ) {
             ballVector.BVector.addElement(this.BVector.elementAt(j));
         }
@@ -510,21 +513,21 @@ public class BallVector {
 /////////////////////////////////////////////////////////////////////////////////////////////////
     public void createLv1 () {
         int ranlv1, duplv1;
-        for ( int i = 0; i < 100; ++i ) {
+        /*for ( int i = 0; i < 100; ++i ) {
             ranlv1 = zumaCanvas.getRand( 0, 3);
             duplv1 = zumaCanvas.getRand(0, 5);
             for ( int j = 0; j < duplv1; ++j ) {
                 if ( i + j < 100 )  Level[i+j] = ranlv1;
             }
             if ( duplv1 != 0 )  i += duplv1 - 1;
-        }
+        }*/
 
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////
     // Hàm tạo đoàn bóng cho lv1 và lv3
     /////////////////////////////////////////////////////////////////////////////////////////////////
-    public void createLv2 () {
+    public void createLv4 () {
         
     }
 }
