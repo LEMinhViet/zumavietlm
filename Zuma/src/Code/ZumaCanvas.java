@@ -43,7 +43,7 @@ public class ZumaCanvas extends GameCanvas implements Runnable {
     boolean run, State0 = true, State1 = false, State2 = false, State3 = false, Divide = false, Asm = false;
     boolean Stop = false, back = false, Shoot = false, Colli = false, pColli = false;
     boolean headInsert = false, backWard = true, afterBack = false, addColor = false, Breaking = false, Breaked = false;
-    boolean OutOfBalls = false, unchangeColor = true;
+    boolean OutOfBalls = false, unchangeColor = true, colliAfter = false;
     public LayerManager lm;
     StartMidlet Midlet;
     Thread t;
@@ -96,8 +96,8 @@ public class ZumaCanvas extends GameCanvas implements Runnable {
         g.setColor(0x00ff00);
         runningLevel = 1;
         chooseLevel(runningLevel);
-        for ( k = 0; k < 100; k++ )
-            System.out.println("lv " + lv[k][1] + " " + lv[k][0]);
+        //for ( k = 0; k < 100; k++ )
+           // System.out.println("lv " + lv[k][1] + " " + lv[k][0]);
 
         wayBall.setVisible(false);
         wayPoint.setVisible(false);
@@ -158,9 +158,9 @@ public class ZumaCanvas extends GameCanvas implements Runnable {
                 ite++;
                 
                 for ( k = 0; k < Number+1; k++ ) {
-                    if ( lv[ite-16*k][2] == 1 )
+                    /*if ( lv[ite-16*k][2] == 1 )
                         ((Sprite) vBall[0].BVector.elementAt(k)).setVisible(false);
-                    else ((Sprite) vBall[0].BVector.elementAt(k)).setVisible(true);
+                    else ((Sprite) vBall[0].BVector.elementAt(k)).setVisible(true);*/
                     try {
                         ((Sprite)vBall[0].BVector.elementAt(k)).setPosition(lv[ite-16*k][0], lv[ite-16*k][1]);
                     } catch ( ArrayIndexOutOfBoundsException b ) {
@@ -298,7 +298,7 @@ public class ZumaCanvas extends GameCanvas implements Runnable {
                     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                     // Xử lý vector 0 add bóng => phân tách ra thành vector 0 và 1, vector 1 distance noi vao vector 2 => asm luôn
                     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                    for ( int x = 0; x < Part - 1; x++ ) {
+                    for ( int x = partColli; x < Part - 1; x++ ) {
                         if ( Part == 1 && x == 0 )  continue;
                         if ( vBall[x].Distance <= 0 ) {
                             for ( j = x; j < Part - 1; j++ ) {
@@ -441,6 +441,7 @@ public class ZumaCanvas extends GameCanvas implements Runnable {
                             //System.out.println("PartColliBack " + partColliBack );
                             //System.out.println("Distance " + vBall[0].Distance);
                             System.out.println(vBall[0].End);
+                            System.out.println("partcolliback " + partColliBack + " " + vBall[0].BVector.size());
                             vBall[partColliBack].testBreak(iColli);
                             if ( Sball.Ball.getX() == (int)(116 + 15*Math.cos((iCount/180)*Math.PI-Math.PI/2))
                                         && Sball.Ball.getY() == (int)(160 - 15*Math.sin((iCount/180)*Math.PI-Math.PI/2)))  {
@@ -469,11 +470,13 @@ public class ZumaCanvas extends GameCanvas implements Runnable {
                                 for ( j = 0; j < Part; j++ ) {
                                     if ( vBall[j].Distance != 0 ) {
                                         State3 = true;
+                                        
                                         State2 = false;
                                         State1 = false;
                                         System.out.println("State3");
                                     }
                                 }
+                                if ( State3 )  partColli = partColliBack;;
                                 if ( State3 != true ) {
                                     State2 = false;
                                     State1 = true;
@@ -483,9 +486,11 @@ public class ZumaCanvas extends GameCanvas implements Runnable {
                                     State1 = true;
                                     State2 = false;
                                     State3 = false;
+                                    
                                 }
                             }
-                            System.out.println("  "+State1+State2+State3);
+                            System.out.println("  "+State1+State2+State3 + " divide "+ Divide + " p " + partColli);
+
                             /*System.out.println("OutBall " + OutOfBalls);
                             if ( !OutOfBalls ) {
                                 System.out.println("OutOfBall");
@@ -635,6 +640,7 @@ public class ZumaCanvas extends GameCanvas implements Runnable {
                     //System.out.println("part " + partColli);
                     vBall[Part] = new BallVector(this);
                     Part++;
+                    System.out.println("Part State3 " + Part );
                         
                     for ( j = Part-1; j >= partColli+1; j-- ) {
                         vBall[j].Distance = vBall[j-1].Distance;
@@ -662,28 +668,36 @@ public class ZumaCanvas extends GameCanvas implements Runnable {
                     }
                     vBall[Part - 1].Distance = 0;
                     vBall[0].End = NumB/16;
-                    vBall[partColli+1].End = vBall[partColli].beginBreak - 1 + vBall[partColli].Begin;
-                    vBall[partColli+1].Begin = vBall[partColli].Begin;
-                    vBall[partColli].Begin  = vBall[partColliBack+1].End + 1;
+                    if ( partColli < Part - 1 ) {
+                        vBall[partColli+1].End = vBall[partColli].beginBreak - 1 + vBall[partColli].Begin;
+                        vBall[partColli+1].Begin = vBall[partColli].Begin;
+                        
+                    }
+                    vBall[partColli].Begin = vBall[partColli+1].End + 1;
                     vBall[partColli].End -= (vBall[partColli].endBreak - vBall[partColli].beginBreak + 1);
 
-                    for( j = partColli - 1; j >= 0; j-- ) {
-                        vBall[j].Begin -= (vBall[partColli].endBreak - vBall[partColli].beginBreak + 1);
-                        vBall[j].End -= (vBall[partColli].endBreak - vBall[partColli].beginBreak + 1);
+                    if ( partColli > 0 ) {
+                        for( j = partColli - 1; j >= 0; j-- ) {
+                            vBall[j].Begin -= (vBall[partColli].endBreak - vBall[partColli].beginBreak + 1);
+                            vBall[j].End -= (vBall[partColli].endBreak - vBall[partColli].beginBreak + 1);
+                        }
                     }
 
-                    for ( j = vBall[partColli+1].Begin; j <= vBall[partColli+1].End; j++ ) {
-                        vBall[partColli+1].BVector.addElement(vBall[partColli].BVector.elementAt(0));
-                        vBall[partColli+1].NumOfBall++;
-                        vBall[partColli].BVector.removeElementAt(0);
-                        vBall[partColli].NumOfBall--;
+                    if ( partColli <  Part - 1 ) {
+                        for ( j = vBall[partColli+1].Begin; j <= vBall[partColli+1].End; j++ ) {
+                            vBall[partColli+1].BVector.addElement(vBall[partColli].BVector.elementAt(0));
+                            vBall[partColli+1].NumOfBall++;
+                            vBall[partColli].BVector.removeElementAt(0);
+                            vBall[partColli].NumOfBall--;
+                        }
                     }
                     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                     // Xử lý vector 0 add bóng => phân tách ra thành vector 0 và 1, vector 1 distance < 0 => asm luôn
                     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                    for ( int x = 0; x < Part - 1; x++ ) {
+                    for ( int x = partColli; x < Part - 1; x++ ) {
                         if ( Part == 1 && x == 0 )  continue;
                         if ( vBall[x].Distance <= 0 ) {
+                            System.out.println("AAAAAAAAAAAA");
                             for ( j = x; j < Part - 1; j++ ) {
                                 vBall[j].Distance = vBall[j+1].Distance;
                             }
@@ -745,9 +759,11 @@ public class ZumaCanvas extends GameCanvas implements Runnable {
                             //add = 0;
                             partColli = 0;
                         } else {
-                            if ( InsertTime == 0 )  Asm = true;
+                            Asm = false;
+                            if ( InsertTime == 0 && Sball.Ball.isVisible() )  Asm = true;
                             if ( Asm ) {
                                 //add = 0;
+                                //if ( partColli > 0 )    partColli --;
                                 for ( j = 0; j < Part - 1; j++ ) {
                                     vBall[j].Distance = vBall[j+1].Distance;
                                 }
@@ -784,6 +800,7 @@ public class ZumaCanvas extends GameCanvas implements Runnable {
                             Sball.shootBall( Sball.ShootAngle );
                             if ( !Colli ) {
                                 pColli = false;
+                                colliAfter = false;
                                 //System.out.println("So part khi Shoot " + Part);
                                 for (  partColli = 0; partColli < Part; partColli++ ) {
                                     for ( iColli = 0; iColli < vBall[partColli].BVector.size(); iColli++ ) {
@@ -795,6 +812,8 @@ public class ZumaCanvas extends GameCanvas implements Runnable {
                                                     if (vBall[partColli].BVector.size() == 1 
                                                             || ( vBall[partColli].BVector.size() > 1 && !Sball.Ball.collidesWith(((Sprite)vBall[partColli].BVector.elementAt(iColli+1)), true))) {
                                                         headInsert = true;
+                                                    } else if ( vBall[partColli].BVector.size() > 1 && Sball.Ball.collidesWith(((Sprite)vBall[partColli].BVector.elementAt(iColli+1)), true)) {
+                                                        colliAfter = true;
                                                     }
                                                 }
                                                 Colli = true;
@@ -821,14 +840,25 @@ public class ZumaCanvas extends GameCanvas implements Runnable {
                                         vBall[m].Begin++;
                                         vBall[m].End++;
                                     }
+//                                    if ( partColli < Part - 1 && partColli > 0 )
+//                                        vBall[partColli].Distance -= 16;
                                 }
                                 
                                 sumOfInsert = 0;
                                 for ( k = partColli; k < Part - 1; k++ ) {
                                     sumOfInsert += vBall[k].Distance;
                                 }
-
-                                if ( iColli == 0 ) {
+                                
+                                if ( iColli == 0 && colliAfter ) {
+                                    for ( j = 0; j <= iColli; j++ ){
+                                        try {
+                                            ((Sprite) vBall[partColli].BVector.elementAt(j)).setPosition(lv[ite-16*(j+vBall[partColli].Begin)-sumOfInsert-12+InsertTime*4][0],
+                                                    lv[ite-16*(j+vBall[partColli].Begin)-sumOfInsert-12+InsertTime*4][1]);
+                                        } catch ( ArrayIndexOutOfBoundsException aio ) {
+                                            //System.out.println("dịch lên để insert vào  : " + j + " Colli " + iColli + " Begin " + vBall[partColli].Begin);
+                                        }
+                                    }
+                                } else if ( iColli == 0 ) {
                                     for ( j = 0; j < iColli; j++ ){
                                         try {
                                         ((Sprite) vBall[partColli].BVector.elementAt(j)).setPosition(lv[ite-16*(j+vBall[partColli].Begin)-sumOfInsert-12+InsertTime*4][0],
@@ -840,9 +870,10 @@ public class ZumaCanvas extends GameCanvas implements Runnable {
                                 } else {
                                     for ( j = 0; j <= iColli; j++ ){
                                         //if ( ite-16*j <= 997 ) {
+                                        //System.out.println("add here " + )
                                         try {
-                                        ((Sprite) vBall[partColli].BVector.elementAt(j)).setPosition(lv[ite-16*(j+vBall[partColli].Begin)-sumOfInsert-12+InsertTime*4][0],
-                                                lv[ite-16*(j+vBall[partColli].Begin)-sumOfInsert-12+InsertTime*4][1]);
+                                            ((Sprite) vBall[partColli].BVector.elementAt(j)).setPosition(lv[ite-16*(j+vBall[partColli].Begin)-sumOfInsert-12+InsertTime*4][0],
+                                                    lv[ite-16*(j+vBall[partColli].Begin)-sumOfInsert-12+InsertTime*4][1]);
                                         } catch ( ArrayIndexOutOfBoundsException aio ) {
                                             //System.out.println("dịch lên để insert vào  : " + j + " Colli " + iColli + " Begin " + vBall[partColli].Begin);
                                         }
@@ -1256,6 +1287,15 @@ public class ZumaCanvas extends GameCanvas implements Runnable {
                     State1 = true;
                     State2 = false;
                 }*/
+                break;
+            case KeyCodeAdapter.KEY_1:
+                Sball.Ball.setFrame(0);
+                break;
+            case KeyCodeAdapter.KEY_2:
+                Sball.Ball.setFrame(1);
+                break;
+            case KeyCodeAdapter.KEY_3:
+                Sball.Ball.setFrame(2);
                 break;
         }
     }
