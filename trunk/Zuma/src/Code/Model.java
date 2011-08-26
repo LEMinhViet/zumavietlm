@@ -26,7 +26,7 @@ public class Model {
         this.zumaCanvas = zumaCanvas;
         x = 88; y = 132;
         try {
-            Model = new Sprite ( Image.createImage("/picture/frog.png"), 68, 68);
+            Model = new Sprite ( Image.createImage("/picture/mod.png"), 60, 60);
             Model.setFrameSequence(ModelSeq);
             Model.setPosition(x, y);
         } catch (IOException ex) {
