@@ -12,13 +12,17 @@ import javax.microedition.midlet.*;
  * @author Admin
  */
 public class StartMidlet extends MIDlet {
+    public static SunnetFlash sunnetFlash;
+    public static SunnetCanvas sunnetCanvas;
     public Display display;
     public ZumaCanvas STNcanvas;
     
     public void startApp() {
+        //sunnetFlash = new SunnetFlash(this);
         STNcanvas = new ZumaCanvas(this);
         STNcanvas.start();
         display = Display.getDisplay(this);
+        //display.setCurrent(sunnetFlash);
         display.setCurrent(STNcanvas);
     }
 
