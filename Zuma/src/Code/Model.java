@@ -24,7 +24,7 @@ public class Model {
     public void initModel( ZumaCanvas zumaCanvas ) {
         
         this.zumaCanvas = zumaCanvas;
-        x = 88; y = 132;
+        x = 91; y = 135;
         try {
             Model = new Sprite ( Image.createImage("/picture/mod.png"), 60, 60);
             Model.setFrameSequence(ModelSeq);
