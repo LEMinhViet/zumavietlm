@@ -23,7 +23,7 @@ public class ZumaCanvas extends GameCanvas implements Runnable {
     int iColliS2, ranA, keyPressed, angleAdd = 3, subDistance;
     // Số đoạn
     int Part = 1;
-
+    Navigator N = new Navigator(this);
     Effect E1 = new Effect ( this, 1 );
     //int w1, h1, dx, dy, wh2, destX, destY;
     double dr, radian;
@@ -43,9 +43,9 @@ public class ZumaCanvas extends GameCanvas implements Runnable {
     int [] moveY = { -1, 0, 1, 0,};
     float iCount = 1;
     boolean run, State0 = true, State1 = false, State2 = false, State3 = false, Divide = false, Asm = false;
-    boolean Stop = false, Back = false, Shoot = false, Colli = false, pColli = false;
+    boolean Stop = false, Back = false, Shoot = false, Colli = false, pColli = false, isStateChange = false, isColliAtEnd = false;
     boolean headInsert = false, backWard = true, afterBack = false, addColor = false, Breaking = false, Breaked = false;
-    boolean OutOfBalls = false, unchangeColor = true, colliAfter = false;
+    boolean OutOfBalls = false, unchangeColor = true, colliAfter = false, notBreak = false;
     public LayerManager lm;
     StartMidlet Midlet;
     Thread t;
@@ -106,8 +106,7 @@ public class ZumaCanvas extends GameCanvas implements Runnable {
             timeLastCycle = System.currentTimeMillis();
             /////////////////////////////////
             // Model quay theo góc
-            g.drawLine(124, 168, 124 + (int)(100*Math.cos((iCount/180)*Math.PI-Math.PI/2))
-                    , 168 - (int)(100*Math.sin((iCount/180)*Math.PI-Math.PI/2)));
+            N.drawNavi(g);
             model.rotateModel();
             model.Model.paint(g);
             Sball.Ball.paint(g);
@@ -155,11 +154,11 @@ public class ZumaCanvas extends GameCanvas implements Runnable {
                 if ( !Stop && !Back )    ite++;
                 else if ( Back ) ite--;
                 for ( k = 0; k < Number + 1; k++ ) {
-                    //try {
+                    try {
                         ((Sprite)vBall[0].BVector.elementAt(k)).setPosition(lv[ite-16*k][0], lv[ite-16*k][1]);
-                    //} catch ( ArrayIndexOutOfBoundsException b ) {
-                    //    System.out.println("k = " +k);
-                    //}
+                    } catch ( ArrayIndexOutOfBoundsException b ) {
+                        System.out.println("End " + vBall[0].End + " size " + vBall[0].BVector.size() + " k " + k );
+                    }
                     if ( ite-16*k >= 0 && lv[ite-16*k][2] == 1 )
                         ((Sprite) vBall[0].BVector.elementAt(k)).setVisible(false);
                     else ((Sprite) vBall[0].BVector.elementAt(k)).setVisible(true);
@@ -167,79 +166,20 @@ public class ZumaCanvas extends GameCanvas implements Runnable {
                 
                 ///////////////////////////////////////////////////////////////////////////////
                 // Xử lý bắn bóng 
-                if ( Shoot ) {
-                    partColli = 0;
-                    Sball.ShootDistance += 15;
-                    if ( Sball.ShootDistance < 200 ) {
-                        Sball.shootBall( Sball.ShootAngle );
-                        if ( !Colli ) {
-                            headInsert = false;
-                            //System.out.println("xet Va cham");
-                            for ( iColli = 0; iColli < Number+1; iColli++ ) {
-                                if ( Sball.Ball.collidesWith(((Sprite)vBall[0].BVector.elementAt(iColli)), true)) {
-                                    if (( iColli != Number && Sball.Ball.collidesWith(((Sprite)vBall[0].BVector.elementAt(iColli+1)), true))
-                                        || ( iColli != 0 && Sball.Ball.collidesWith(((Sprite)vBall[0].BVector.elementAt(iColli-1)), true))
-                                        || iColli == 0 || iColli == Number)  {
-                                        if ( iColli == 0 && vBall[partColli].BVector.size() >= 1) {
-                                            if (vBall[partColli].BVector.size() == 1
-                                                    || ( vBall[partColli].BVector.size() > 1 && !Sball.Ball.collidesWith(((Sprite)vBall[partColli].BVector.elementAt(iColli+1)), true))) {
-                                                headInsert = true;
-                                            }
-                                        }
-                                        Colli = true;
-                                        break;
-                                    } else {
-                                        Colli = true;
-                                        pColli = true;
-                                        break;
-                                    }
-                                }
-                            }
-                        } else {
-                            if ( InsertTime == 0 ) {
-                                vBall[0].End ++;
-                                Sball.Ball.setVisible(false);
-                                ite += 16;
-                                NumB += 16;
-                            }
-                            sumOfInsert = 0;
-                            sumOfDistance = 0;
-                            for ( j = 0; j <= iColli; j++ ){
-                                ((Sprite) vBall[0].BVector.elementAt(j)).setPosition(lv[ite-16*j-12+InsertTime*4][0], lv[ite-16*j-12+InsertTime*4][1]);
-                            }
-                            vBall[0].InsertBall(iColli, 0);
-                            if ( InsertTime == 4 ) {
-                                InsertTime = 0;
-                                //ColliPoint = iColli - 1;
-                                
-                                Colli = false;
-                                Shoot = false;
-                                vBall[0].testBreak(iColli);
-//                                if ( Sball.Ball.getX() == (int)(116 + 15*Math.cos((iCount/180)*Math.PI-Math.PI/2))
-//                                        && Sball.Ball.getY() == (int)(160 - 15*Math.sin((iCount/180)*Math.PI-Math.PI/2)))
-                                    Sball.resetBall();
-                            }
-                        }
-                    } else {
-                        Shoot = false;
-                        Sball.resetBall();
-                        Colli = false;
-                    }
-                } else
-                    Sball.Ball.setPosition((int)(116 + 15*Math.cos((iCount/180)*Math.PI-Math.PI/2)),
-                        (int)(160 - 15*Math.sin((iCount/180)*Math.PI-Math.PI/2)));
+                S1Shoot();
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //State 2 : bóng trước lùi về bóng sau nếu 2 đầu bóng cùng màu
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             } else if ( State2 ) {
-                if ( Divide ) {System.out.println("partColliBack " + partColliBack);
+                if ( Divide ) {
+                    
                     ////////////////////////////////////////////////////////////////////////////////////
                     // Tách làm 2 đoạn sau khi có khoảng trống
                     ////////////////////////////////////////////////////////////////////////////////////
                     vBall[Part] = new BallVector(this);
                     Part++;
-
+                    System.out.println("Part " + Part);
                     /*for ( j = Part-1; j >= partColliBack+1; j-- ) {
                         vBall[j].Distance = vBall[j-1].Distance;
                     }*/
@@ -288,7 +228,7 @@ public class ZumaCanvas extends GameCanvas implements Runnable {
                         vBall[partColliBack+1].BVector.addElement(vBall[partColliBack].BVector.elementAt(0));
                         vBall[partColliBack].BVector.removeElementAt(0);
                     }
-
+                    System.out.println("Part " + Part);
                     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                     // Xử lý vector 0 add bóng => phân tách ra thành vector 0 và 1, vector 1 distance noi vao vector 2 => asm luôn
                     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -315,7 +255,7 @@ public class ZumaCanvas extends GameCanvas implements Runnable {
                                 ((Sprite)vBall[x].BVector.elementAt(j)).setPosition(lv[ite-16*(j+vBall[x].Begin)][0], lv[ite-16*(j+vBall[x].Begin)][1]);
                         }
                     }
-
+                    System.out.println("Part " + Part);
                     for ( i = 0; i < Part; i++ ) {
                         System.out.println("Here1");
                         System.out.println("Vector so " + i + " Begin " + vBall[i].Begin + " End " + vBall[i].End );
@@ -354,8 +294,8 @@ public class ZumaCanvas extends GameCanvas implements Runnable {
                                     (lv[ite-16*(i+vBall[partColliBack+1].Begin)-sumOfBack][0], lv[ite-16*(i+vBall[partColliBack+1].Begin)-sumOfBack][1]);
                         }
 
-                        if ( vBall[partColliBack].Distance == 0 && InsertTime == 0) {
-                            //iColliS2 = vBall[partColliBack+1].Begin + vBall[partColliBack+1].BVector.size() - 1;
+                        if ( vBall[partColliBack].Distance == 0 && InsertTime == 0 && !Shoot) {
+                            iColli =  vBall[partColliBack+1].BVector.size() - 1;
                             //System.out.println("iColliS2 " + iColliS2 + " beginbreak " + vBall[partColliBack].beginBreak + " endbreak " + vBall[partColliBack].endBreak);
                             
                             for ( k = 0; k <= vBall[partColliBack+1].End-vBall[partColliBack+1].Begin; k++ ) {
@@ -367,7 +307,7 @@ public class ZumaCanvas extends GameCanvas implements Runnable {
 //                            for ( j = partColliBack; j < Part - 1; j++ ) {
 //                                vBall[j].Distance = vBall[j+1].Distance;
 //                            }
-                            //vBall[partColliBack].Distance = vBall[partColliBack+1].Distance;
+                            vBall[partColliBack].Distance = vBall[partColliBack+1].Distance;
                             vBall[partColliBack].Begin = vBall[partColliBack+1].Begin;
                             vBall[partColliBack].End = vBall[partColliBack].Begin + vBall[partColliBack].BVector.size() - 1;
                             for ( j = partColliBack+2; j < Part; j++ ) {
@@ -381,7 +321,6 @@ public class ZumaCanvas extends GameCanvas implements Runnable {
                                 System.out.println("Vector so " + i + " Begin " + vBall[i].Begin + " End " + vBall[i].End );
                                 System.out.println("Vector so " + i + " Size " + vBall[i].BVector.size() + " Distance " + vBall[i].Distance );
                             }
-
                             afterBack = true;
                             backWard = false;
                         }
@@ -470,32 +409,36 @@ public class ZumaCanvas extends GameCanvas implements Runnable {
                             }
                                     
                             for ( i = 0; i < Part; i++ ) {
-                                //System.out.println("Here2");
+                                System.out.println("Here5");
                                 System.out.println("Vector so " + i + " Begin " + vBall[i].Begin + " End " + vBall[i].End );
                                 System.out.println("Vector so " + i + " Size " + vBall[i].BVector.size() + " Distance " + vBall[i].Distance );
                             }
 
-                            if ( !State2 ) {
-                                for ( j = 0; j < Part; j++ ) {
-                                    if ( vBall[j].Distance != 0 ) {
-                                        State3 = true;                                        
-                                        State2 = false;
-                                        State1 = false;
+                            if ( !Divide ) {
+                                if ( !State2 || ( State2 && notBreak )) {
+                                    for ( j = 0; j < Part; j++ ) {
+                                        if ( vBall[j].Distance != 0 ) {
+                                            State3 = true;
+                                            State2 = false;
+                                            State1 = false;
+                                            break;
+                                        } else {
+                                            State3 = false;
+                                            State2 = false;
+                                            State1 = true;
+                                        }
                                     }
-                                }
-                                if ( State3 )  {
-                                    //partColli = partColliBack;
-                                    partColli = k;
+                                    if ( State3 )  {
+                                        partColli = j;
+                                    }
+
                                 } else {
-                                    State2 = false;
-                                    State1 = true;
-                                }
-                            } else {
-                                if ( !Breaked && Part == 1) {
-                                    State1 = true;
-                                    State2 = false;
-                                    State3 = false;
-                                    
+                                    if ( !Breaked && Part == 1) {
+                                        State1 = true;
+                                        State2 = false;
+                                        State3 = false;
+
+                                    }
                                 }
                             }
                             System.out.println("  "+State1+State2+State3 + " divide "+ Divide + " p " + partColli);
@@ -517,113 +460,8 @@ public class ZumaCanvas extends GameCanvas implements Runnable {
                 ////////////////////////////////////////////////////////////////////////////////////
                 // Điều khiển bắn bóng State2
                 ////////////////////////////////////////////////////////////////////////////////////
-                if ( Shoot ) {
-                    Sball.ShootDistance += 15;
-                    if ( Sball.ShootDistance < 200 ) {
-                        Sball.shootBall( Sball.ShootAngle );
-                        if ( !Colli ) {
-                            pColli = false;
-                            for (  partColli = 0; partColli < Part; partColli++ ) {
-                                for ( iColli = 0; iColli < vBall[partColli].BVector.size(); iColli++ ) {
-                                    if ( Sball.Ball.collidesWith(((Sprite)vBall[partColli].BVector.elementAt(iColli)), true)) {
-                                        if (( iColli != vBall[partColli].BVector.size()-1 && Sball.Ball.collidesWith(((Sprite)vBall[partColli].BVector.elementAt(iColli+1)), true))
-                                            || ( iColli != 0 && Sball.Ball.collidesWith(((Sprite)vBall[partColli].BVector.elementAt(iColli-1)), true))
-                                            || iColli == 0 || iColli == vBall[partColli].BVector.size()-1 )  {
-                                            if ( iColli == 0 && vBall[partColli].BVector.size() >= 1) {
-                                                if (vBall[partColli].BVector.size() == 1
-                                                        || ( vBall[partColli].BVector.size() > 1 && !Sball.Ball.collidesWith(((Sprite)vBall[partColli].BVector.elementAt(iColli+1)), true))) {
-                                                    headInsert = true;
-                                                }
-                                            }
-                                            Colli = true;
-                                            pColli = true;
-                                            break;
-                                        } else {
-                                            Colli = true;
-                                            pColli = true;
-                                            break;
-                                        }
-                                    }
-                                }
-                                if ( pColli )    break;
-                            }
-                        } else {
-                            if ( InsertTime == 0 ) {                                
-                                Sball.Ball.setVisible(false);
-                                //if ( partColli == Part - 1 )
-                                ite += 16;
-                                NumB += 16;
-                                //if ( partColli == Part - 1 )    add += 16;
-                                vBall[partColli].End++;
-                                for ( m = partColli - 1; m >= 0; m-- ) {
-                                    vBall[m].Begin++;
-                                    vBall[m].End++;
-                                }
-
-                                if ( vBall[partColliBack].Distance > 16 )
-                                        vBall[partColliBack].Distance -= 16;
-                                else vBall[partColliBack].Distance = 0;
-                            }
-
-                            sumOfInsert = 0;
-                            if ( Part > 1 ) {
-                                for ( k = partColli; k < Part - 1; k++ ) {
-                                    sumOfInsert += vBall[k].Distance;
-                                }
-                            } else { 
-                                sumOfInsert = 0;
-                            }                           
-
-                            if ( iColli != 0 ) {
-                                for ( j = 0; j <= iColli; j++ ){
-                                    try {
-                                    ((Sprite) vBall[partColli].BVector.elementAt(j)).setPosition(lv[ite-16*(j+vBall[partColli].Begin)-sumOfInsert-12+InsertTime*4][0],
-                                            lv[ite-16*(j+vBall[partColli].Begin)-sumOfInsert-12+InsertTime*4][1]);
-                                    } catch ( ArrayIndexOutOfBoundsException aio ) {
-                                        System.out.println("dịch lên để insert vào  : " + j + " Colli " + iColli + " Begin " + vBall[partColli].Begin);
-                                    }
-                                }
-                            }
-
-                            vBall[partColli].InsertBall(iColli, partColli);
-
-                            if ( InsertTime == 4 ) {
-                                if ( partColli != Part - 1 )
-                                    ite-=16;
-
-                                InsertTime = 0;
-                                //ColliPoint = iColli - 1;
-                                vBall[partColli].testBreak(iColli);
-//                                if ( Sball.Ball.getX() == (int)(116 + 15*Math.cos((iCount/180)*Math.PI-Math.PI/2))
-//                                        && Sball.Ball.getY() == (int)(160 - 15*Math.sin((iCount/180)*Math.PI-Math.PI/2)))
-//                                    Sball.resetBall();
-
-                                /*if ( Divide ) {
-
-                                } else {
-                                    if ( vBall[partColli].Distance > 16 )
-                                        vBall[partColli].Distance -= 16;
-                                    else vBall[partColli].Distance = 0;
-
-                                    
-                                }*/
-                                
-                                Colli = false;
-                                Shoot = false;
-                                Sball.resetBall();
-                                Asm = true;
-
-                            }
-                        }
-                    } else {
-                        Shoot = false;
-                        Sball.resetBall();
-                        Colli = false;
-                        Asm = true;
-                    }
-                } else
-                    Sball.Ball.setPosition((int)(116 + 15*Math.cos((iCount/180)*Math.PI-Math.PI/2)),
-                        (int)(160 - 15*Math.sin((iCount/180)*Math.PI-Math.PI/2)));
+                S2Shoot ();
+                
                 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -632,7 +470,6 @@ public class ZumaCanvas extends GameCanvas implements Runnable {
             } else if ( State3 ) {
                 //ite++;
                 if ( Divide ) {
-                    // Nếu bóng mất đi không ở 2 đầu
                     vBall[Part] = new BallVector(this);
                     Part++;
 
@@ -645,7 +482,7 @@ public class ZumaCanvas extends GameCanvas implements Runnable {
                     }*/
                     if ( Part > 1 && partColli + 1 < Part - 1 ) {
                         vBall[partColli+1].Distance = vBall[partColli].Distance;
-                        vBall[partColli+1].Distance -= 16;
+                        //vBall[partColli+1].Distance -= 16;
                     }
                     vBall[partColli].Distance = 0;                    
                     
@@ -746,7 +583,7 @@ public class ZumaCanvas extends GameCanvas implements Runnable {
                     ///////////////////////////////////////////////////////////////////////////////
                     // Ghép 2 vector bóng
                     ///////////////////////////////////////////////////////////////////////////////
-                    } else {
+                    } else  {
                         if ( Part == 1 && !Colli ) {
                             State3 = false;
                             State1 = true;
@@ -754,7 +591,7 @@ public class ZumaCanvas extends GameCanvas implements Runnable {
                             partColli = 0;
                         } else {
                             Asm = false;
-                            if ( InsertTime == 0 && Sball.Ball.isVisible() )  Asm = true;
+                            if ( !Shoot && InsertTime == 0 && Sball.Ball.isVisible() )  Asm = true;
                             if ( Asm ) {
                                 //add = 0;
                                 //if ( partColli > 0 )    partColli --;
@@ -786,116 +623,10 @@ public class ZumaCanvas extends GameCanvas implements Runnable {
                             }
                         }
                     }
-                    
                     ///////////////////////////////////////////////////////////////////////////////
                     // Xử lý bắn bóng State3
                     ////////////////////////////////////////////////////////////////////////////
-                    if ( Shoot ) {
-                        Sball.ShootDistance += 15;
-                        if ( Sball.ShootDistance < 200 ) {
-                            Sball.shootBall( Sball.ShootAngle );
-                            if ( !Colli ) {
-                                pColli = false;
-                                colliAfter = false;
-                                for (  partColli = 0; partColli < Part; partColli++ ) {
-                                    for ( iColli = 0; iColli < vBall[partColli].BVector.size(); iColli++ ) {
-                                        if ( Sball.Ball.collidesWith(((Sprite)vBall[partColli].BVector.elementAt(iColli)), true)) {
-                                            if (( iColli != vBall[partColli].BVector.size()-1 && Sball.Ball.collidesWith(((Sprite)vBall[partColli].BVector.elementAt(iColli+1)), true))
-                                                || ( iColli != 0 && Sball.Ball.collidesWith(((Sprite)vBall[partColli].BVector.elementAt(iColli-1)), true))
-                                                || iColli == 0 || iColli == vBall[partColli].BVector.size()-1 )  {
-                                                if ( iColli == 0 && vBall[partColli].BVector.size() >= 1) {
-                                                    if (vBall[partColli].BVector.size() == 1 
-                                                            || ( vBall[partColli].BVector.size() > 1 && !Sball.Ball.collidesWith(((Sprite)vBall[partColli].BVector.elementAt(iColli+1)), true))) {
-                                                        headInsert = true;
-                                                    } else if ( vBall[partColli].BVector.size() > 1 && Sball.Ball.collidesWith(((Sprite)vBall[partColli].BVector.elementAt(iColli+1)), true)) {
-                                                        colliAfter = true;
-                                                    }
-                                                }
-                                                Colli = true;
-                                                pColli = true;
-                                                break;
-                                            } else {
-                                                Colli = true;
-                                                pColli = true;
-                                                break;
-                                            }
-                                        }
-                                    }
-                                    if ( pColli )    break;
-                                }
-                            } else {
-                                if ( InsertTime == 0 ) {
-                                    Sball.Ball.setVisible(false);
-                                    ite += 16;
-                                    NumB += 16;
-                                    //if ( partColli == Part - 1 )    add += 16;
-                                    //System.out.println("add " + add);
-                                    vBall[partColli].End++;
-                                    for ( m = partColli - 1; m >= 0; m-- ) {
-                                        vBall[m].Begin++;
-                                        vBall[m].End++;
-                                    }
-//                                    if ( partColli < Part - 1 && partColli > 0 )
-//                                        vBall[partColli].Distance -= 16;
-                                    if ( vBall[partColli].Distance > 16 )
-                                        vBall[partColli].Distance -= 16;
-                                    else vBall[partColli].Distance = 0;
-                                }
-                                
-                                sumOfInsert = 0;
-                                for ( k = partColli; k < Part - 1; k++ ) {
-                                    sumOfInsert += vBall[k].Distance;
-                                }
-                                
-                                if ( iColli == 0 && colliAfter ) {
-                                    for ( j = 0; j <= iColli; j++ ){
-                                        try {
-                                            ((Sprite) vBall[partColli].BVector.elementAt(j)).setPosition(lv[ite-16*(j+vBall[partColli].Begin)-sumOfInsert-12+InsertTime*4][0],
-                                                    lv[ite-16*(j+vBall[partColli].Begin)-sumOfInsert-12+InsertTime*4][1]);
-                                        } catch ( ArrayIndexOutOfBoundsException aio ) {
-                                            //System.out.println("dịch lên để insert vào  : " + j + " Colli " + iColli + " Begin " + vBall[partColli].Begin);
-                                        }
-                                    }
-                                } else if ( iColli != 0 ) {              
-                                    for ( j = 0; j <= iColli; j++ ){
-                                        //if ( ite-16*j <= 997 ) {
-                                        //System.out.println("add here " + )
-                                        try {
-                                            ((Sprite) vBall[partColli].BVector.elementAt(j)).setPosition(lv[ite-16*(j+vBall[partColli].Begin)-sumOfInsert-12+InsertTime*4][0],
-                                                    lv[ite-16*(j+vBall[partColli].Begin)-sumOfInsert-12+InsertTime*4][1]);
-                                        } catch ( ArrayIndexOutOfBoundsException aio ) {
-                                            //System.out.println("dịch lên để insert vào  : " + j + " Colli " + iColli + " Begin " + vBall[partColli].Begin);
-                                        }
-                                        //}
-                                    }
-                                }
-                 
-                                vBall[partColli].InsertBall(iColli, partColli);
-
-                                if ( InsertTime == 4 ) {
-                                    if ( partColli != Part - 1 )
-                                        ite-=16;                                    
-                                    InsertTime = 0;
-                                    vBall[partColli].testBreak(iColli);
-//                                    if ( Sball.Ball.getX() == (int)(116 + 15*Math.cos((iCount/180)*Math.PI-Math.PI/2))
-//                                        && Sball.Ball.getY() == (int)(160 - 15*Math.sin((iCount/180)*Math.PI-Math.PI/2)))
-//                                    Sball.resetBall();
-
-                                    Colli = false;
-                                    Shoot = false;
-                                    Sball.resetBall();
-                                    Asm = true;                                    
-                                }
-                            }
-                        } else {
-                            Shoot = false;
-                            Sball.resetBall();
-                            Colli = false;
-                            Asm = true;
-                        }
-                    } else
-                        Sball.Ball.setPosition((int)(116 + 15*Math.cos((iCount/180)*Math.PI-Math.PI/2)),
-                            (int)(160 - 15*Math.sin((iCount/180)*Math.PI-Math.PI/2)));
+                    S3Shoot();
                 }
 
             }
@@ -905,7 +636,7 @@ public class ZumaCanvas extends GameCanvas implements Runnable {
                     ((Sprite)vBall[0].BVector.elementAt(arr)).setVisible(false);
             }*/
 
-//            System.out.println("State = " + State1 + State2 + State3 );
+            System.out.println("State = " + State1 + State2 + State3 );
 //            System.out.println("So Part " + Part);
             if ( Part >= 1 ) {
                 if (((Sprite)vBall[Part-1].BVector.elementAt(0)).getX() == 0 && ((Sprite)vBall[Part-1].BVector.elementAt(0)).getY() == 0 ) {
@@ -983,6 +714,339 @@ public class ZumaCanvas extends GameCanvas implements Runnable {
             Runtime.getRuntime().gc();
         }
     }
+
+
+    ///////////////////////////////////////////////////////////////////////////////
+    // Xử lý bắn bóng State1
+    ////////////////////////////////////////////////////////////////////////////
+    public void S1Shoot() {
+        if ( Shoot ) {
+            partColli = 0;
+            Sball.ShootDistance += 15;
+            if ( Sball.ShootDistance < 200 ) {
+                Sball.shootBall( Sball.ShootAngle );
+                if ( !Colli ) {
+                    headInsert = false;
+                    //System.out.println("xet Va cham");
+                    for ( iColli = 0; iColli < Number+1; iColli++ ) {
+                        if ( Sball.Ball.collidesWith(((Sprite)vBall[0].BVector.elementAt(iColli)), true)) {
+                            if (( iColli != Number && Sball.Ball.collidesWith(((Sprite)vBall[0].BVector.elementAt(iColli+1)), true))
+                                || ( iColli != 0 && Sball.Ball.collidesWith(((Sprite)vBall[0].BVector.elementAt(iColli-1)), true))
+                                || iColli == 0 || iColli == Number)  {
+                                /*if ( iColli == 0 && vBall[partColli].BVector.size() >= 1) {
+                                    if (vBall[partColli].BVector.size() == 1
+                                            || ( vBall[partColli].BVector.size() > 1 && !Sball.Ball.collidesWith(((Sprite)vBall[partColli].BVector.elementAt(iColli+1)), true))) {
+                                        headInsert = true;
+                                    }
+                                }*/
+                                if ( iColli == 0 && vBall[partColli].BVector.size() >= 1) {
+                                    if (vBall[partColli].BVector.size() == 1
+                                            || ( vBall[partColli].BVector.size() > 1 && !Sball.Ball.collidesWith(((Sprite)vBall[partColli].BVector.elementAt(iColli+1)), true))) {
+                                        headInsert = true;
+                                    } else if ( vBall[partColli].BVector.size() > 1 && Sball.Ball.collidesWith(((Sprite)vBall[partColli].BVector.elementAt(iColli+1)), true)) {
+                                        colliAfter = true;
+                                    }
+                                }
+                                Colli = true;
+                                break;
+                            } else {
+                                Colli = true;
+                                pColli = true;
+                                break;
+                            }
+                        }
+                    }
+                } else {
+                    if ( InsertTime == 0 ) {
+                        vBall[0].End ++;
+                        Sball.Ball.setVisible(false);
+                        ite += 16;
+                        NumB += 16;
+                    }
+                    sumOfInsert = 0;
+                    sumOfDistance = 0;
+                    for ( j = 0; j <= iColli; j++ ){
+                        ((Sprite) vBall[0].BVector.elementAt(j)).setPosition(lv[ite-16*j-12+InsertTime*4][0], lv[ite-16*j-12+InsertTime*4][1]);
+                    }
+                    vBall[0].InsertBall(iColli, 0);
+                    if ( InsertTime == 4 ) {
+                        InsertTime = 0;
+                        //ColliPoint = iColli - 1;
+
+                        Colli = false;
+                        Shoot = false;
+                        vBall[0].testBreak(iColli);
+    //                                if ( Sball.Ball.getX() == (int)(116 + 15*Math.cos((iCount/180)*Math.PI-Math.PI/2))
+    //                                        && Sball.Ball.getY() == (int)(160 - 15*Math.sin((iCount/180)*Math.PI-Math.PI/2)))
+                            Sball.resetBall();
+                    }
+                }
+            } else {
+                Shoot = false;
+                Sball.resetBall();
+                Colli = false;
+            }
+        } else
+            Sball.Ball.setPosition((int)(116 + 15*Math.cos((iCount/180)*Math.PI-Math.PI/2)),
+                (int)(160 - 15*Math.sin((iCount/180)*Math.PI-Math.PI/2)));
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////
+    // Xử lý bắn bóng State2
+    ////////////////////////////////////////////////////////////////////////////
+    public void S2Shoot() {
+        if ( Shoot ) {
+            Sball.ShootDistance += 15;
+            if ( Sball.ShootDistance < 200 ) {
+                Sball.shootBall( Sball.ShootAngle );
+                if ( !Colli ) {
+                    headInsert = false;
+                    pColli = false;
+                    for (  partColli = 0; partColli < Part; partColli++ ) {
+                        for ( iColli = 0; iColli < vBall[partColli].BVector.size(); iColli++ ) {
+                            if ( Sball.Ball.collidesWith(((Sprite)vBall[partColli].BVector.elementAt(iColli)), true)) {
+                                if (( iColli != vBall[partColli].BVector.size()-1 && Sball.Ball.collidesWith(((Sprite)vBall[partColli].BVector.elementAt(iColli+1)), true))
+                                    || ( iColli != 0 && Sball.Ball.collidesWith(((Sprite)vBall[partColli].BVector.elementAt(iColli-1)), true))
+                                    || iColli == 0 || iColli == vBall[partColli].BVector.size()-1 )  {
+                                    /*if ( iColli == 0 && vBall[partColli].BVector.size() >= 1) {
+                                        if (vBall[partColli].BVector.size() == 1
+                                                || ( vBall[partColli].BVector.size() > 1 && !Sball.Ball.collidesWith(((Sprite)vBall[partColli].BVector.elementAt(iColli+1)), true))) {
+                                            headInsert = true;
+                                        }
+                                    }*/
+                                    if ( iColli == 0 && vBall[partColli].BVector.size() >= 1) {
+                                        if (vBall[partColli].BVector.size() == 1
+                                                || ( vBall[partColli].BVector.size() > 1 && !Sball.Ball.collidesWith(((Sprite)vBall[partColli].BVector.elementAt(iColli+1)), true))) {
+                                            headInsert = true;
+                                        } else if ( vBall[partColli].BVector.size() > 1 && Sball.Ball.collidesWith(((Sprite)vBall[partColli].BVector.elementAt(iColli+1)), true)) {
+                                            colliAfter = true;
+                                        }
+                                    }
+                                    Colli = true;
+                                    pColli = true;
+                                    break;
+                                } else {
+                                    Colli = true;
+                                    pColli = true;
+                                    break;
+                                }
+                            }
+                        }
+                        if ( pColli )    break;
+                    }
+                } else {
+                    if ( InsertTime == 0 ) {
+                        Sball.Ball.setVisible(false);
+                        //if ( partColli == Part - 1 )
+
+                        NumB += 16;
+                        //if ( partColli == Part - 1 )    add += 16;
+                        vBall[partColli].End++;
+                        for ( m = partColli - 1; m >= 0; m-- ) {
+                            vBall[m].Begin++;
+                            vBall[m].End++;
+                        }
+                        if ( partColli == Part - 1 )    ite += 16;
+                        else {
+                            if(vBall[partColli].Distance > 16)
+                                vBall[partColli].Distance -= 16;
+                            else vBall[partColli].Distance = 0;
+                        }
+                    }
+
+                    sumOfInsert = 0;
+                    if ( Part > 1 ) {
+                        for ( k = partColli; k < Part - 1; k++ ) {
+                            sumOfInsert += vBall[k].Distance;
+                        }
+                    } else {
+                        sumOfInsert = 0;
+                    }
+
+                    if ( iColli != 0 ) {
+                        for ( j = 0; j <= iColli; j++ ){
+                            try {
+                            ((Sprite) vBall[partColli].BVector.elementAt(j)).setPosition(lv[ite-16*(j+vBall[partColli].Begin)-sumOfInsert-12+InsertTime*4][0],
+                                    lv[ite-16*(j+vBall[partColli].Begin)-sumOfInsert-12+InsertTime*4][1]);
+                            } catch ( ArrayIndexOutOfBoundsException aio ) {
+                                System.out.println("dịch lên để insert vào  : " + j + " Colli " + iColli + " Begin " + vBall[partColli].Begin);
+                            }
+                        }
+                    }
+
+                    vBall[partColli].InsertBall(iColli, partColli);
+
+                    if ( InsertTime == 4 ) {
+//                                if ( partColli != Part - 1 )
+//                                    ite-=16;
+
+                        InsertTime = 0;
+                        //ColliPoint = iColli - 1;
+                        
+                        vBall[partColli].testBreak(iColli);
+                        /*if ( Divide ) {
+
+                        } else {
+                            if ( vBall[partColli].Distance > 16 )
+                                vBall[partColli].Distance -= 16;
+                            else vBall[partColli].Distance = 0;
+
+
+                        }*/
+
+                        Colli = false;
+                        Shoot = false;
+                        Sball.resetBall();
+                        Asm = true;
+
+                    }
+                }
+            } else {
+                Shoot = false;
+                Sball.resetBall();
+                Colli = false;
+                Asm = true;
+            }
+        } else
+            Sball.Ball.setPosition((int)(116 + 15*Math.cos((iCount/180)*Math.PI-Math.PI/2)),
+                (int)(160 - 15*Math.sin((iCount/180)*Math.PI-Math.PI/2)));
+    }
+    ///////////////////////////////////////////////////////////////////////////////
+    // Xử lý bắn bóng State3
+    ////////////////////////////////////////////////////////////////////////////
+    public void S3Shoot () {
+        if ( Shoot ) {
+            Sball.ShootDistance += 15;
+            if ( Sball.ShootDistance < 200 ) {
+                Sball.shootBall( Sball.ShootAngle );
+                if ( !Colli ) {
+                    headInsert = false;
+                    pColli = false;
+                    colliAfter = false;
+                    isColliAtEnd = false;
+                    for (  partColli = 0; partColli < Part; partColli++ ) {
+                        for ( iColli = 0; iColli < vBall[partColli].BVector.size(); iColli++ ) {
+                            if ( Sball.Ball.collidesWith(((Sprite)vBall[partColli].BVector.elementAt(iColli)), true)) {
+                                if (( iColli != vBall[partColli].BVector.size()-1 && Sball.Ball.collidesWith(((Sprite)vBall[partColli].BVector.elementAt(iColli+1)), true))
+                                    || ( iColli != 0 && Sball.Ball.collidesWith(((Sprite)vBall[partColli].BVector.elementAt(iColli-1)), true))
+                                    || iColli == 0 || iColli == vBall[partColli].BVector.size()-1 )  {
+                                    if ( iColli == 0 && vBall[partColli].BVector.size() >= 1) {
+                                        if (vBall[partColli].BVector.size() == 1
+                                                || ( vBall[partColli].BVector.size() > 1 && !Sball.Ball.collidesWith(((Sprite)vBall[partColli].BVector.elementAt(iColli+1)), true))) {
+                                            headInsert = true;
+                                        } else if ( vBall[partColli].BVector.size() > 1 && Sball.Ball.collidesWith(((Sprite)vBall[partColli].BVector.elementAt(iColli+1)), true)) {
+                                            colliAfter = true;
+                                        }
+                                    }
+                                    if ( vBall[partColli].BVector.size() > 1  && iColli == vBall[partColli].BVector.size()-1
+                                            && !Sball.Ball.collidesWith(((Sprite)vBall[partColli].BVector.elementAt(iColli-1)), true)) {
+                                        isColliAtEnd = true;
+                                    }
+                                    Colli = true;
+                                    pColli = true;
+                                    break;
+                                } else {
+                                    Colli = true;
+                                    pColli = true;
+                                    break;
+                                }
+                            }
+                        }
+                        if ( pColli )    break;
+                    }
+                } else {
+                    if ( InsertTime == 0 ) {
+                        Sball.Ball.setVisible(false);
+
+                        NumB += 16;
+                        //if ( partColli == Part - 1 )    add += 16;
+                        //System.out.println("add " + add);
+                        vBall[partColli].End++;
+                        for ( m = partColli - 1; m >= 0; m-- ) {
+                            vBall[m].Begin++;
+                            vBall[m].End++;
+                        }
+                        if ( partColli == Part - 1 )    ite += 16;
+                        else {
+                            if ( vBall[partColli].Distance > 16 )
+                                vBall[partColli].Distance -= 16;
+                            else vBall[partColli].Distance = 0;
+                        }
+                    }
+
+                    sumOfInsert = 0;
+                    for ( k = partColli; k < Part - 1; k++ ) {
+                        sumOfInsert += vBall[k].Distance;
+                    }
+
+                    if ( iColli == 0 && colliAfter ) {
+                        for ( j = 0; j <= iColli; j++ ){
+                            try {
+                                ((Sprite) vBall[partColli].BVector.elementAt(j)).setPosition(lv[ite-16*(j+vBall[partColli].Begin)-sumOfInsert-12+InsertTime*4][0],
+                                        lv[ite-16*(j+vBall[partColli].Begin)-sumOfInsert-12+InsertTime*4][1]);
+                            } catch ( ArrayIndexOutOfBoundsException aio ) {
+                                //System.out.println("dịch lên để insert vào  : " + j + " Colli " + iColli + " Begin " + vBall[partColli].Begin);
+                            }
+                        }
+                    } else if ( iColli != 0 ) {
+                        for ( j = 0; j <= iColli; j++ ){
+                            //if ( ite-16*j <= 997 ) {
+                            //System.out.println("add here " + )
+                            try {
+                                ((Sprite) vBall[partColli].BVector.elementAt(j)).setPosition(lv[ite-16*(j+vBall[partColli].Begin)-sumOfInsert-12+InsertTime*4][0],
+                                        lv[ite-16*(j+vBall[partColli].Begin)-sumOfInsert-12+InsertTime*4][1]);
+                            } catch ( ArrayIndexOutOfBoundsException aio ) {
+                                System.out.println("dịch lên để insert vào  : " + j + " Colli " + iColli + " Begin " + vBall[partColli].Begin);
+                            }
+                            //}
+                        }
+                    }
+
+                    vBall[partColli].InsertBall(iColli, partColli);
+
+                    if ( InsertTime == 4 ) {
+                        //if ( partColli != Part - 1 )
+                        //    ite-=16;
+                        InsertTime = 0;
+                        isStateChange = false;
+                        vBall[partColli].testBreak(iColli);
+                        if ( !isStateChange ) {
+                            if ( headInsert  ) {
+                                if (  partColli != Part-1 && ((Sprite)vBall[partColli].BVector.elementAt(0)).getFrame()
+                                    == ((Sprite)vBall[partColli+1].BVector.elementAt(vBall[partColli+1].BVector.size()-1)).getFrame()) {
+                                    State1 = false;
+                                    State2 = true;
+                                    State3 = false;
+                                    partColliBack = partColli;
+                                }
+                            } else if ( isColliAtEnd ) {
+                                if ( partColli != 0 && ((Sprite)vBall[partColli].BVector.elementAt(vBall[partColli].BVector.size()-1)).getFrame()
+                                    == ((Sprite)vBall[partColli-1].BVector.elementAt(0)).getFrame()) {
+                                    State1 = false;
+                                    State2 = true;
+                                    State3 = false;
+                                    partColliBack = partColli - 1;
+                                }
+                            }
+                        }
+
+                        Colli = false;
+                        Shoot = false;
+                        Sball.resetBall();
+                        Asm = true;
+                    }
+                }
+            } else {
+                Shoot = false;
+                Sball.resetBall();
+                Colli = false;
+                Asm = true;
+            }
+        } else
+            Sball.Ball.setPosition((int)(116 + 15*Math.cos((iCount/180)*Math.PI-Math.PI/2)),
+                (int)(160 - 15*Math.sin((iCount/180)*Math.PI-Math.PI/2)));
+    }
+
 
     public void start(){
         this.run = true;
@@ -1267,9 +1331,9 @@ public class ZumaCanvas extends GameCanvas implements Runnable {
                 Sball.Ball.setFrame(2);
                 break;
             case KeyCodeAdapter.KEY_4:
-                E1.SlowEf();
+                //E1.SlowEf();
                 //if ( !Stop  ){
-                    //this.run = false;
+                    this.run = false;
                     //t.interrupt();
                     //Stop = true;
                 //}

@@ -1,0 +1,4 @@
+ban vao` giua 2 doan 1 2 => cung mau => state2
+luc gop lui` cua state2 chua testbreak
+Khi thua cac bong' lui` het vao
+pbiet bong dau cuoi khi chi co 1 ball
