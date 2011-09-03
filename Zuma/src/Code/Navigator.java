@@ -28,9 +28,9 @@ public class Navigator {
             g.setColor( 0xff0000 );
         else if(zumaCanvas.Sball.Ball.getFrame() == 3)
             g.setColor( 0xffff00 );
-        for ( iP = 0; iP <= 140; iP += 12 ) {
-            g.fillArc(123 + (int)(iP*Math.cos((zumaCanvas.iCount/180)*Math.PI-Math.PI/2)),
-                    166  - (int)(iP*Math.sin((zumaCanvas.iCount/180)*Math.PI-Math.PI/2)), 3, 3, 0, 360);
+        for ( iP = 0; iP <= 150; iP += 15 ) {
+            g.fillArc( zumaCanvas.Sball.getPositionX() + 6 + (int)(iP*Math.cos((zumaCanvas.iCount/180)*Math.PI-Math.PI/2)),
+                    zumaCanvas.Sball.getPositionY() + 6 - (int)(iP*Math.sin((zumaCanvas.iCount/180)*Math.PI-Math.PI/2)), 4, 4, 0, 360);
         }
     }
 }

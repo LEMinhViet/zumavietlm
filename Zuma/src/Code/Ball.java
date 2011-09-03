@@ -44,15 +44,15 @@ public class Ball {
         Ball.setFrameSequence(ballSeq);
         zumaCanvas.lm.insert(Ball, 0);
         zumaCanvas.lm.insert(Pixel, 0);
-        Ball.setPosition( 116, 160);
+        Ball.setPosition( getPositionX(), getPositionY() );
         zumaCanvas.getColor();
         Ball.setFrame(zumaCanvas.getRandAmong(zumaCanvas.Color));
         
     }
 
     public void shootBall( float ShootAngle ){
-        Ball.setPosition((int)(116 + ShootDistance*Math.cos((ShootAngle/180)*Math.PI-Math.PI/2)),
-                                (int)(160 - ShootDistance*Math.sin((ShootAngle/180)*Math.PI-Math.PI/2)));
+        Ball.setPosition((int)( getPositionX() + ShootDistance*Math.cos((ShootAngle/180)*Math.PI-Math.PI/2)),
+                                (int)( getPositionY() - ShootDistance*Math.sin((ShootAngle/180)*Math.PI-Math.PI/2)));
     }
 
     public void resetBall(){
@@ -60,8 +60,8 @@ public class Ball {
         if ( zumaCanvas.Part != 0 || ( zumaCanvas.Part == 1 && zumaCanvas.vBall[0].BVector.size() == 0 )) {
             // Hiện lại bóng để bắn, các biến liên quan đến việc bắn về lại trị số ban đầu
             ShootDistance = 15;
-            Ball.setPosition((int)(116 + 15*Math.cos((zumaCanvas.iCount/180)*Math.PI-Math.PI/2)),
-                            (int)(160 - 15*Math.sin((zumaCanvas.iCount/180)*Math.PI-Math.PI/2)));
+            Ball.setPosition((int)(getPositionX() + 15*Math.cos((zumaCanvas.iCount/180)*Math.PI-Math.PI/2)),
+                            (int)(getPositionY() - 15*Math.sin((zumaCanvas.iCount/180)*Math.PI-Math.PI/2)));
             /*System.out.print( "Color " );
             for ( int u = 0; u < 10; u++ ) {
                 System.out.print( zumaCanvas.Color[u] + "\t");
@@ -88,5 +88,13 @@ public class Ball {
 
             Ball.setVisible(true);
         }
+    }
+
+    public int getPositionX ( ) {
+        return zumaCanvas.model.Model.getX() + zumaCanvas.model.Model.getWidth()/2 - 8;
+    }
+
+    public int getPositionY ( ) {
+        return zumaCanvas.model.Model.getY() + zumaCanvas.model.Model.getHeight()/2 - 8;
     }
 }
