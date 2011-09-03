@@ -289,7 +289,8 @@ public class BallVector {
             for ( j = beginBreak; j <= endBreak; j++ ) {
 
                 zumaCanvas.breakBall[j-beginBreak].setPosition(((Sprite)BVector.elementAt(j)).getX()-4, ((Sprite)BVector.elementAt(j)).getY()-4);
-                zumaCanvas.breakBall[j-beginBreak].setVisible(true);
+                if ( ((Sprite)BVector.elementAt(j)).isVisible() == true )   
+                    zumaCanvas.breakBall[j-beginBreak].setVisible(true);
                 ((Sprite)BVector.elementAt(j)).setVisible(false);
                 zumaCanvas.Breaking = true;
             }

@@ -24,7 +24,7 @@ public class Model {
     public void initModel( ZumaCanvas zumaCanvas ) {
         
         this.zumaCanvas = zumaCanvas;
-        x = 91; y = 135;
+        positionInLevel(zumaCanvas.runningLevel);
         try {
             Model = new Sprite ( Image.createImage("/picture/mod.png"), 60, 60);
             Model.setFrameSequence(ModelSeq);
@@ -80,39 +80,9 @@ public class Model {
 
     }
 
-    /*public void drawModel( Graphics g, int X, int Y ) {
-        g.drawImage( Model, X, Y, Graphics.TOP | Graphics.LEFT);
-    }*/
-
-    /////////////////////////////////////////////////////////////////////////////////////////
-    // Hàm rotate để quay model
-    // imgSource : Ảnh gốc để quay
-    // cx       : tọa độ X tâm ảnh imgSource
-    // cy       : tọa độ Y tâm ảnh imgSource
-    // theta    : góc quay của ảnh
-    /////////////////////////////////////////////////////////////////////////////////////////
-    /*public Image rotate(Image imgSource, int cx, int cy, double theta) {
-        if (Math.abs(theta % 360) < 0.1) {
-            return imgSource;
-        }
-        w1 = imgSource.getWidth();
-        h1 = imgSource.getHeight();
-        srcMap = new int[w1 * h1];
-        imgSource.getRGB(srcMap, 0, w1, 0, 0, w1, h1);
-        dx= cx;
-        dy = cy;
-        dr = Math.sqrt(dx * dx + dy * dy);
-        wh2 = (int) (2 * dr + 1);
-        destMap = new int[wh2 * wh2];
-        radian = theta * Math.PI / 180;
-        for ( i = 0; i < w1; i++) {
-            for (j = 0; j < h1; j++) {
-                destX = (int) (dr + (i - cx) * Math.cos(radian) + (j - cy) * Math.sin(radian));
-                destY = (int) (dr + (j - cy) * Math.cos(radian) - (i - cx) * Math.sin(radian));
-                destMap[(int) wh2 * destY + (int) destX] = srcMap[j * w1 + i];
-                destMap[(int) wh2 * (int) destY + (int) destX + 1] = srcMap[j * w1 + i];
-            }
-        }
-        return Image.createRGBImage(destMap, wh2, wh2, true);
-    }*/
+    public void positionInLevel ( int Level ) {
+        if ( Level == 1 ) {   x = 91; y = 135; }
+        else if ( Level == 4 ) {   x = 95; y = 152; }
+        else if ( Level == 5 ) {   x = 109; y = 148; }
+    }
 }
