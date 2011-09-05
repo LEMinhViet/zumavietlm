@@ -61,7 +61,7 @@ public class BallVector {
                 ex.printStackTrace();
             }
             ((Sprite)BVector.elementAt(j)).setFrameSequence(ballSeq);
-            zumaCanvas.lm.append((Sprite)BVector.elementAt(j));
+            zumaCanvas.lm.insert((Sprite)BVector.elementAt(j), 0);
             ((Sprite)BVector.elementAt(j)).setPosition(-16, -16);
             ((Sprite)BVector.elementAt(j)).setFrame(Level[j]);
         }
@@ -279,10 +279,16 @@ public class BallVector {
         if ( End < endBreak ) {
             endBreak = End;
         }
-        if ( endBreak - beginBreak < 2 )    zumaCanvas.notBreak = true;
+        if ( endBreak - beginBreak < 2 ) {
+            zumaCanvas.notBreak = true;
+            zumaCanvas.score.multiNum = 1;
         /////////////////////////////////////////////////////////////////////////////////////////////////
         // Nếu số bóng cùng màu >= 2 => Xóa các viên bi cùng màu với bóng bắn vào
-        if ( endBreak - beginBreak >= 2 ) {
+        } else if(endBreak - beginBreak >= 2) {
+            zumaCanvas.score.addScore(beginBreak, endBreak);
+            System.out.println("Score " + zumaCanvas.score.Score + " " + zumaCanvas.score.multiNum);
+            zumaCanvas.drawScore = true;
+            zumaCanvas.score.drawScore();
             zumaCanvas.iColli = beginBreak - 1;
             zumaCanvas.isStateChange = true;
             zumaCanvas.Breaked = true;
@@ -432,6 +438,7 @@ public class BallVector {
                     
                 } else if ( zumaCanvas.Part == 0 ) {
                     System.out.println("End Of level");
+                    zumaCanvas.nextLevel();
                     zumaCanvas.State1 = true;
                     zumaCanvas.State2 = false;
                     zumaCanvas.State3 = false;
