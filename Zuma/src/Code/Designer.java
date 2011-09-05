@@ -56,7 +56,8 @@ public class Designer {
     public static final byte TRANS_ROT270 = 6;
     
     private static final byte[] loadDatFile(String file){
-        InputStream is = StartMidlet.sunnetFlash.getClass().getResourceAsStream(file);
+        //InputStream is = StartMidlet.sunnetFlash.getClass().getResourceAsStream(file);
+        InputStream is = InputStream.class.getResourceAsStream(file);
         byte[] dat = null;
         try {
             dat = new byte[is.available()];
@@ -67,7 +68,8 @@ public class Designer {
     }
 
     private static final int[] loadPalFile(String file){
-        InputStream is = StartMidlet.sunnetFlash.getClass().getResourceAsStream(file);
+        //InputStream is = StartMidlet.sunnetFlash.getClass().getResourceAsStream(file);
+        InputStream is = InputStream.class.getResourceAsStream(file);
         int[] pal = null;
         try {
             pal = new int[is.available() / 4];
@@ -144,11 +146,11 @@ public class Designer {
     public static final int renderTextChar(Graphics g, int index, int colorType, int x, int y){
       if(pal_textFont == null){
             pal_textFont = loadPalFile("/Code/textfont.pal");
-            Runtime.getRuntime().gc();
+//            Runtime.getRuntime().gc();
         }
         if(dat_textFont == null){
             dat_textFont = loadDatFile("/Code/textfont.dat");
-            Runtime.getRuntime().gc();
+//            Runtime.getRuntime().gc();
         }
 
         int shift = index * 120;

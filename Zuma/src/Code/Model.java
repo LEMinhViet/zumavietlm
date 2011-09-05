@@ -20,13 +20,16 @@ public class Model {
     Sprite Model;
     int[] ModelSeq = { 0, 1, 2, 3, 4, 5, 6, 7, 8 };
     int Quarter, Angle, x, y;
+    int back;
+    boolean Back;
 
     public void initModel( ZumaCanvas zumaCanvas ) {
         
         this.zumaCanvas = zumaCanvas;
         positionInLevel(zumaCanvas.runningLevel);
         try {
-            Model = new Sprite ( Image.createImage("/picture/mod.png"), 60, 60);
+            if ( Model == null )
+                Model = new Sprite ( Image.createImage("/picture/mod.png"), 60, 60);
             Model.setFrameSequence(ModelSeq);
             Model.setPosition(x, y);
         } catch (IOException ex) {
@@ -84,5 +87,18 @@ public class Model {
         if ( Level == 1 ) {   x = 91; y = 135; }
         else if ( Level == 4 ) {   x = 95; y = 152; }
         else if ( Level == 5 ) {   x = 109; y = 148; }
+    }
+
+    public void whenShoot ( float iCount ) {
+        if ( back < 8 ) {
+            if ( !Back ) {
+                Model.setPosition(Model.getX() - (int)(back*Math.cos((iCount/180)*Math.PI-Math.PI/2)), Model.getY() + (int)(back*Math.sin((iCount/180)*Math.PI-Math.PI/2)));
+                back+=2;
+            }
+        } else {
+            Back = true;
+            back = 0;
+            Model.setPosition(x, y);
+        }
     }
 }
