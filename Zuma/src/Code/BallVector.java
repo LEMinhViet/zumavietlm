@@ -439,9 +439,12 @@ public class BallVector {
                 } else if ( zumaCanvas.Part == 0 ) {
                     System.out.println("End Of level");
                     zumaCanvas.nextLevel();
-                    zumaCanvas.State1 = true;
+                    zumaCanvas.State0 = false;
+                    zumaCanvas.State1 = false;
                     zumaCanvas.State2 = false;
                     zumaCanvas.State3 = false;
+                    zumaCanvas.State5 = true;
+                    
                 }
                     
             /////////////////////////////////////////////////////////////////////////////////////////////////

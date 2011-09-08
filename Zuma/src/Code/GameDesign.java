@@ -16,12 +16,29 @@ import java.io.IOException;
 public class GameDesign {
 
     //<editor-fold defaultstate="collapsed" desc=" Generated Fields ">//GEN-BEGIN:|fields|0|
+    private TiledLayer l3;
+    private Sprite va;
+    public int vaseq001Delay = 200;
+    public int[] vaseq001 = {0, 0, 0, 0, 0};
+    private Image lv3;
     private Image lv1;
     private TiledLayer lv1GD;
+    private Image lv5_patch;
     private Image mod;
     private Sprite Scop;
     public int Scopseq001Delay = 200;
     public int[] Scopseq001 = {8, 0, 0, 0, 0};
+    private TiledLayer v1;
+    private Image lv4;
+    private Image lv4_patch1;
+    private Image mod_2;
+    private Sprite scorp;
+    public int scorpseq001Delay = 200;
+    public int[] scorpseq001 = {8, 4, 5, 6, 7, 8};
+    private Image mod_;
+    private Sprite modX;
+    public int modXseq001Delay = 200;
+    public int[] modXseq001 = {0, 1, 2, 3, 4, 5, 7, 8};
     private Sprite a;
     public int aseq001Delay = 200;
     public int[] aseq001 = {0, 0, 0, 0, 0};
@@ -29,14 +46,8 @@ public class GameDesign {
     public int abseq001Delay = 200;
     public int[] abseq001 = {0, 0, 0, 0, 0};
     private Image lv4_patch;
-    private Image lv4;
-    private Image lv4_patch1;
     private Image lv5;
     private TiledLayer v4;
-    private Image lv5_patch;
-    private Sprite va;
-    public int vaseq001Delay = 200;
-    public int[] vaseq001 = {0, 0, 0, 0, 0};
     //</editor-fold>//GEN-END:|fields|0|
 
     //<editor-fold defaultstate="collapsed" desc=" Generated Methods ">//GEN-BEGIN:|methods|0|
@@ -44,15 +55,18 @@ public class GameDesign {
 
     public void updateLayerManagerForLm(LayerManager lm) throws java.io.IOException {//GEN-LINE:|1-updateLayerManager|0|1-preUpdate
         // write pre-update user code here
-        getVa().setPosition(194, 79);//GEN-BEGIN:|1-updateLayerManager|1|1-postUpdate
-        getVa().setVisible(true);
-        lm.append(getVa());
-        getScop().setPosition(109, 148);
+        getScorp().setPosition(96, 135);//GEN-BEGIN:|1-updateLayerManager|1|1-postUpdate
+        getScorp().setVisible(true);
+        lm.append(getScorp());
+        getScop().setPosition(155, 234);
         getScop().setVisible(true);
         lm.append(getScop());
-        getV4().setPosition(0, 0);
-        getV4().setVisible(true);
-        lm.append(getV4());
+        getV1().setPosition(0, 0);
+        getV1().setVisible(true);
+        lm.append(getV1());
+        getVa().setPosition(194, 79);
+        getVa().setVisible(true);
+        lm.append(getVa());
         getLv1GD().setPosition(0, 0);
         getLv1GD().setVisible(true);
         lm.append(getLv1GD());//GEN-END:|1-updateLayerManager|1|1-postUpdate
@@ -92,7 +106,7 @@ public class GameDesign {
     public Image getMod() throws java.io.IOException {//GEN-BEGIN:|8-getter|0|8-preInit
         if (mod == null) {//GEN-END:|8-getter|0|8-preInit
             // write pre-init user code here
-            mod = Image.createImage("/picture/mod.png");//GEN-BEGIN:|8-getter|1|8-postInit
+            mod = Image.createImage("/picture/mod_.png");//GEN-BEGIN:|8-getter|1|8-postInit
         }//GEN-END:|8-getter|1|8-postInit
         // write post-init user code here
         return this.mod;//GEN-BEGIN:|8-getter|2|
@@ -213,5 +227,107 @@ public class GameDesign {
         return va;
     }
 //GEN-END:|204-getter|2|
+
+    public Image getMod_2() throws java.io.IOException {//GEN-BEGIN:|218-getter|0|218-preInit
+        if (mod_2 == null) {//GEN-END:|218-getter|0|218-preInit
+            // write pre-init user code here
+            mod_2 = Image.createImage("/picture/mod_.png");//GEN-BEGIN:|218-getter|1|218-postInit
+        }//GEN-END:|218-getter|1|218-postInit
+        // write post-init user code here
+        return this.mod_2;//GEN-BEGIN:|218-getter|2|
+    }
+//GEN-END:|218-getter|2|
+
+    public Sprite getScorp() throws java.io.IOException {//GEN-BEGIN:|219-getter|0|219-preInit
+        if (scorp == null) {//GEN-END:|219-getter|0|219-preInit
+            // write pre-init user code here
+            scorp = new Sprite(getMod_2(), 50, 60);//GEN-BEGIN:|219-getter|1|219-postInit
+            scorp.setFrameSequence(scorpseq001);//GEN-END:|219-getter|1|219-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|219-getter|2|
+        return scorp;
+    }
+//GEN-END:|219-getter|2|
+
+    public TiledLayer getV1() throws java.io.IOException {//GEN-BEGIN:|221-getter|0|221-preInit
+        if (v1 == null) {//GEN-END:|221-getter|0|221-preInit
+            // write pre-init user code here
+            v1 = new TiledLayer(1, 1, getLv1(), 240, 320);//GEN-BEGIN:|221-getter|1|221-midInit
+            int[][] tiles = {
+                { 1 }
+            };//GEN-END:|221-getter|1|221-midInit
+            // write mid-init user code here
+            for (int row = 0; row < 1; row++) {//GEN-BEGIN:|221-getter|2|221-postInit
+                for (int col = 0; col < 1; col++) {
+                    v1.setCell(col, row, tiles[row][col]);
+                }
+            }
+        }//GEN-END:|221-getter|2|221-postInit
+        // write post-init user code here
+        return v1;//GEN-BEGIN:|221-getter|3|
+    }
+//GEN-END:|221-getter|3|
+
+    public Image getMod_() throws java.io.IOException {//GEN-BEGIN:|270-getter|0|270-preInit
+        if (mod_ == null) {//GEN-END:|270-getter|0|270-preInit
+            // write pre-init user code here
+            mod_ = Image.createImage("/picture/mod_.png");//GEN-BEGIN:|270-getter|1|270-postInit
+        }//GEN-END:|270-getter|1|270-postInit
+        // write post-init user code here
+        return this.mod_;//GEN-BEGIN:|270-getter|2|
+    }
+//GEN-END:|270-getter|2|
+
+    public Sprite getModX() throws java.io.IOException {//GEN-BEGIN:|271-getter|0|271-preInit
+        if (modX == null) {//GEN-END:|271-getter|0|271-preInit
+            // write pre-init user code here
+            modX = new Sprite(getMod_(), 60, 60);//GEN-BEGIN:|271-getter|1|271-postInit
+            modX.setFrameSequence(modXseq001);//GEN-END:|271-getter|1|271-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|271-getter|2|
+        return modX;
+    }
+//GEN-END:|271-getter|2|
+
+    public Image getLv3() throws java.io.IOException {//GEN-BEGIN:|273-getter|0|273-preInit
+        if (lv3 == null) {//GEN-END:|273-getter|0|273-preInit
+            // write pre-init user code here
+            lv3 = Image.createImage("/picture/lv3.png");//GEN-BEGIN:|273-getter|1|273-postInit
+        }//GEN-END:|273-getter|1|273-postInit
+        // write post-init user code here
+        return this.lv3;//GEN-BEGIN:|273-getter|2|
+    }
+//GEN-END:|273-getter|2|
+
+    public TiledLayer getL3() throws java.io.IOException {//GEN-BEGIN:|274-getter|0|274-preInit
+        if (l3 == null) {//GEN-END:|274-getter|0|274-preInit
+            // write pre-init user code here
+            l3 = new TiledLayer(1, 1, getLv3(), 240, 320);//GEN-BEGIN:|274-getter|1|274-midInit
+            int[][] tiles = {
+                { 1 }
+            };//GEN-END:|274-getter|1|274-midInit
+            // write mid-init user code here
+            for (int row = 0; row < 1; row++) {//GEN-BEGIN:|274-getter|2|274-postInit
+                for (int col = 0; col < 1; col++) {
+                    l3.setCell(col, row, tiles[row][col]);
+                }
+            }
+        }//GEN-END:|274-getter|2|274-postInit
+        // write post-init user code here
+        return l3;//GEN-BEGIN:|274-getter|3|
+    }
+//GEN-END:|274-getter|3|
+
+    public void updateLayerManagerForLm2(LayerManager lm) throws java.io.IOException {//GEN-LINE:|275-updateLayerManager|0|275-preUpdate
+        // write pre-update user code here
+        getScorp().setPosition(18, 226);//GEN-BEGIN:|275-updateLayerManager|1|275-postUpdate
+        getScorp().setVisible(true);
+        lm.append(getScorp());
+        getL3().setPosition(0, 0);
+        getL3().setVisible(true);
+        lm.append(getL3());//GEN-END:|275-updateLayerManager|1|275-postUpdate
+        // write post-update user code here
+    }//GEN-BEGIN:|275-updateLayerManager|2|
+//GEN-END:|275-updateLayerManager|2|
 
 }

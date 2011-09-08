@@ -29,14 +29,14 @@ public class Model {
         positionInLevel(zumaCanvas.runningLevel);
         try {
             if ( Model == null )
-                Model = new Sprite ( Image.createImage("/picture/mod.png"), 60, 60);
+                Model = new Sprite ( Image.createImage("/picture/mod_.png"), 60, 60);
             Model.setFrameSequence(ModelSeq);
             Model.setPosition(x, y);
         } catch (IOException ex) {
             ex.printStackTrace();
         }
-        
-        
+        if ( zumaCanvas.runningLevel == 3 ) zumaCanvas.iCount = 90;
+        else zumaCanvas.iCount = 0;
     }
 
     public void rotateModel() {
@@ -47,7 +47,7 @@ public class Model {
              //x = 80; y = 124;
         }
         else if ( Quarter == 1 ) {
-            Model.setTransform(Model.TRANS_ROT270);
+            Model.setTransform(Model.TRANS_ROT90);
             //x = 80; y = 124 + 68;
         }
         else if ( Quarter == 2 ) {
@@ -55,7 +55,7 @@ public class Model {
             //x = 12; y = 56;
         }
         else if ( Quarter == 3 ) {
-            Model.setTransform(Model.TRANS_ROT90);
+            Model.setTransform(Model.TRANS_ROT270);
             //x = 12; y = 124;
         }
         Model.setPosition(x, y);
@@ -84,7 +84,8 @@ public class Model {
     }
 
     public void positionInLevel ( int Level ) {
-        if ( Level == 1 ) {   x = 91; y = 135; }
+        if ( Level == 1 ) {   x = 96; y = 135; }
+        else if ( Level == 3 ) {   x = 13; y = 178; }
         else if ( Level == 4 ) {   x = 95; y = 152; }
         else if ( Level == 5 ) {   x = 109; y = 148; }
     }
