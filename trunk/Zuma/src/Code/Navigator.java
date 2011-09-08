@@ -30,7 +30,7 @@ public class Navigator {
             g.setColor( 0xffff00 );
         for ( iP = 0; iP <= 150; iP += 15 ) {
             g.fillArc( zumaCanvas.Sball.getPositionX() + 6 + (int)(iP*Math.cos((zumaCanvas.iCount/180)*Math.PI-Math.PI/2)),
-                    zumaCanvas.Sball.getPositionY() + 6 - (int)(iP*Math.sin((zumaCanvas.iCount/180)*Math.PI-Math.PI/2)), 4, 4, 0, 360);
+                    zumaCanvas.Sball.getPositionY() + 6 + (int)(iP*Math.sin((zumaCanvas.iCount/180)*Math.PI-Math.PI/2)), 4, 4, 0, 360);
         }
     }
 }

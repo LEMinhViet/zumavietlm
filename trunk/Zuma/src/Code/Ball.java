@@ -6,6 +6,7 @@
 package Code;
 
 import java.io.IOException;
+import javax.microedition.lcdui.Graphics;
 import javax.microedition.lcdui.Image;
 import javax.microedition.lcdui.game.Sprite;
 import javax.microedition.m3g.Image2D;
@@ -22,6 +23,7 @@ public class Ball {
     //int[] ballSeq = { 0, 1, 2, 3, 4, 5, 6, 7 };
     int[] ballSeq = { 0, 1, 2, 3 };
     int ranColor;
+    int nextColor, saveColor;
     
     public Ball( ZumaCanvas zumaCanvas ) {
         this.zumaCanvas = zumaCanvas;
@@ -47,12 +49,13 @@ public class Ball {
         Ball.setPosition( getPositionX(), getPositionY() );
         zumaCanvas.getColor();
         Ball.setFrame(zumaCanvas.getRandAmong(zumaCanvas.Color));
+        nextColor = zumaCanvas.getRandAmong(zumaCanvas.Color);
         
     }
 
     public void shootBall( float ShootAngle ){
         Ball.setPosition((int)( getPositionX() + ShootDistance*Math.cos((ShootAngle/180)*Math.PI-Math.PI/2)),
-                                (int)( getPositionY() - ShootDistance*Math.sin((ShootAngle/180)*Math.PI-Math.PI/2)));
+                                (int)( getPositionY() + ShootDistance*Math.sin((ShootAngle/180)*Math.PI-Math.PI/2)));
     }
 
     public void resetBall(){
@@ -61,7 +64,7 @@ public class Ball {
             // Hiện lại bóng để bắn, các biến liên quan đến việc bắn về lại trị số ban đầu
             ShootDistance = 15;
             Ball.setPosition((int)(getPositionX() + 15*Math.cos((zumaCanvas.iCount/180)*Math.PI-Math.PI/2)),
-                            (int)(getPositionY() - 15*Math.sin((zumaCanvas.iCount/180)*Math.PI-Math.PI/2)));
+                            (int)(getPositionY() + 15*Math.sin((zumaCanvas.iCount/180)*Math.PI-Math.PI/2)));
             /*System.out.print( "Color " );
             for ( int u = 0; u < 10; u++ ) {
                 System.out.print( zumaCanvas.Color[u] + "\t");
@@ -73,7 +76,8 @@ public class Ball {
                 System.out.print( zumaCanvas.Color[u] + "\t");
             }
             System.out.print( "\n " );*/
-            Ball.setFrame(zumaCanvas.getRandAmong(zumaCanvas.Color));
+            Ball.setFrame(nextColor);
+            nextColor = zumaCanvas.getRandAmong(zumaCanvas.Color);
             //Ball = null;
             //ranColor = zumaCanvas.getRand(0, 2);
             /*try {
@@ -96,5 +100,17 @@ public class Ball {
 
     public int getPositionY ( ) {
         return zumaCanvas.model.Model.getY() + zumaCanvas.model.Model.getHeight()/2 - 8;
+    }
+
+    public void drawNextBall ( Graphics g ) {
+        saveColor = g.getColor();
+        if ( nextColor == 0 ) g.setColor(0x00ff00);
+        else if ( nextColor == 1 ) g.setColor(0x0000ff);
+        else if ( nextColor == 2 ) g.setColor(0xff0000);
+        else if ( nextColor == 3 ) g.setColor(0xffff00);
+        g.fillArc( zumaCanvas.model.Model.getX() + 30 + -5,
+                    zumaCanvas.model.Model.getY() + 30 + -5, 10, 10, 0, 360);
+        //System.out.println("toa do " + Math.cos(-3*(Math.PI)/4) + " " + Math.sin(-3*(Math.PI)/4));
+        g.setColor(saveColor);
     }
 }
