@@ -50,7 +50,7 @@ public class Score {
             }
             System.out.println("ibreak " + ibreak + "part " + partColli);
         }
-        if ( drawTimes < 10) {
+        if ( drawTimes < 15) {
             byte[] add = new byte[1];
             Designer.toBytesIndex("+", add);
             Designer.drawString( zumaCanvas.g, add, 0, 1, Designer.FONT_TEXT, 1, x1 - 20, y1 - y*(drawTimes/3));

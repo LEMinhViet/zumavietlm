@@ -19,9 +19,10 @@ public class Model {
     ZumaCanvas zumaCanvas;
     Sprite Model;
     int[] ModelSeq = { 0, 1, 2, 3, 4, 5, 6, 7, 8 };
-    int Quarter, Angle, x, y;
-    int back;
+    int Quarter, Angle, x, y, x2, y2;
+    int back, yMin, yMax;
     boolean Back;
+
 
     public void initModel( ZumaCanvas zumaCanvas ) {
         
@@ -35,8 +36,17 @@ public class Model {
         } catch (IOException ex) {
             ex.printStackTrace();
         }
-        if ( zumaCanvas.runningLevel == 3 ) zumaCanvas.iCount = 90;
+        if ( zumaCanvas.runningLevel == 3 || zumaCanvas.runningLevel == 6
+                || zumaCanvas.runningLevel == 9 || zumaCanvas.runningLevel == 12 || zumaCanvas.runningLevel == 7 )
+            zumaCanvas.iCount = 90;
         else zumaCanvas.iCount = 0;
+        if ( zumaCanvas.runningLevel == 3 ) { yMax = 250; yMin = 20; }
+        else if (zumaCanvas.runningLevel == 6) { yMax = 226; yMin = 22; }
+        else if (zumaCanvas.runningLevel == 7) { yMax = 210; yMin = 10; }
+        else if (zumaCanvas.runningLevel == 8) { yMax = 172; yMin = -10; }
+        else if (zumaCanvas.runningLevel == 9) { yMax = 245; yMin = 10; }
+        else if (zumaCanvas.runningLevel == 12) { yMax = 256; yMin = 11; }
+        else if (zumaCanvas.runningLevel == 15) { yMax = 210; yMin = 30; }
     }
 
     public void rotateModel() {
@@ -85,9 +95,21 @@ public class Model {
 
     public void positionInLevel ( int Level ) {
         if ( Level == 1 ) {   x = 96; y = 135; }
-        else if ( Level == 3 ) {   x = 13; y = 178; }
+        else if ( Level == 2 ) {   x = 89; y = 183; }
+        else if ( Level == 3 ) {   x = 5; y = 133; }
         else if ( Level == 4 ) {   x = 95; y = 152; }
         else if ( Level == 5 ) {   x = 109; y = 148; }
+        else if ( Level == 6 ) {   x = 13; y = 178; }
+        else if ( Level == 7 ) {   x = -8; y = 128; }
+        else if ( Level == 8 ) {   x = 73; y = 109; }
+        else if ( Level == 9 ) {   x = -8; y = 113; }
+        else if ( Level == 10 ) {   x = 99; y = 137; }
+        else if ( Level == 11 ) {   x = 65; y = 137; }
+        else if ( Level == 12 ) {   x = 9; y = 129; }
+        else if ( Level == 13 ) {   x = 51; y = 206; x2 = 147; y2 = 57; } // 147; 57
+        else if ( Level == 14 ) {   x = 85; y = 51; x2 = 115; y2 = 231; } //115; 231
+        else if ( Level == 15 ) {   x = 87; y = 137; }
+
     }
 
     public void whenShoot ( float iCount ) {
