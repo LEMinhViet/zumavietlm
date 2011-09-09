@@ -14,13 +14,13 @@ public class ZumaCanvas extends GameCanvas implements Runnable {
     Model model;
     Sprite BGSpr, Level1, L1_way, L2_way, wayPoint, wayBall, Lv_patch1, Lv_patch2, Lv_patch3, Lv_patch4, Lv_patch5;
     int [] breakSeq = { 0, 1, 2, 3 };
-    int ite, iteS0, NumB, runningLevel;
+    int ite, iteS0, iteS0Max, NumB, runningLevel;
     int keyState, testX = 20, testY = 220, Number, distanceAdd;
     int InsertTime, add , partColli, partColliBack;
     int sumOfDistance, sumOfInsert, backCount, countDownTiming = 1, countDownIte, sumOfBack;
     int checkTime, NumOfColor, BreakingTime, runIte, iColliSave, iS5;
     int i, j, m, k, r, w, h, arr, times = 1, iColli, angleCount, runCount;
-    int iColliS2, ranA, keyPressed, angleAdd = 3, subDistance, check_1ball;
+    int iColliS2, ranA, keyPressed, angleAdd = 3, subDistance, check_1ball, resetBall;
     int Part = 1;
     Score score = new Score(this);
     Navigator N = new Navigator(this);
@@ -36,15 +36,15 @@ public class ZumaCanvas extends GameCanvas implements Runnable {
     int zigzac = 0;
     int [] Color = {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1};
     int [] ColorOld = {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1};
-    int [][] lv = new int [2048][3];
+    int [][] lv = new int [2560][3];
     int [] moveX = { 0, 1, 0, -1,};
     int [] moveY = { -1, 0, 1, 0,};
     float iCount = 1;
-    boolean run, State0 = true, State1 = false, State2 = false, State3 = false, State4 = false, State5 = false, Divide = false, Asm = false;
+    boolean run, State0 = false, State1 = false, State2 = false, State3 = false, State4 = false, State5 = true, Divide = false, Asm = false;
     boolean Stop = false, Back = false, Shoot = false, Colli = false, pColli = false, isStateChange = false, isColliAtEnd = false;
     boolean headInsert = false, backWard = true, afterBack = false, addColor = false, Breaking = false, Breaked = false;
     boolean OutOfBalls = false, unchangeColor = true, colliAfter = false, notBreak = false, Be_1ball = false, Af_1ball;
-    boolean isColli = false, isRotated = false, drawScore = false;
+    boolean isColli = false, isRotated = false, drawScore = false, ballReset, nextballreset;
     public LayerManager lm;
     StartMidlet Midlet;
     Thread t;
@@ -75,13 +75,16 @@ public class ZumaCanvas extends GameCanvas implements Runnable {
             }
 
             vBall[0] = new BallVector(this);
-            vBall[0].NumOfBall = 10;
+            vBall[0].NumOfBall = 50;
             NumB = 16*vBall[0].NumOfBall;
+            
+            runningLevel = 1;
+
             vBall[0].initBallVector();
             vBall[0].Begin = 0;
             vBall[0].End = NumB/16-1;
 
-            runningLevel = 13;
+            
             
             model = new Model();
             model.initModel(this);
@@ -150,9 +153,11 @@ public class ZumaCanvas extends GameCanvas implements Runnable {
                         ((Sprite) vBall[0].BVector.elementAt(k)).setVisible(false);
                     else ((Sprite) vBall[0].BVector.elementAt(k)).setVisible(true);
                 }
-                
 
-                if ( iteS0 >= 10 )  {
+//                if ( runningLevel == 2 )    iteS0Max = 55;
+//                else
+                    iteS0Max = 20;
+                if ( iteS0 >= iteS0Max )  {
                     iteS0 = 0;
                     State0 = false;
                     State1 = true;
@@ -437,16 +442,20 @@ public class ZumaCanvas extends GameCanvas implements Runnable {
                             vBall[partColliBack].testBreak(iColli);
                             if ( Sball.Ball.getX() == (int)(Sball.getPositionX() + 15*Math.cos((iCount/180)*Math.PI-Math.PI/2))
                                         && Sball.Ball.getY() == (int)(Sball.getPositionY() + 15*Math.sin((iCount/180)*Math.PI-Math.PI/2)))  {
-                                System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAA");
                                 for ( int i = 0; i < 10; i++ ) {
                                     ColorOld[i] = Color[i];
                                 }
                                 getColor();
+                                System.out.println("AAAAAAAAAAAAAAA");
+                                System.out.println(" " + compareColor( Color, ColorOld ));
                                 if ( compareColor( Color, ColorOld ) == 0 ) {
                                     System.out.println("Compare ");
-                                    Sball.nextColor = getRandAmong(Color);
-                                    Sball.resetBall();
-                                }                               
+                                    if ( nextballreset )
+                                        Sball.nextColor = getRandAmong(Color);
+                                    if ( ballReset ) 
+                                        Sball.resetBall();
+                                }
+                                
                             }
                                     
                             for ( i = 0; i < Part; i++ ) {
@@ -680,11 +689,12 @@ public class ZumaCanvas extends GameCanvas implements Runnable {
 // State4 : kết thúc level
 ////////////////////////////////////////////////////////////////////////////
             } else if ( State4 ) {
+                System.out.println("Part " + Part + " " + vBall[0].BVector.size());
                 for ( i = 0; i < Part; i++ ) {
                     for ( k = 0; k < vBall[i].BVector.size(); k++ ){
-                        if ( ite-16*k >= 0 && ite-16*k < 2048 )
+                        if ( ite-16*k >= 0 && ite-16*k < 2560 )
                             ((Sprite) vBall[i].BVector.elementAt(k)).setPosition(lv[ite-16*k][0], lv[ite-16*k][1]);
-                        if ( ite-16*k >= 0 && ite-16*k < 2048 && lv[ite-16*k][2] == 1 )
+                        if ( ite-16*k >= 0 && ite-16*k < 2560 && lv[ite-16*k][2] == 1 )
                             ((Sprite) vBall[i].BVector.elementAt(k)).setVisible(false);
                         else ((Sprite) vBall[i].BVector.elementAt(k)).setVisible(true);
                         if (((Sprite)vBall[i].BVector.elementAt(k)).getX() == 0 && ((Sprite)vBall[i].BVector.elementAt(k)).getY() == 0 )
@@ -695,6 +705,7 @@ public class ZumaCanvas extends GameCanvas implements Runnable {
                 if (((Sprite)vBall[0].BVector.elementAt(vBall[0].BVector.size()-1)).getX() == 0
                         && ((Sprite)vBall[0].BVector.elementAt(vBall[0].BVector.size()-1)).getY() == 0 ) {
                     restartLevel();
+                    System.out.println("State5");
                     State0 = false;
                     State1 = false;
                     State4 = false;
@@ -706,10 +717,13 @@ public class ZumaCanvas extends GameCanvas implements Runnable {
 // State5 : load level
 ////////////////////////////////////////////////////////////////////////////
             } else if ( State5 ) {
+                byte[] Level = new byte[8];
+                Designer.toBytesIndex("Level " + runningLevel, Level);
                 if ( iS5 > 100 ) iS5 = 0;
                 iS5++;
                 g.setColor(0x000000);
                 g.fillRect(0, 0, 240, 320);
+                Designer.drawCenterString(g, Level, 0, 6 + runningLevel/10 + 1, Designer.FONT_TEXT, 1, 120, 150);
                 if ( iS5 == 100 ) {
                     State0 = true;
                     State5 = false;
@@ -727,6 +741,7 @@ public class ZumaCanvas extends GameCanvas implements Runnable {
                     State2 = false;
                     State3 = false;
                     State4 = true;
+                    System.out.println("Vao State4");
                 }
             }
 
@@ -755,41 +770,59 @@ public class ZumaCanvas extends GameCanvas implements Runnable {
                 keyPressed = 0;
                 distanceAdd = 2;
             }
+
             if ( (keyState & LEFT_PRESSED) != 0 ) {
-                if ( runningLevel != 3 ) {
+                if ( runningLevel != 3 && runningLevel != 6 && runningLevel != 9 
+                        && runningLevel != 12 && runningLevel != 15 && runningLevel != 8 && runningLevel != 7 ) {
                     keyPressed++;
                     if ( keyPressed % 5 == 0 )
                         if ( angleAdd <= 9 )    angleAdd += 2;
                     if ( iCount > angleAdd ) iCount -= angleAdd;
                     else iCount = 359;
-                }                
+                } else if ( runningLevel == 15 || runningLevel == 8) {
+                    keyPressed++;
+                    if ( keyPressed % 5 == 0 )
+                        if ( distanceAdd <= 9 ) distanceAdd += 2;
+                    if ( model.x > model.yMin + distanceAdd ) model.x -= distanceAdd;
+                    else model.x = model.yMin;
+                }
+
             } else if ( (keyState & RIGHT_PRESSED) != 0 ) {
-                if ( runningLevel != 3 ) {
+                if ( runningLevel != 3 && runningLevel != 6 && runningLevel != 9 
+                        && runningLevel != 12 && runningLevel != 15 && runningLevel != 8 && runningLevel != 7 ) {
                     keyPressed++;
                     if ( keyPressed % 5 == 0 )
                         if ( angleAdd <= 9)     angleAdd += 2;
                     if ( iCount < 360 - angleAdd ) iCount += angleAdd;
                     else iCount = 0;
+                } else if ( runningLevel == 15 || runningLevel == 8 ) {
+                    keyPressed++;
+                    if ( keyPressed % 5 == 0 )
+                        if ( distanceAdd <= 9 ) distanceAdd += 2;
+                    if ( model.x < model.yMax - distanceAdd ) model.x += distanceAdd;
+                    else model.x = model.yMax;
                 }
+
             } else if ( ( keyState & UP_PRESSED) != 0 ) {
-                if ( runningLevel != 3 ) {
+                if ( runningLevel != 3 && runningLevel != 6 && runningLevel != 9 && runningLevel != 12 && runningLevel != 7) {
                     
                 } else {
                     keyPressed++;
                     if ( keyPressed % 5 == 0 )
                         if ( distanceAdd <= 9 ) distanceAdd += 2;
-                    if ( model.y > 24 + distanceAdd )     model.y -= distanceAdd;
-                    else model.y = 22;
+                    if ( model.y > model.yMin + distanceAdd )     model.y -= distanceAdd;
+                    else model.y = model.yMin;
                 }
+
             } else if (( keyState & DOWN_PRESSED) != 0 ) {
-                if ( runningLevel != 3 ) {
+                if ( runningLevel != 3 && runningLevel != 6 && runningLevel != 9 && runningLevel != 12 && runningLevel != 7 ) {
 
                 } else {
                     keyPressed++;
                     if ( keyPressed % 5 == 0 )
                         if ( distanceAdd <= 9 ) distanceAdd += 2;
-                    if ( model.y < 224 - distanceAdd ) model.y += distanceAdd;
-                    else model.y = 226;
+                    if ( model.y < model.yMax - distanceAdd ) model.y += distanceAdd;
+                    else model.y = model.yMax;
                 }
             }
 
@@ -1235,6 +1268,7 @@ public class ZumaCanvas extends GameCanvas implements Runnable {
                                     partColliBack = partColli - 1;
                                 }
                             }
+                            System.out.println ( "               " + iColli);
                         }
 
                         Colli = false;
@@ -1423,11 +1457,30 @@ public class ZumaCanvas extends GameCanvas implements Runnable {
         }
         System.out.println("Change " + haveChangeColor);
         if ( haveChangeColor )  {
+            nextballreset = false;
+            ballReset = false;
+            resetBall = 0;
             for ( i = 0; i < Color.length; i++ ) {
-                if ( Sball.Ball.getFrame() == Color[i] )
-                    return 1;
+                if ( Sball.Ball.getFrame() == Color[i] ) {
+                    //resetBall = 1;
+                    ballReset = false;
+                    break;
+                } else {
+                    ballReset = true;
+                }
             }
-            return 0;
+            
+            for ( i = 0; i < Color.length; i++ ) {
+                if ( Sball.nextColor == Color[i] ) {
+                    //resetBall = 2;
+                    nextballreset = false;
+                    break;
+                } else {
+                    nextballreset = true;
+                }
+            }
+            if ( nextballreset || ballReset )   
+                return 0;
         }
         return 1;
     }
@@ -1448,7 +1501,7 @@ public class ZumaCanvas extends GameCanvas implements Runnable {
 //////////////////////////////////////////////////////////////////////////////////
 // Hàm chọn level 
     public void chooseLevel ( int runningLevel ) {
-        for ( k = 0; k < 2048; k++ ) {
+        for ( k = 0; k < 2560; k++ ) {
             lv[k][0] = 0;
             lv[k][1] = 0;
             lv[k][2] = 0;
@@ -1470,12 +1523,18 @@ public class ZumaCanvas extends GameCanvas implements Runnable {
             L1_way.setPosition(-16, 0);
             lm.append(L1_way);
 
-            for ( k = 0; k < 2048; k++ )
+            for ( k = 0; k < 2560; k++ )
                 move ( wayPoint, wayBall, L1_way);
         } else if ( runningLevel == 2 ) {
             lm.remove(Level1);
             lm.remove(L1_way);
 
+//            for ( i = 0; i < Part; i++ ) {
+//                for ( j = 0; j < vBall[i].BVector.size(); j++ ) {
+//                     vBall[i].BVector.removeAllElements();
+//                }
+//            }
+            
             Level1 = null;
             L1_way = null;
 
@@ -1498,7 +1557,7 @@ public class ZumaCanvas extends GameCanvas implements Runnable {
             L1_way.setPosition(0, 0);
             lm.append(L1_way);
 
-            for ( k = 0; k < 2048; k++ )
+            for ( k = 0; k < 2560; k++ )
                 move ( wayPoint, wayBall, L1_way);
 
             wayBall.setVisible(false);
@@ -1513,14 +1572,13 @@ public class ZumaCanvas extends GameCanvas implements Runnable {
             wayBall.setVisible(true);
             wayPoint.setVisible(true);
 
-            width = 171;
+            width = 162;
             height = -16;
-            lv[0][0] = 163;
+            lv[0][0] = 154;
             lv[0][1] = -24;
-            
             try {
                 Level1 = new Sprite(Image.createImage("/picture/lv3.png"), 240, 320);
-                L1_way = new Sprite(Image.createImage("/picture/lv3-way.png"), 240, 400);
+                L1_way = new Sprite(Image.createImage("/picture/lv3-way.png"), 240, 336);
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
@@ -1530,12 +1588,11 @@ public class ZumaCanvas extends GameCanvas implements Runnable {
             L1_way.setPosition(0, -16);
             lm.append(L1_way);
 
-            for ( k = 0; k < 2048; k++ )
+            for ( k = 0; k < 2560; k++ )
                 move ( wayPoint, wayBall, L1_way);
 
             wayBall.setVisible(false);
             wayPoint.setVisible(false);
-            
         } else if ( runningLevel == 4 ) {
             lm.remove(Level1);
             lm.remove(L1_way);
@@ -1647,7 +1704,7 @@ public class ZumaCanvas extends GameCanvas implements Runnable {
             L1_way.setPosition(0, 0);
             lm.append(L1_way);
 
-            for ( k = 0; k < 2048; k++ )
+            for ( k = 0; k < 2560; k++ )
                 move ( wayPoint, wayBall, L1_way);
             
 //            for ( k = 0; k < 1751; k++ )
@@ -1657,20 +1714,180 @@ public class ZumaCanvas extends GameCanvas implements Runnable {
                 lv[k][2] = 1;
 
         } else if ( runningLevel == 6 ) {
+            lm.remove(Level1);
+            lm.remove(L1_way);
+
+            Level1 = null;
+            L1_way = null;
+
+            wayBall.setVisible(true);
+            wayPoint.setVisible(true);
+
+            width = 171;
+            height = -16;
+            lv[0][0] = 163;
+            lv[0][1] = -24;
+
+            try {
+                Level1 = new Sprite(Image.createImage("/picture/lv6.png"), 240, 320);
+                L1_way = new Sprite(Image.createImage("/picture/lv6-way.png"), 240, 400);
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+            Level1.setPosition(0, 0);
+            lm.append(Level1);
+
+            L1_way.setPosition(0, -16);
+            lm.append(L1_way);
+
+            for ( k = 0; k < 2560; k++ )
+                move ( wayPoint, wayBall, L1_way);
+
+            wayBall.setVisible(false);
+            wayPoint.setVisible(false);
 
         } else if ( runningLevel == 7 ) {
+            lm.remove(Level1);
+            lm.remove(L1_way);
 
+            Level1 = null;
+            L1_way = null;
+
+            wayBall.setVisible(true);
+            wayPoint.setVisible(true);
+
+            width = 179;
+            height = 319;
+            lv[0][0] = 171;
+            lv[0][1] = 311;
+
+            try {
+                Level1 = new Sprite(Image.createImage("/picture/lv7.png"), 240, 320);
+                L1_way = new Sprite(Image.createImage("/picture/lv7-way.png"), 240, 320);
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+            Level1.setPosition(0, 0);
+            lm.append(Level1);
+
+            L1_way.setPosition(0, 0);
+            lm.append(L1_way);
+
+            for ( k = 0; k < 2560; k++ )
+                move ( wayPoint, wayBall, L1_way);
+
+            wayBall.setVisible(false);
+            wayPoint.setVisible(false);
         } else if ( runningLevel == 8 ) {
+            lm.remove(Level1);
+            lm.remove(L1_way);
 
+            Level1 = null;
+            L1_way = null;
+
+            wayBall.setVisible(true);
+            wayPoint.setVisible(true);
+
+            width = 41;
+            height = -16;
+            lv[0][0] = 33;
+            lv[0][1] = -24;
+
+            try {
+                Level1 = new Sprite(Image.createImage("/picture/lv8.png"), 240, 320);
+                L1_way = new Sprite(Image.createImage("/picture/lv8-way.png"), 240, 336);
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+            Level1.setPosition(0, 0);
+            lm.append(Level1);
+
+            L1_way.setPosition(0, -16);
+            lm.append(L1_way);
+
+            for ( k = 0; k < 2560; k++ )
+                move ( wayPoint, wayBall, L1_way);
+
+            wayBall.setVisible(false);
+            wayPoint.setVisible(false);
         } else if ( runningLevel == 9 ) {
+            lm.remove(Level1);
+            lm.remove(L1_way);
 
+            Level1 = null;
+            L1_way = null;
+
+            wayBall.setVisible(true);
+            wayPoint.setVisible(true);
+
+            width = 124;
+            height = 319;
+            lv[0][0] = 116;
+            lv[0][1] = 311;
+
+            try {
+                Level1 = new Sprite(Image.createImage("/picture/lv9.png"), 240, 320);
+                L1_way = new Sprite(Image.createImage("/picture/lv9-way.png"), 240, 336);
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+            Level1.setPosition(0, 0);
+            lm.append(Level1);
+
+            L1_way.setPosition(0, -8);
+            lm.append(L1_way);
+
+            for ( k = 0; k < 2560; k++ )
+                move ( wayPoint, wayBall, L1_way);
+
+            wayBall.setVisible(false);
+            wayPoint.setVisible(false);
         }else if ( runningLevel == 10 ) {
 
         } else if ( runningLevel == 11 ) {
 
         } else if ( runningLevel == 12 ) {
+            lm.remove(Level1);
+            lm.remove(L1_way);
 
+            Level1 = null;
+            L1_way = null;
+
+            wayBall.setVisible(true);
+            wayPoint.setVisible(true);
+
+            width = 112;
+            height = 333;
+            lv[0][0] = 104;
+            lv[0][1] = 325;
+
+            try {
+                Level1 = new Sprite(Image.createImage("/picture/lv12.png"), 240, 320);
+                L1_way = new Sprite(Image.createImage("/picture/lv12-way.png"), 240, 352);
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+            Level1.setPosition(0, 0);
+            lm.append(Level1);
+
+            L1_way.setPosition(0, -16);
+            lm.append(L1_way);
+
+            for ( k = 0; k < 2560; k++ )
+                move ( wayPoint, wayBall, L1_way);
+
+            wayBall.setVisible(false);
+            wayPoint.setVisible(false);
         } else if ( runningLevel == 13 ) {
+            lm.remove(Level1);
+            lm.remove(L1_way);
+
+            Level1 = null;
+            L1_way = null;
+
+            wayBall.setVisible(true);
+            wayPoint.setVisible(true);
+
             width = 138;
             height = 244;
             lv[0][0] = 130;
@@ -1688,19 +1905,21 @@ public class ZumaCanvas extends GameCanvas implements Runnable {
             L1_way.setPosition(0, 0);
             lm.append(L1_way);
 
-            for ( k = 0; k < 2048; k++ )
+            for ( k = 0; k < 2560; k++ )
                 move ( wayPoint, wayBall, L1_way);
 
+            wayBall.setVisible(false);
+            wayPoint.setVisible(false);
 
         } else if ( runningLevel == 14 ) {
-            //lm.remove(Level1);
-            //.remove(L1_way);
+            lm.remove(Level1);
+            lm.remove(L1_way);
 
-           // Level1 = null;
-            //L1_way = null;
+            Level1 = null;
+            L1_way = null;
 
-//            wayBall.setVisible(true);
-//            wayPoint.setVisible(true);
+            wayBall.setVisible(true);
+            wayPoint.setVisible(true);
 
             width = -16;
             height = 139;
@@ -1719,13 +1938,43 @@ public class ZumaCanvas extends GameCanvas implements Runnable {
             L1_way.setPosition(-16, 0);
             lm.append(L1_way);
 
-            for ( k = 0; k < 2048; k++ )
+            for ( k = 0; k < 2560; k++ )
                 move ( wayPoint, wayBall, L1_way);
 
-//            wayBall.setVisible(false);
-//            wayPoint.setVisible(false);
+            wayBall.setVisible(false);
+            wayPoint.setVisible(false);
         } else if ( runningLevel == 15 ) {
+            lm.remove(Level1);
+            lm.remove(L1_way);
 
+            Level1 = null;
+            L1_way = null;
+
+            wayBall.setVisible(true);
+            wayPoint.setVisible(true);
+
+            width = -16;
+            height = 72;
+            lv[0][0] = -24;
+            lv[0][1] = 66;
+
+            try {
+                Level1 = new Sprite(Image.createImage("/picture/lv15.png"), 240, 320);
+                L1_way = new Sprite(Image.createImage("/picture/lv15-way.png"), 272, 320);
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+            Level1.setPosition(0, 0);
+            lm.append(Level1);
+
+            L1_way.setPosition(-16, 0);
+            lm.append(L1_way);
+
+            for ( k = 0; k < 2560; k++ )
+                move ( wayPoint, wayBall, L1_way);
+
+            wayBall.setVisible(false);
+            wayPoint.setVisible(false);
         }
         
     }
@@ -1737,13 +1986,20 @@ public class ZumaCanvas extends GameCanvas implements Runnable {
         else if(runningLevel == 2)    runningLevel = 3;
         else if(runningLevel == 3)    runningLevel = 4;
         else if(runningLevel == 4)    runningLevel = 5;
+        else if(runningLevel == 5)    runningLevel = 6;
+        else if(runningLevel == 6)    runningLevel = 7;
+        else if(runningLevel == 7)    runningLevel = 8;
+        else if(runningLevel == 8)    runningLevel = 9;
+        else if(runningLevel == 9)    runningLevel = 12;
+//        else if(runningLevel == 10)    runningLevel = 11;
+//        else if(runningLevel == 11)    runningLevel = 12;
+        else if(runningLevel == 12)    runningLevel = 13;
+        else if(runningLevel == 13)    runningLevel = 14;
+        else if(runningLevel == 14)    runningLevel = 15;
 
-        vBall[0] = new BallVector(this);
-        vBall[0].NumOfBall = 50;
-        vBall[0].initBallVector();
-        vBall[0].Begin = 0;
-        vBall[0].End = NumB/16-1;
-
+        
+        //vBall[0] = new BallVector(this);
+        
         model.initModel(this);
         Sball.resetBall();
 
@@ -1751,6 +2007,11 @@ public class ZumaCanvas extends GameCanvas implements Runnable {
         chooseLevel(runningLevel);
         wayBall.setVisible(false);
         wayPoint.setVisible(false);
+
+        vBall[0].NumOfBall = 50;
+        vBall[0].initBallVector();
+        vBall[0].Begin = 0;
+        vBall[0].End = NumB/16-1;
 
         ite = 0;
         NumB = 16*vBall[0].NumOfBall;
@@ -1774,7 +2035,7 @@ public class ZumaCanvas extends GameCanvas implements Runnable {
         }
         lm.insert(Level1, 0);
         //vBall[0] = new BallVector(this);
-        vBall[0].NumOfBall = 10;
+        vBall[0].NumOfBall = 50;
         vBall[0].initBallVector();
         vBall[0].Begin = 0;
         vBall[0].End = NumB/16-1;
@@ -1862,6 +2123,9 @@ public class ZumaCanvas extends GameCanvas implements Runnable {
                 break;
             case KeyCodeAdapter.KEY_8:
                 nextLevel();
+                State0 = false;
+                State1 = false;
+                State4 = true;
                 break;
             
         }

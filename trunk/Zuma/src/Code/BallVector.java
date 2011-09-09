@@ -26,19 +26,17 @@ public class BallVector {
     //int[] ballSeq = { 0, 1, 2, 3, 4, 5, 6, 7 };
     int[] ballSeq = { 0, 1, 2, 3 };
     int[] Level = new int [100];
-//    int[] Level = { 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1,
-//                    0, 0, 0, 2, 2,
-//                    1, 1, 1, 1, 1, 1,
-//                    //2, 2, 2, 2, 2, //2, 0, 0, 0, 0,
-//                    0, 0, 0, 0, 2, 2, 2, 2, 2, 2, 2, 2, 0, 0, 0,  //0, 0,
-//                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2,
-//                    //, 2, 2,
-////                    1, 1, 1, 0, 0, 0, 0, 0, 0, 0, //1, 1, 1, 1, 1, 1, 1,
-////                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-////                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-////                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-////                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-//                } ;
+//    int[] Level = { 2, 2, 0, 0, 0, 0, 0, 0, 0, 1,
+//                    1, 1, 0, 0, 0, 0, 0, 3, 3, 0,
+//                    0, 0, 0, 0, 0, 0, 0, 0, 0, 2,
+//                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+//                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+//                    1, 1, 1, 1, 1, 1, 3, 3, 3, 3,
+//                    1, 1, 1, 1, 1, 1, 3, 3, 3, 3,
+//                    1, 1, 1, 1, 1, 1, 3, 3, 3, 3,
+//                    1, 1, 1, 1, 1, 1, 3, 3, 3, 3,
+//                    1, 1, 1, 1, 1, 1, 3, 3, 3, 3,
+//                };
     Sprite Sball;
     Vector BVector = new Vector ( NumOfBall, 1 );
     int iColliTemp;
@@ -48,7 +46,8 @@ public class BallVector {
     }
 
     public void initBallVector () {
-        createLv1();
+        if ( zumaCanvas.runningLevel != 2 ) createLv1();
+        else if ( zumaCanvas.runningLevel == 2 ) createLv2();
         for ( j = 0; j < NumOfBall; j++) {
 
             try {
@@ -633,12 +632,23 @@ public class BallVector {
             }
             if ( duplv1 != 0 )  i += duplv1 - 1;
         }
-
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////
     // Hàm tạo đoàn bóng cho lv1 và lv3
     /////////////////////////////////////////////////////////////////////////////////////////////////
+    public void createLv2 () {
+        int ranlv1, duplv1;
+        for ( int i = 0; i < 100; ++i ) {
+            ranlv1 = zumaCanvas.getRand(0, 4);
+            duplv1 = zumaCanvas.getRand(0, 3);
+            for ( int j = 0; j < duplv1; ++j ) {
+                if ( i + j < 100 )  Level[i+j] = ranlv1;
+            }
+            if ( duplv1 != 0 )  i += duplv1 - 1;
+        }
+    }
+
     public void createLv4 () {
         
     }

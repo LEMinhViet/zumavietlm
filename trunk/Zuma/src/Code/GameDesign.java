@@ -17,9 +17,6 @@ public class GameDesign {
 
     //<editor-fold defaultstate="collapsed" desc=" Generated Fields ">//GEN-BEGIN:|fields|0|
     private TiledLayer l3;
-    private Sprite va;
-    public int vaseq001Delay = 200;
-    public int[] vaseq001 = {0, 0, 0, 0, 0};
     private Image lv3;
     private Image lv1;
     private TiledLayer lv1GD;
@@ -27,27 +24,56 @@ public class GameDesign {
     private Image mod;
     private Sprite Scop;
     public int Scopseq001Delay = 200;
-    public int[] Scopseq001 = {8, 0, 0, 0, 0};
+    public int[] Scopseq001 = {8, 0, 0};
     private TiledLayer v1;
     private Image lv4;
     private Image lv4_patch1;
     private Image mod_2;
-    private Sprite scorp;
-    public int scorpseq001Delay = 200;
-    public int[] scorpseq001 = {8, 4, 5, 6, 7, 8};
     private Image mod_;
-    private Sprite modX;
-    public int modXseq001Delay = 200;
-    public int[] modXseq001 = {0, 1, 2, 3, 4, 5, 7, 8};
-    private Sprite a;
-    public int aseq001Delay = 200;
-    public int[] aseq001 = {0, 0, 0, 0, 0};
-    private Sprite ab;
-    public int abseq001Delay = 200;
-    public int[] abseq001 = {0, 0, 0, 0, 0};
     private Image lv4_patch;
     private Image lv5;
     private TiledLayer v4;
+    private Image lv10;
+    private TiledLayer x10;
+    private Image lv11;
+    private Sprite x11;
+    public int x11seq001Delay = 200;
+    public int[] x11seq001 = {0, 0, 0, 0, 0};
+    private Image lv12;
+    private Sprite x12;
+    public int x12seq001Delay = 200;
+    public int[] x12seq001 = {0, 0, 0, 0, 0};
+    private Image lv13;
+    private Sprite x13;
+    public int x13seq001Delay = 200;
+    public int[] x13seq001 = {0, 0, 0, 0, 0};
+    private Image lv14;
+    private Sprite x14;
+    public int x14seq001Delay = 200;
+    public int[] x14seq001 = {0, 0, 0, 0, 0};
+    private Image lv15;
+    private Sprite x15;
+    public int x15seq001Delay = 200;
+    public int[] x15seq001 = {0, 0, 0, 0, 0};
+    private Image lv2;
+    private Sprite x2;
+    public int x2seq001Delay = 200;
+    public int[] x2seq001 = {0, 0, 0, 0, 0};
+    private Image lv9;
+    private Sprite x9;
+    public int x9seq001Delay = 200;
+    public int[] x9seq001 = {0, 0, 0, 0, 0};
+    private Image lv7;
+    private Sprite x7;
+    public int x7seq001Delay = 200;
+    public int[] x7seq001 = {0, 0, 0, 0, 0};
+    private Image lv8;
+    private Sprite x8;
+    public int x8seq001Delay = 200;
+    public int[] x8seq001 = {0, 0, 0, 0, 0};
+    private Sprite x3;
+    public int x3seq001Delay = 200;
+    public int[] x3seq001 = {0, 0, 0, 0, 0};
     //</editor-fold>//GEN-END:|fields|0|
 
     //<editor-fold defaultstate="collapsed" desc=" Generated Methods ">//GEN-BEGIN:|methods|0|
@@ -55,18 +81,12 @@ public class GameDesign {
 
     public void updateLayerManagerForLm(LayerManager lm) throws java.io.IOException {//GEN-LINE:|1-updateLayerManager|0|1-preUpdate
         // write pre-update user code here
-        getScorp().setPosition(96, 135);//GEN-BEGIN:|1-updateLayerManager|1|1-postUpdate
-        getScorp().setVisible(true);
-        lm.append(getScorp());
-        getScop().setPosition(155, 234);
+        getScop().setPosition(155, 234);//GEN-BEGIN:|1-updateLayerManager|1|1-postUpdate
         getScop().setVisible(true);
         lm.append(getScop());
         getV1().setPosition(0, 0);
         getV1().setVisible(true);
         lm.append(getV1());
-        getVa().setPosition(194, 79);
-        getVa().setVisible(true);
-        lm.append(getVa());
         getLv1GD().setPosition(0, 0);
         getLv1GD().setVisible(true);
         lm.append(getLv1GD());//GEN-END:|1-updateLayerManager|1|1-postUpdate
@@ -146,16 +166,7 @@ public class GameDesign {
     }
 //GEN-END:|45-getter|2|
 
-    public Sprite getA() throws java.io.IOException {//GEN-BEGIN:|46-getter|0|46-preInit
-        if (a == null) {//GEN-END:|46-getter|0|46-preInit
-            // write pre-init user code here
-            a = new Sprite(getLv4_patch(), 16, 11);//GEN-BEGIN:|46-getter|1|46-postInit
-            a.setFrameSequence(aseq001);//GEN-END:|46-getter|1|46-postInit
-            // write post-init user code here
-        }//GEN-BEGIN:|46-getter|2|
-        return a;
-    }
-//GEN-END:|46-getter|2|
+
 
     public Image getLv4_patch1() throws java.io.IOException {//GEN-BEGIN:|80-getter|0|80-preInit
         if (lv4_patch1 == null) {//GEN-END:|80-getter|0|80-preInit
@@ -167,16 +178,7 @@ public class GameDesign {
     }
 //GEN-END:|80-getter|2|
 
-    public Sprite getAb() throws java.io.IOException {//GEN-BEGIN:|107-getter|0|107-preInit
-        if (ab == null) {//GEN-END:|107-getter|0|107-preInit
-            // write pre-init user code here
-            ab = new Sprite(getLv4_patch1(), 21, 21);//GEN-BEGIN:|107-getter|1|107-postInit
-            ab.setFrameSequence(abseq001);//GEN-END:|107-getter|1|107-postInit
-            // write post-init user code here
-        }//GEN-BEGIN:|107-getter|2|
-        return ab;
-    }
-//GEN-END:|107-getter|2|
+
 
     public Image getLv5() throws java.io.IOException {//GEN-BEGIN:|178-getter|0|178-preInit
         if (lv5 == null) {//GEN-END:|178-getter|0|178-preInit
@@ -217,16 +219,7 @@ public class GameDesign {
     }
 //GEN-END:|203-getter|2|
 
-    public Sprite getVa() throws java.io.IOException {//GEN-BEGIN:|204-getter|0|204-preInit
-        if (va == null) {//GEN-END:|204-getter|0|204-preInit
-            // write pre-init user code here
-            va = new Sprite(getLv5_patch(), 46, 45);//GEN-BEGIN:|204-getter|1|204-postInit
-            va.setFrameSequence(vaseq001);//GEN-END:|204-getter|1|204-postInit
-            // write post-init user code here
-        }//GEN-BEGIN:|204-getter|2|
-        return va;
-    }
-//GEN-END:|204-getter|2|
+
 
     public Image getMod_2() throws java.io.IOException {//GEN-BEGIN:|218-getter|0|218-preInit
         if (mod_2 == null) {//GEN-END:|218-getter|0|218-preInit
@@ -238,16 +231,7 @@ public class GameDesign {
     }
 //GEN-END:|218-getter|2|
 
-    public Sprite getScorp() throws java.io.IOException {//GEN-BEGIN:|219-getter|0|219-preInit
-        if (scorp == null) {//GEN-END:|219-getter|0|219-preInit
-            // write pre-init user code here
-            scorp = new Sprite(getMod_2(), 50, 60);//GEN-BEGIN:|219-getter|1|219-postInit
-            scorp.setFrameSequence(scorpseq001);//GEN-END:|219-getter|1|219-postInit
-            // write post-init user code here
-        }//GEN-BEGIN:|219-getter|2|
-        return scorp;
-    }
-//GEN-END:|219-getter|2|
+
 
     public TiledLayer getV1() throws java.io.IOException {//GEN-BEGIN:|221-getter|0|221-preInit
         if (v1 == null) {//GEN-END:|221-getter|0|221-preInit
@@ -278,16 +262,7 @@ public class GameDesign {
     }
 //GEN-END:|270-getter|2|
 
-    public Sprite getModX() throws java.io.IOException {//GEN-BEGIN:|271-getter|0|271-preInit
-        if (modX == null) {//GEN-END:|271-getter|0|271-preInit
-            // write pre-init user code here
-            modX = new Sprite(getMod_(), 60, 60);//GEN-BEGIN:|271-getter|1|271-postInit
-            modX.setFrameSequence(modXseq001);//GEN-END:|271-getter|1|271-postInit
-            // write post-init user code here
-        }//GEN-BEGIN:|271-getter|2|
-        return modX;
-    }
-//GEN-END:|271-getter|2|
+
 
     public Image getLv3() throws java.io.IOException {//GEN-BEGIN:|273-getter|0|273-preInit
         if (lv3 == null) {//GEN-END:|273-getter|0|273-preInit
@@ -320,14 +295,252 @@ public class GameDesign {
 
     public void updateLayerManagerForLm2(LayerManager lm) throws java.io.IOException {//GEN-LINE:|275-updateLayerManager|0|275-preUpdate
         // write pre-update user code here
-        getScorp().setPosition(18, 226);//GEN-BEGIN:|275-updateLayerManager|1|275-postUpdate
-        getScorp().setVisible(true);
-        lm.append(getScorp());
-        getL3().setPosition(0, 0);
+        getL3().setPosition(0, 0);//GEN-BEGIN:|275-updateLayerManager|1|275-postUpdate
         getL3().setVisible(true);
         lm.append(getL3());//GEN-END:|275-updateLayerManager|1|275-postUpdate
         // write post-update user code here
     }//GEN-BEGIN:|275-updateLayerManager|2|
 //GEN-END:|275-updateLayerManager|2|
+
+    public void updateLayerManagerForLm3(LayerManager lm) throws java.io.IOException {//GEN-LINE:|298-updateLayerManager|0|298-preUpdate
+        // write pre-update user code here
+        getScop().setPosition(5, 133);//GEN-BEGIN:|298-updateLayerManager|1|298-postUpdate
+        getScop().setVisible(true);
+        lm.append(getScop());
+        getX3().setPosition(0, 0);
+        getX3().setVisible(true);
+        lm.append(getX3());//GEN-END:|298-updateLayerManager|1|298-postUpdate
+        // write post-update user code here
+    }//GEN-BEGIN:|298-updateLayerManager|2|
+//GEN-END:|298-updateLayerManager|2|
+
+    public Image getLv10() throws java.io.IOException {//GEN-BEGIN:|307-getter|0|307-preInit
+        if (lv10 == null) {//GEN-END:|307-getter|0|307-preInit
+            // write pre-init user code here
+            lv10 = Image.createImage("/picture/lv10.png");//GEN-BEGIN:|307-getter|1|307-postInit
+        }//GEN-END:|307-getter|1|307-postInit
+        // write post-init user code here
+        return this.lv10;//GEN-BEGIN:|307-getter|2|
+    }
+//GEN-END:|307-getter|2|
+
+    public TiledLayer getX10() throws java.io.IOException {//GEN-BEGIN:|308-getter|0|308-preInit
+        if (x10 == null) {//GEN-END:|308-getter|0|308-preInit
+            // write pre-init user code here
+            x10 = new TiledLayer(1, 1, getLv10(), 240, 320);//GEN-BEGIN:|308-getter|1|308-midInit
+            int[][] tiles = {
+                { 1 }
+            };//GEN-END:|308-getter|1|308-midInit
+            // write mid-init user code here
+            for (int row = 0; row < 1; row++) {//GEN-BEGIN:|308-getter|2|308-postInit
+                for (int col = 0; col < 1; col++) {
+                    x10.setCell(col, row, tiles[row][col]);
+                }
+            }
+        }//GEN-END:|308-getter|2|308-postInit
+        // write post-init user code here
+        return x10;//GEN-BEGIN:|308-getter|3|
+    }
+//GEN-END:|308-getter|3|
+
+    public Image getLv11() throws java.io.IOException {//GEN-BEGIN:|323-getter|0|323-preInit
+        if (lv11 == null) {//GEN-END:|323-getter|0|323-preInit
+            // write pre-init user code here
+            lv11 = Image.createImage("/picture/lv11.png");//GEN-BEGIN:|323-getter|1|323-postInit
+        }//GEN-END:|323-getter|1|323-postInit
+        // write post-init user code here
+        return this.lv11;//GEN-BEGIN:|323-getter|2|
+    }
+//GEN-END:|323-getter|2|
+
+    public Sprite getX11() throws java.io.IOException {//GEN-BEGIN:|324-getter|0|324-preInit
+        if (x11 == null) {//GEN-END:|324-getter|0|324-preInit
+            // write pre-init user code here
+            x11 = new Sprite(getLv11(), 240, 320);//GEN-BEGIN:|324-getter|1|324-postInit
+            x11.setFrameSequence(x11seq001);//GEN-END:|324-getter|1|324-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|324-getter|2|
+        return x11;
+    }
+//GEN-END:|324-getter|2|
+
+    public Image getLv12() throws java.io.IOException {//GEN-BEGIN:|341-getter|0|341-preInit
+        if (lv12 == null) {//GEN-END:|341-getter|0|341-preInit
+            // write pre-init user code here
+            lv12 = Image.createImage("/picture/lv12.png");//GEN-BEGIN:|341-getter|1|341-postInit
+        }//GEN-END:|341-getter|1|341-postInit
+        // write post-init user code here
+        return this.lv12;//GEN-BEGIN:|341-getter|2|
+    }
+//GEN-END:|341-getter|2|
+
+    public Sprite getX12() throws java.io.IOException {//GEN-BEGIN:|342-getter|0|342-preInit
+        if (x12 == null) {//GEN-END:|342-getter|0|342-preInit
+            // write pre-init user code here
+            x12 = new Sprite(getLv12(), 240, 320);//GEN-BEGIN:|342-getter|1|342-postInit
+            x12.setFrameSequence(x12seq001);//GEN-END:|342-getter|1|342-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|342-getter|2|
+        return x12;
+    }
+//GEN-END:|342-getter|2|
+
+    public Image getLv13() throws java.io.IOException {//GEN-BEGIN:|359-getter|0|359-preInit
+        if (lv13 == null) {//GEN-END:|359-getter|0|359-preInit
+            // write pre-init user code here
+            lv13 = Image.createImage("/picture/lv13.png");//GEN-BEGIN:|359-getter|1|359-postInit
+        }//GEN-END:|359-getter|1|359-postInit
+        // write post-init user code here
+        return this.lv13;//GEN-BEGIN:|359-getter|2|
+    }
+//GEN-END:|359-getter|2|
+
+    public Sprite getX13() throws java.io.IOException {//GEN-BEGIN:|360-getter|0|360-preInit
+        if (x13 == null) {//GEN-END:|360-getter|0|360-preInit
+            // write pre-init user code here
+            x13 = new Sprite(getLv13(), 240, 320);//GEN-BEGIN:|360-getter|1|360-postInit
+            x13.setFrameSequence(x13seq001);//GEN-END:|360-getter|1|360-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|360-getter|2|
+        return x13;
+    }
+//GEN-END:|360-getter|2|
+
+    public Image getLv14() throws java.io.IOException {//GEN-BEGIN:|377-getter|0|377-preInit
+        if (lv14 == null) {//GEN-END:|377-getter|0|377-preInit
+            // write pre-init user code here
+            lv14 = Image.createImage("/picture/lv14.png");//GEN-BEGIN:|377-getter|1|377-postInit
+        }//GEN-END:|377-getter|1|377-postInit
+        // write post-init user code here
+        return this.lv14;//GEN-BEGIN:|377-getter|2|
+    }
+//GEN-END:|377-getter|2|
+
+    public Sprite getX14() throws java.io.IOException {//GEN-BEGIN:|378-getter|0|378-preInit
+        if (x14 == null) {//GEN-END:|378-getter|0|378-preInit
+            // write pre-init user code here
+            x14 = new Sprite(getLv14(), 240, 320);//GEN-BEGIN:|378-getter|1|378-postInit
+            x14.setFrameSequence(x14seq001);//GEN-END:|378-getter|1|378-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|378-getter|2|
+        return x14;
+    }
+//GEN-END:|378-getter|2|
+
+    public Image getLv15() throws java.io.IOException {//GEN-BEGIN:|399-getter|0|399-preInit
+        if (lv15 == null) {//GEN-END:|399-getter|0|399-preInit
+            // write pre-init user code here
+            lv15 = Image.createImage("/picture/lv15.png");//GEN-BEGIN:|399-getter|1|399-postInit
+        }//GEN-END:|399-getter|1|399-postInit
+        // write post-init user code here
+        return this.lv15;//GEN-BEGIN:|399-getter|2|
+    }
+//GEN-END:|399-getter|2|
+
+    public Sprite getX15() throws java.io.IOException {//GEN-BEGIN:|400-getter|0|400-preInit
+        if (x15 == null) {//GEN-END:|400-getter|0|400-preInit
+            // write pre-init user code here
+            x15 = new Sprite(getLv15(), 240, 320);//GEN-BEGIN:|400-getter|1|400-postInit
+            x15.setFrameSequence(x15seq001);//GEN-END:|400-getter|1|400-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|400-getter|2|
+        return x15;
+    }
+//GEN-END:|400-getter|2|
+
+    public Image getLv2() throws java.io.IOException {//GEN-BEGIN:|417-getter|0|417-preInit
+        if (lv2 == null) {//GEN-END:|417-getter|0|417-preInit
+            // write pre-init user code here
+            lv2 = Image.createImage("/picture/lv2.png");//GEN-BEGIN:|417-getter|1|417-postInit
+        }//GEN-END:|417-getter|1|417-postInit
+        // write post-init user code here
+        return this.lv2;//GEN-BEGIN:|417-getter|2|
+    }
+//GEN-END:|417-getter|2|
+
+    public Sprite getX2() throws java.io.IOException {//GEN-BEGIN:|418-getter|0|418-preInit
+        if (x2 == null) {//GEN-END:|418-getter|0|418-preInit
+            // write pre-init user code here
+            x2 = new Sprite(getLv2(), 240, 320);//GEN-BEGIN:|418-getter|1|418-postInit
+            x2.setFrameSequence(x2seq001);//GEN-END:|418-getter|1|418-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|418-getter|2|
+        return x2;
+    }
+//GEN-END:|418-getter|2|
+
+    public Image getLv9() throws java.io.IOException {//GEN-BEGIN:|433-getter|0|433-preInit
+        if (lv9 == null) {//GEN-END:|433-getter|0|433-preInit
+            // write pre-init user code here
+            lv9 = Image.createImage("/picture/lv9.png");//GEN-BEGIN:|433-getter|1|433-postInit
+        }//GEN-END:|433-getter|1|433-postInit
+        // write post-init user code here
+        return this.lv9;//GEN-BEGIN:|433-getter|2|
+    }
+//GEN-END:|433-getter|2|
+
+    public Sprite getX9() throws java.io.IOException {//GEN-BEGIN:|434-getter|0|434-preInit
+        if (x9 == null) {//GEN-END:|434-getter|0|434-preInit
+            // write pre-init user code here
+            x9 = new Sprite(getLv9(), 240, 320);//GEN-BEGIN:|434-getter|1|434-postInit
+            x9.setFrameSequence(x9seq001);//GEN-END:|434-getter|1|434-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|434-getter|2|
+        return x9;
+    }
+//GEN-END:|434-getter|2|
+
+    public Image getLv7() throws java.io.IOException {//GEN-BEGIN:|469-getter|0|469-preInit
+        if (lv7 == null) {//GEN-END:|469-getter|0|469-preInit
+            // write pre-init user code here
+            lv7 = Image.createImage("/picture/lv7.png");//GEN-BEGIN:|469-getter|1|469-postInit
+        }//GEN-END:|469-getter|1|469-postInit
+        // write post-init user code here
+        return this.lv7;//GEN-BEGIN:|469-getter|2|
+    }
+//GEN-END:|469-getter|2|
+
+    public Sprite getX7() throws java.io.IOException {//GEN-BEGIN:|470-getter|0|470-preInit
+        if (x7 == null) {//GEN-END:|470-getter|0|470-preInit
+            // write pre-init user code here
+            x7 = new Sprite(getLv7(), 240, 320);//GEN-BEGIN:|470-getter|1|470-postInit
+            x7.setFrameSequence(x7seq001);//GEN-END:|470-getter|1|470-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|470-getter|2|
+        return x7;
+    }
+//GEN-END:|470-getter|2|
+
+    public Image getLv8() throws java.io.IOException {//GEN-BEGIN:|485-getter|0|485-preInit
+        if (lv8 == null) {//GEN-END:|485-getter|0|485-preInit
+            // write pre-init user code here
+            lv8 = Image.createImage("/picture/lv8.png");//GEN-BEGIN:|485-getter|1|485-postInit
+        }//GEN-END:|485-getter|1|485-postInit
+        // write post-init user code here
+        return this.lv8;//GEN-BEGIN:|485-getter|2|
+    }
+//GEN-END:|485-getter|2|
+
+    public Sprite getX8() throws java.io.IOException {//GEN-BEGIN:|486-getter|0|486-preInit
+        if (x8 == null) {//GEN-END:|486-getter|0|486-preInit
+            // write pre-init user code here
+            x8 = new Sprite(getLv8(), 240, 320);//GEN-BEGIN:|486-getter|1|486-postInit
+            x8.setFrameSequence(x8seq001);//GEN-END:|486-getter|1|486-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|486-getter|2|
+        return x8;
+    }
+//GEN-END:|486-getter|2|
+
+    public Sprite getX3() throws java.io.IOException {//GEN-BEGIN:|507-getter|0|507-preInit
+        if (x3 == null) {//GEN-END:|507-getter|0|507-preInit
+            // write pre-init user code here
+            x3 = new Sprite(getLv3(), 240, 320);//GEN-BEGIN:|507-getter|1|507-postInit
+            x3.setFrameSequence(x3seq001);//GEN-END:|507-getter|1|507-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|507-getter|2|
+        return x3;
+    }
+//GEN-END:|507-getter|2|
 
 }

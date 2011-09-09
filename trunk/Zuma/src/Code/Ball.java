@@ -59,7 +59,9 @@ public class Ball {
     }
 
     public void resetBall(){
+
         //System.out.println("resetBall " + zumaCanvas.Part );
+
         if ( zumaCanvas.Part != 0 || ( zumaCanvas.Part == 1 && zumaCanvas.vBall[0].BVector.size() == 0 )) {
             // Hiện lại bóng để bắn, các biến liên quan đến việc bắn về lại trị số ban đầu
             ShootDistance = 15;
