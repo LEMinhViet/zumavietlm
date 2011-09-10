@@ -42,7 +42,7 @@ public class Boss {
                     if ( Boss.getY() == 0 ) MoveDistance = 0;
                     else    MoveDistance = zumaCanvas.getRand(0, Boss.getY());
                 } else {
-                    if ( 320 - Boss.getHeight() - Boss.getY() < 0 ) MoveDistance = 0;
+                    if ( 320 - Boss.getHeight() - Boss.getY() <= 0 ) MoveDistance = 0;
                     else
                         MoveDistance = zumaCanvas.getRand(0, 320 - Boss.getHeight() - Boss.getY());
                 }

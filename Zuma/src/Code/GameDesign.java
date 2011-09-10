@@ -60,9 +60,13 @@ public class GameDesign {
     private Sprite x11;
     public int x11seq001Delay = 200;
     public int[] x11seq001 = {0, 0, 0, 0, 0};
-    private Image lv4_patch1;
     private Image lv11;
+    private Image lv4_patch1;
     private Image mod_2;
+    private Image boss_1;
+    private Sprite boss;
+    public int bossseq001Delay = 200;
+    public int[] bossseq001 = {0, 0, 0, 0, 0};
     private Sprite x3;
     public int x3seq001Delay = 200;
     public int[] x3seq001 = {0, 0, 0, 0, 0};
@@ -78,10 +82,17 @@ public class GameDesign {
     private Sprite x13;
     public int x13seq001Delay = 200;
     public int[] x13seq001 = {0, 0, 0, 0, 0};
-    private Image boss_1;
-    private Sprite boss;
-    public int bossseq001Delay = 200;
-    public int[] bossseq001 = {0, 0, 0, 0, 0};
+    private Sprite x4;
+    public int x4seq001Delay = 200;
+    public int[] x4seq001 = {0, 0, 0, 0, 0};
+    private Image lv6;
+    private Sprite x6;
+    public int x6seq001Delay = 200;
+    public int[] x6seq001 = {0, 0, 0, 0, 0};
+    private Image key;
+    private Sprite fin;
+    public int finseq001Delay = 200;
+    public int[] finseq001 = {0, 0, 0, 0, 0};
     //</editor-fold>//GEN-END:|fields|0|
 
     //<editor-fold defaultstate="collapsed" desc=" Generated Methods ">//GEN-BEGIN:|methods|0|
@@ -306,12 +317,12 @@ public class GameDesign {
 
     public void updateLayerManagerForLm2(LayerManager lm) throws java.io.IOException {//GEN-LINE:|275-updateLayerManager|0|275-preUpdate
         // write pre-update user code here
-        getNhgan().setPosition(146, 216);//GEN-BEGIN:|275-updateLayerManager|1|275-postUpdate
-        getNhgan().setVisible(true);
-        lm.append(getNhgan());
-        getX2().setPosition(0, 0);
-        getX2().setVisible(true);
-        lm.append(getX2());//GEN-END:|275-updateLayerManager|1|275-postUpdate
+        getX15().setPosition(104, 104);//GEN-BEGIN:|275-updateLayerManager|1|275-postUpdate
+        getX15().setVisible(true);
+        lm.append(getX15());
+        getFin().setPosition(111, 159);
+        getFin().setVisible(true);
+        lm.append(getFin());//GEN-END:|275-updateLayerManager|1|275-postUpdate
         // write post-update user code here
     }//GEN-BEGIN:|275-updateLayerManager|2|
 //GEN-END:|275-updateLayerManager|2|
@@ -604,5 +615,58 @@ public class GameDesign {
         return boss;
     }
 //GEN-END:|582-getter|2|
+
+    public Sprite getX4() throws java.io.IOException {//GEN-BEGIN:|620-getter|0|620-preInit
+        if (x4 == null) {//GEN-END:|620-getter|0|620-preInit
+            // write pre-init user code here
+            x4 = new Sprite(getLv4(), 240, 320);//GEN-BEGIN:|620-getter|1|620-postInit
+            x4.setFrameSequence(x4seq001);//GEN-END:|620-getter|1|620-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|620-getter|2|
+        return x4;
+    }
+//GEN-END:|620-getter|2|
+
+    public Image getLv6() throws java.io.IOException {//GEN-BEGIN:|643-getter|0|643-preInit
+        if (lv6 == null) {//GEN-END:|643-getter|0|643-preInit
+            // write pre-init user code here
+            lv6 = Image.createImage("/picture/lv6.png");//GEN-BEGIN:|643-getter|1|643-postInit
+        }//GEN-END:|643-getter|1|643-postInit
+        // write post-init user code here
+        return this.lv6;//GEN-BEGIN:|643-getter|2|
+    }
+//GEN-END:|643-getter|2|
+
+    public Sprite getX6() throws java.io.IOException {//GEN-BEGIN:|644-getter|0|644-preInit
+        if (x6 == null) {//GEN-END:|644-getter|0|644-preInit
+            // write pre-init user code here
+            x6 = new Sprite(getLv6(), 240, 320);//GEN-BEGIN:|644-getter|1|644-postInit
+            x6.setFrameSequence(x6seq001);//GEN-END:|644-getter|1|644-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|644-getter|2|
+        return x6;
+    }
+//GEN-END:|644-getter|2|
+
+    public Image getKey() throws java.io.IOException {//GEN-BEGIN:|674-getter|0|674-preInit
+        if (key == null) {//GEN-END:|674-getter|0|674-preInit
+            // write pre-init user code here
+            key = Image.createImage("/picture/key.png");//GEN-BEGIN:|674-getter|1|674-postInit
+        }//GEN-END:|674-getter|1|674-postInit
+        // write post-init user code here
+        return this.key;//GEN-BEGIN:|674-getter|2|
+    }
+//GEN-END:|674-getter|2|
+
+    public Sprite getFin() throws java.io.IOException {//GEN-BEGIN:|675-getter|0|675-preInit
+        if (fin == null) {//GEN-END:|675-getter|0|675-preInit
+            // write pre-init user code here
+            fin = new Sprite(getKey(), 40, 40);//GEN-BEGIN:|675-getter|1|675-postInit
+            fin.setFrameSequence(finseq001);//GEN-END:|675-getter|1|675-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|675-getter|2|
+        return fin;
+    }
+//GEN-END:|675-getter|2|
 
 }

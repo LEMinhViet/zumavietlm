@@ -240,21 +240,22 @@ public class SunnetCanvas extends Canvas implements MessageListener {
                     StartMidlet.STNcanvas = new ZumaCanvas(StartMidlet);
                     StartMidlet.STNcanvas.start();
                     StartMidlet.display.setCurrent(StartMidlet.STNcanvas);
+                    StartMidlet.STNcanvas.langID = langId;
                     Runtime.getRuntime().gc();                  
 
                     return;
                 case 1:
                     return;
-                case 2:
-                    if (langId == 1) {
-                        langId = 0;
-//                        menu = menuEnglish;
-                    } else {
-                        langId = 1;
-//                        menu = menuViet;
-                    }
-                    return;
-                case 3:
+//                case 2:
+//                    if (langId == 1) {
+//                        langId = 0;
+////                        menu = menuEnglish;
+//                    } else {
+//                        langId = 1;
+////                        menu = menuViet;
+//                    }
+//                    return;
+//                case 3:
 //                    //SettingsScreen settingsScreen;
 //                    try {
 //                        //settingsScreen = new SettingsScreen (midlet, midlet.settings);
@@ -265,16 +266,16 @@ public class SunnetCanvas extends Canvas implements MessageListener {
 //                        ex.printStackTrace();
 //                    }
 //                    return;
-                case 4:
-//                    //HelpScreen helpScreen;
-//                    try {
-//                        //helpScreen = new HelpScreen (midlet);
-//                        StartMidlet.display.setCurrent(StartMidlet.helpScreen);
-//                        Runtime.getRuntime().gc();
-//                    } catch ( Exception ex ) {
-//                        ex.printStackTrace();
-//                    }
-//                    return;
+                case 2:
+                    //HelpScreen helpScreen;
+                    try {
+                        StartMidlet.helpScreen = new HelpScreen (StartMidlet);
+                        StartMidlet.display.setCurrent(StartMidlet.helpScreen);
+                        Runtime.getRuntime().gc();
+                    } catch ( Exception ex ) {
+                        ex.printStackTrace();
+                    }
+                    return;
                 case 5:
 //                    //HighScoreScreen highscoreScreen;
 //                    try {
