@@ -94,7 +94,7 @@ public class Model {
     }
 
     public void positionInLevel ( int Level ) {
-        if ( Level == 1 ) {   x = 96; y = 135; }
+        if ( Level == 1 ) {   x = 93; y = 135; }
         else if ( Level == 2 ) {   x = 89; y = 183; }
         else if ( Level == 3 ) {   x = 5; y = 133; }
         else if ( Level == 4 ) {   x = 95; y = 152; }

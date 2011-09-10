@@ -16,6 +16,7 @@ public class StartMidlet extends MIDlet {
     public static SunnetCanvas sunnetCanvas;
     public Display display;
     public ZumaCanvas STNcanvas;
+    public HelpScreen helpScreen;
     
     public void startApp() {
 //        sunnetFlash = new SunnetFlash(this);
