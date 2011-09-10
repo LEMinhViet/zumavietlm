@@ -79,7 +79,7 @@ public class SunnetCanvas extends Canvas implements MessageListener {
         //Draw background
         if(bkImage == null){
             try {
-                bkImage = Image.createImage("/picture/bg.png");
+                bkImage = Image.createImage("/menu/bg.png");
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
@@ -95,36 +95,36 @@ public class SunnetCanvas extends Canvas implements MessageListener {
         }
         g.drawRegion(bkImage, (240-width)/2, (320-height)/2, width, height,0, Math.abs(getWidth()-240)/2, Math.abs(getHeight()-320)/2,  0);
 
-//        if ( menuPic == null ) {
-//            try {
-//                menuPic = Image.createImage("/picture/bg-menu.png");
-//            } catch (IOException ex) {
-//                ex.printStackTrace();
-//            }
-//        }
-//        g.drawRegion(menuPic, 0, 0, 209, 272, 0, 18, 25, 0);
+        if ( menuPic == null ) {
+            try {
+                menuPic = Image.createImage("/menu/bg-menu.png");
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
+        g.drawRegion(menuPic, 0, 0, 209, 272, 0, 18, 25, 0);
 
-//        menu1 = createImage ("/menu/1.png");
-//        menu2 = createImage ("/menu/2.png");
-//        menu3 = createImage ("/menu/3.png");
-//        menu4 = createImage ("/menu/4.png");
-//        menu5 = createImage ("/menu/5.png");
-//        if ( curMenu == 0 ) {
-//            menu1 = createImage ("/menu/1_p.png");
-//        } else if ( curMenu == 1 ) {
-//            menu2 = createImage ("/menu/2_p.png");
-//        } else if ( curMenu == 2 ) {
-//            menu3 = createImage ("/menu/3_p.png");
-//        } else if ( curMenu == 3 ) {
-//            menu4 = createImage ("/menu/4_p.png");
-//        } else if ( curMenu == 4 ) {
-//            menu5 = createImage ("/menu/5_p.png");
-//        }
-//        g.drawImage(menu1, 240/2 - menu1.getWidth()/2, 80, Graphics.TOP | Graphics.LEFT);
-//        g.drawImage(menu2, 240/2 - menu2.getWidth()/2, 100, Graphics.TOP | Graphics.LEFT);
-//        g.drawImage(menu3, 240/2 - menu3.getWidth()/2, 120, Graphics.TOP | Graphics.LEFT);
-//        g.drawImage(menu4, 240/2 - menu4.getWidth()/2, 140, Graphics.TOP | Graphics.LEFT);
-//        g.drawImage(menu5, 240/2 - menu5.getWidth()/2, 160, Graphics.TOP | Graphics.LEFT);
+        menu1 = createImage ("/menu/1.png");
+        menu2 = createImage ("/menu/2.png");
+        menu3 = createImage ("/menu/3.png");
+        menu4 = createImage ("/menu/4.png");
+        menu5 = createImage ("/menu/5.png");
+        if ( curMenu == 0 ) {
+            menu1 = createImage ("/menu/1_p.png");
+        } else if ( curMenu == 1 ) {
+            menu2 = createImage ("/menu/2_p.png");
+        } else if ( curMenu == 2 ) {
+            menu3 = createImage ("/menu/3_p.png");
+        } else if ( curMenu == 3 ) {
+            menu4 = createImage ("/menu/4_p.png");
+        } else if ( curMenu == 4 ) {
+            menu5 = createImage ("/menu/5_p.png");
+        }
+        g.drawImage(menu1, 240/2 - menu1.getWidth()/2, 80, Graphics.TOP | Graphics.LEFT);
+        g.drawImage(menu2, 240/2 - menu2.getWidth()/2, 100, Graphics.TOP | Graphics.LEFT);
+        g.drawImage(menu3, 240/2 - menu3.getWidth()/2, 120, Graphics.TOP | Graphics.LEFT);
+        g.drawImage(menu4, 240/2 - menu4.getWidth()/2, 140, Graphics.TOP | Graphics.LEFT);
+        g.drawImage(menu5, 240/2 - menu5.getWidth()/2, 160, Graphics.TOP | Graphics.LEFT);
         
 //        if (isMenu) {
 //            drawMenu(g);
