@@ -168,7 +168,7 @@ public boolean isDisplay = true;
             g.setColor(255-color2[0], color2[1], color2[2]);
             byte[] text = new byte[4];
             Designer.toBytesIndex("Zuma", text);
-            Designer.drawString(g,text, 0, 4, Designer.FONT_TEXT, 1, getWidth()/2-28, getHeight()/2);
+            Designer.drawString(g,text, 0, 4, Designer.FONT_TEXT, 1, getWidth()/2-13, getHeight()/2);
             
             //  CustomFont.drawString(g ,"ĐẢO GIẤU VÀNG", 0, 400, color, CustomFont.SIZE_MEDIUM, CustomFont.STYLE_BOLD,CustomFont.MARGIN_CENTER,0,getHeight()/2,getWidth(),getHeight());
            // g.drawString("PACMAN", (getWidth() - fontLarge.stringWidth("PACMAN")) / 2, getHeight() / 2, 0);

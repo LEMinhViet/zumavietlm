@@ -18,12 +18,12 @@ public class StartMidlet extends MIDlet {
     public ZumaCanvas STNcanvas;
     
     public void startApp() {
-        //sunnetFlash = new SunnetFlash(this);
-        STNcanvas = new ZumaCanvas(this);
-        STNcanvas.start();
+        sunnetFlash = new SunnetFlash(this);
+        //STNcanvas = new ZumaCanvas(this);
+        //STNcanvas.start();
         display = Display.getDisplay(this);
-        //display.setCurrent(sunnetFlash);
-        display.setCurrent(STNcanvas);
+        display.setCurrent(sunnetFlash);
+        //display.setCurrent(STNcanvas);
     }
 
     public void pauseApp() {
