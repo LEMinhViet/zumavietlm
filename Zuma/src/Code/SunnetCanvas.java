@@ -30,8 +30,8 @@ public class SunnetCanvas extends Canvas implements MessageListener {
     public boolean isMenu = true;
     int curMenu = 0, langId = 1, minMenu = 0;
     int xL = 0, yL = 0;
-    public String[] menu,  menuViet = new String[]{"VÁN MỚI", "ÂM THANH", "ENGLISH", "TÙY CHỌN", "HƯỚNG DẪN", "ĐIỂM CAO", "QUAY LẠI", "THOÁT"};
-    public String[] menuEnglish = new String[]{"NEW GAME", "SOUND ON/OFF", "TIẾNG VIỆT", "SETTING", "HELP", "HIGH SCORE", "BACK", "EXIT"};
+//    public String[] menu,  menuViet = new String[]{"VÁN MỚI", "ÂM THANH", "ENGLISH", "TÙY CHỌN", "HƯỚNG DẪN", "ĐIỂM CAO", "QUAY LẠI", "THOÁT"};
+//    public String[] menuEnglish = new String[]{"NEW GAME", "SOUND ON/OFF", "TIẾNG VIỆT", "SETTING", "HELP", "HIGH SCORE", "BACK", "EXIT"};
     Font fontMenu = Font.getFont(Font.FACE_SYSTEM, Font.STYLE_BOLD, Font.SIZE_MEDIUM);
     Font fontTextMenu = Font.getFont(Font.FACE_SYSTEM, Font.STYLE_BOLD, Font.SIZE_SMALL);
     String msgReceived = "no Message";
@@ -39,7 +39,7 @@ public class SunnetCanvas extends Canvas implements MessageListener {
     byte[] text;
     public static int DELAY_DEFAULT = 100;
     private int color = 0;
-    Image bkImage = null;
+    Image bkImage = null, menuPic = null, menu1 = null, menu2 = null, menu3 = null, menu4 = null, menu5 = null;
     StartMidlet StartMidlet;
 
     public SunnetCanvas(StartMidlet StartMidlet) {
@@ -79,7 +79,7 @@ public class SunnetCanvas extends Canvas implements MessageListener {
         //Draw background
         if(bkImage == null){
             try {
-                bkImage = Image.createImage("/picture/menu.png");
+                bkImage = Image.createImage("/picture/bg.png");
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
@@ -93,78 +93,65 @@ public class SunnetCanvas extends Canvas implements MessageListener {
         if(height > 320){
             height = 320;
         }
-         g.drawRegion(bkImage, (240-width)/2, (320-height)/2, width, height,0, Math.abs(getWidth()-240)/2, Math.abs(getHeight()-320)/2,  0);
+        g.drawRegion(bkImage, (240-width)/2, (320-height)/2, width, height,0, Math.abs(getWidth()-240)/2, Math.abs(getHeight()-320)/2,  0);
+
+//        if ( menuPic == null ) {
+//            try {
+//                menuPic = Image.createImage("/picture/bg-menu.png");
+//            } catch (IOException ex) {
+//                ex.printStackTrace();
+//            }
+//        }
+//        g.drawRegion(menuPic, 0, 0, 209, 272, 0, 18, 25, 0);
+
+//        menu1 = createImage ("/menu/1.png");
+//        menu2 = createImage ("/menu/2.png");
+//        menu3 = createImage ("/menu/3.png");
+//        menu4 = createImage ("/menu/4.png");
+//        menu5 = createImage ("/menu/5.png");
+//        if ( curMenu == 0 ) {
+//            menu1 = createImage ("/menu/1_p.png");
+//        } else if ( curMenu == 1 ) {
+//            menu2 = createImage ("/menu/2_p.png");
+//        } else if ( curMenu == 2 ) {
+//            menu3 = createImage ("/menu/3_p.png");
+//        } else if ( curMenu == 3 ) {
+//            menu4 = createImage ("/menu/4_p.png");
+//        } else if ( curMenu == 4 ) {
+//            menu5 = createImage ("/menu/5_p.png");
+//        }
+//        g.drawImage(menu1, 240/2 - menu1.getWidth()/2, 80, Graphics.TOP | Graphics.LEFT);
+//        g.drawImage(menu2, 240/2 - menu2.getWidth()/2, 100, Graphics.TOP | Graphics.LEFT);
+//        g.drawImage(menu3, 240/2 - menu3.getWidth()/2, 120, Graphics.TOP | Graphics.LEFT);
+//        g.drawImage(menu4, 240/2 - menu4.getWidth()/2, 140, Graphics.TOP | Graphics.LEFT);
+//        g.drawImage(menu5, 240/2 - menu5.getWidth()/2, 160, Graphics.TOP | Graphics.LEFT);
         
-        if (isMenu) {
-            drawMenu(g, getWidth() / 2, (getHeight() - fontMenu.getHeight() * 5) / 2);
-        } else {
-            g.setColor(255, 255, 255);
-            g.drawString(msgReceived, getWidth() / 29, getHeight() / 2, 0);
-        }
+//        if (isMenu) {
+//            drawMenu(g);
+//
+//        } else {
+//            g.setColor(255, 255, 255);
+//            g.drawString(msgReceived, getWidth() / 29, getHeight() / 2, 0);
+//        }
     }
     public static int VERTICAL = 1;
     public static int HORIZONTAL = 0;
 
-    public void drawMenu(Graphics g, int x, int y) {
-
-       
-        if (langId == 0) {
-            menu = menuEnglish;
-        } else {
-            menu = menuViet;
-        }
-
-        g.setFont(fontTextMenu);
-        for (int i = minMenu; i < minMenu + 5; i++) {
-            if (curMenu == i) {
-               color  = 10;
-            } else {
-               color = 1;
-            }
-             text = new byte[menu[i].length()];
-             Designer.toBytesIndex(menu[i], text);
-             Designer.drawCenterString(g,text, 0, menu[i].length(), Designer.FONT_TEXT, color, getWidth()/2, y-6 + (i - minMenu) * 16);
-           // Designer.drawString(g,text, 0, menu[i].length(), Designer.FONT_TEXT, color, getWidth()/2-(menu[i].length()-1)*4, y-6 + (i - minMenu) * 16);
-        }
+    public void drawMenu(Graphics g) {
+        
+        
         Runtime.getRuntime().gc();
     }
 
-    public static void gradientBox(Graphics g, int color1, int color2, int left, int top, int width, int height, int orientation) {
-        int max = orientation == VERTICAL ? height : width;
-
-        for (int i = 0; i < max; i++) {
-            int color = midColor(color1, color2, max * (max - 1 - i) / (max - 1), max);
-
-            g.setColor(color);
-
-            if (orientation == VERTICAL) {
-                g.drawLine(left, top + i, left + width - 1, top + i);
-            } else {
-                g.drawLine(left + i, top, left + i, top + height - 1);
-            }
+    public Image createImage( String filepath ) {
+        Image menu = null;
+        try {
+            menu = Image.createImage(filepath);
+        } catch (IOException ex) {
+            ex.printStackTrace();
         }
-    }
 
-    static int midColor(int color1, int color2, int prop, int max) {
-        int red =
-                (((color1 >> 16) & 0xff) * prop +
-                ((color2 >> 16) & 0xff) * (max - prop)) / max;
-
-        int green =
-                (((color1 >> 8) & 0xff) * prop +
-                ((color2 >> 8) & 0xff) * (max - prop)) / max;
-
-        int blue =
-                (((color1 >> 0) & 0xff) * prop +
-                ((color2 >> 0) & 0xff) * (max - prop)) / max;
-
-        int color = red << 16 | green << 8 | blue;
-
-        return color;
-    }
-
-    private int makeColorAsInt(int alpha, int red, int green, int blue) {
-        return alpha << 24 | red << 16 | green << 8 | blue;
+        return menu;
     }
 
     protected void keyPressed(int keyCode) {
@@ -229,29 +216,19 @@ public class SunnetCanvas extends Canvas implements MessageListener {
     public void upKey() {
 
         if (curMenu > 0) {
-            if (minMenu == curMenu) {
-                minMenu--;
-            }
             curMenu--;
         } else {
-            curMenu = menu.length - 1;
-            minMenu = menu.length - 5;
+            curMenu = 4;
         }
 
     }
 
     public void downKey() {
 
-        if (curMenu < (menu.length - 1)) {
-
-            if (curMenu == minMenu + 4) {
-                minMenu++;
-            }
+        if (curMenu < 4) {
             curMenu++;
-
         } else {
             curMenu = 0;
-            minMenu = 0;
         }
     }
 
@@ -263,8 +240,7 @@ public class SunnetCanvas extends Canvas implements MessageListener {
                     StartMidlet.STNcanvas = new ZumaCanvas(StartMidlet);
                     StartMidlet.STNcanvas.start();
                     StartMidlet.display.setCurrent(StartMidlet.STNcanvas);
-                    Runtime.getRuntime().gc();
-                    
+                    Runtime.getRuntime().gc();                  
 
                     return;
                 case 1:
@@ -272,10 +248,10 @@ public class SunnetCanvas extends Canvas implements MessageListener {
                 case 2:
                     if (langId == 1) {
                         langId = 0;
-                        menu = menuEnglish;
+//                        menu = menuEnglish;
                     } else {
                         langId = 1;
-                        menu = menuViet;
+//                        menu = menuViet;
                     }
                     return;
                 case 3:

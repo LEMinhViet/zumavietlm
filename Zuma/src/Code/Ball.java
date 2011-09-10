@@ -65,8 +65,8 @@ public class Ball {
         if ( zumaCanvas.Part != 0 || ( zumaCanvas.Part == 1 && zumaCanvas.vBall[0].BVector.size() == 0 )) {
             // Hiện lại bóng để bắn, các biến liên quan đến việc bắn về lại trị số ban đầu
             ShootDistance = 15;
-            Ball.setPosition((int)(getPositionX() + 15*Math.cos((zumaCanvas.iCount/180)*Math.PI-Math.PI/2)),
-                            (int)(getPositionY() + 15*Math.sin((zumaCanvas.iCount/180)*Math.PI-Math.PI/2)));
+            Ball.setPosition((int)(getPositionX() + 20*Math.cos((zumaCanvas.iCount/180)*Math.PI-Math.PI/2)),
+                            (int)(getPositionY() + 20*Math.sin((zumaCanvas.iCount/180)*Math.PI-Math.PI/2)));
             /*System.out.print( "Color " );
             for ( int u = 0; u < 10; u++ ) {
                 System.out.print( zumaCanvas.Color[u] + "\t");

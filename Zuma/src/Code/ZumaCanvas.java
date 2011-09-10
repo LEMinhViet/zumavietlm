@@ -440,8 +440,8 @@ public class ZumaCanvas extends GameCanvas implements Runnable {
 //                            System.out.println(vBall[0].End);
 //                            System.out.println("partcolliback " + partColliBack + " " + vBall[0].BVector.size());
                             vBall[partColliBack].testBreak(iColli);
-                            if ( Sball.Ball.getX() == (int)(Sball.getPositionX() + 15*Math.cos((iCount/180)*Math.PI-Math.PI/2))
-                                        && Sball.Ball.getY() == (int)(Sball.getPositionY() + 15*Math.sin((iCount/180)*Math.PI-Math.PI/2)))  {
+                            if ( Sball.Ball.getX() == (int)(Sball.getPositionX() + 20*Math.cos((iCount/180)*Math.PI-Math.PI/2))
+                                        && Sball.Ball.getY() == (int)(Sball.getPositionY() + 20*Math.sin((iCount/180)*Math.PI-Math.PI/2)))  {
                                 for ( int i = 0; i < 10; i++ ) {
                                     ColorOld[i] = Color[i];
                                 }
@@ -937,8 +937,8 @@ public class ZumaCanvas extends GameCanvas implements Runnable {
                 Colli = false;
             }
         } else
-            Sball.Ball.setPosition((int)(Sball.getPositionX() + 15*Math.cos((iCount/180)*Math.PI-Math.PI/2)),
-                (int)(Sball.getPositionY() + 15*Math.sin((iCount/180)*Math.PI-Math.PI/2)));
+            Sball.Ball.setPosition((int)(Sball.getPositionX() + 20*Math.cos((iCount/180)*Math.PI-Math.PI/2)),
+                (int)(Sball.getPositionY() + 20*Math.sin((iCount/180)*Math.PI-Math.PI/2)));
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -1111,8 +1111,8 @@ public class ZumaCanvas extends GameCanvas implements Runnable {
                 Asm = true;
             }
         } else
-            Sball.Ball.setPosition((int)(Sball.getPositionX() + 15*Math.cos((iCount/180)*Math.PI-Math.PI/2)),
-                (int)(Sball.getPositionY() + 15*Math.sin((iCount/180)*Math.PI-Math.PI/2)));
+            Sball.Ball.setPosition((int)(Sball.getPositionX() + 20*Math.cos((iCount/180)*Math.PI-Math.PI/2)),
+                (int)(Sball.getPositionY() + 20*Math.sin((iCount/180)*Math.PI-Math.PI/2)));
     }
     ///////////////////////////////////////////////////////////////////////////////
     // Xử lý bắn bóng State3
@@ -1284,8 +1284,8 @@ public class ZumaCanvas extends GameCanvas implements Runnable {
                 Asm = true;
             }
         } else
-            Sball.Ball.setPosition((int)(Sball.getPositionX() + 15*Math.cos((iCount/180)*Math.PI-Math.PI/2)),
-                (int)( Sball.getPositionY() + 15*Math.sin((iCount/180)*Math.PI-Math.PI/2)));
+            Sball.Ball.setPosition((int)(Sball.getPositionX() + 20*Math.cos((iCount/180)*Math.PI-Math.PI/2)),
+                (int)( Sball.getPositionY() + 20*Math.sin((iCount/180)*Math.PI-Math.PI/2)));
     }
 
 
