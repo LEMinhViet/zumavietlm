@@ -27,16 +27,24 @@ public class GameDesign {
     private Sprite x15;
     public int x15seq001Delay = 200;
     public int[] x15seq001 = {0, 0, 0, 0, 0};
+    private Sprite fin;
+    public int finseq001Delay = 200;
+    public int[] finseq001 = {0, 0, 0, 0, 0};
+    private Image key;
     private Image lv4;
     private Image lv15;
     private Image mod_;
     private Image lv10;
     private TiledLayer x10;
+    private Sprite x6;
+    public int x6seq001Delay = 200;
+    public int[] x6seq001 = {0, 0, 0, 0, 0};
     private Image lv9;
     private Sprite x9;
     public int x9seq001Delay = 200;
     public int[] x9seq001 = {0, 0, 0, 0, 0};
     private Image nhan_su;
+    private Image lv6;
     private Image lv4_patch;
     private Sprite nhgan;
     public int nhganseq001Delay = 200;
@@ -56,12 +64,15 @@ public class GameDesign {
     public int x7seq001Delay = 200;
     public int[] x7seq001 = {0, 0, 0, 0, 0};
     private Image lv7;
+    private Sprite x4;
+    public int x4seq001Delay = 200;
+    public int[] x4seq001 = {0, 0, 0, 0, 0};
     private TiledLayer v1;
     private Sprite x11;
     public int x11seq001Delay = 200;
     public int[] x11seq001 = {0, 0, 0, 0, 0};
-    private Image lv11;
     private Image lv4_patch1;
+    private Image lv11;
     private Image mod_2;
     private Image boss_1;
     private Sprite boss;
@@ -82,17 +93,6 @@ public class GameDesign {
     private Sprite x13;
     public int x13seq001Delay = 200;
     public int[] x13seq001 = {0, 0, 0, 0, 0};
-    private Sprite x4;
-    public int x4seq001Delay = 200;
-    public int[] x4seq001 = {0, 0, 0, 0, 0};
-    private Image lv6;
-    private Sprite x6;
-    public int x6seq001Delay = 200;
-    public int[] x6seq001 = {0, 0, 0, 0, 0};
-    private Image key;
-    private Sprite fin;
-    public int finseq001Delay = 200;
-    public int[] finseq001 = {0, 0, 0, 0, 0};
     //</editor-fold>//GEN-END:|fields|0|
 
     //<editor-fold defaultstate="collapsed" desc=" Generated Methods ">//GEN-BEGIN:|methods|0|
@@ -100,18 +100,18 @@ public class GameDesign {
 
     public void updateLayerManagerForLm(LayerManager lm) throws java.io.IOException {//GEN-LINE:|1-updateLayerManager|0|1-preUpdate
         // write pre-update user code here
-        getNhgan().setPosition(95, 82);//GEN-BEGIN:|1-updateLayerManager|1|1-postUpdate
-        getNhgan().setVisible(true);
-        lm.append(getNhgan());
-        getScop().setPosition(155, 234);
+        getScop().setPosition(51, 206);//GEN-BEGIN:|1-updateLayerManager|1|1-postUpdate
         getScop().setVisible(true);
         lm.append(getScop());
-        getV1().setPosition(0, 0);
-        getV1().setVisible(true);
-        lm.append(getV1());
-        getLv1GD().setPosition(0, 0);
+        getNhgan().setPosition(131, 70);
+        getNhgan().setVisible(true);
+        lm.append(getNhgan());
+        getLv1GD().setPosition(1, -6);
         getLv1GD().setVisible(true);
-        lm.append(getLv1GD());//GEN-END:|1-updateLayerManager|1|1-postUpdate
+        lm.append(getLv1GD());
+        getX10().setPosition(0, 0);
+        getX10().setVisible(true);
+        lm.append(getX10());//GEN-END:|1-updateLayerManager|1|1-postUpdate
         // write post-update user code here
     }//GEN-BEGIN:|1-updateLayerManager|2|
 //GEN-END:|1-updateLayerManager|2|
@@ -440,7 +440,7 @@ public class GameDesign {
     public Image getLv14() throws java.io.IOException {//GEN-BEGIN:|377-getter|0|377-preInit
         if (lv14 == null) {//GEN-END:|377-getter|0|377-preInit
             // write pre-init user code here
-            lv14 = Image.createImage("/picture/lv14.png");//GEN-BEGIN:|377-getter|1|377-postInit
+            lv14 = Image.createImage("/picture/lv10-way.png");//GEN-BEGIN:|377-getter|1|377-postInit
         }//GEN-END:|377-getter|1|377-postInit
         // write post-init user code here
         return this.lv14;//GEN-BEGIN:|377-getter|2|
@@ -461,7 +461,7 @@ public class GameDesign {
     public Image getLv15() throws java.io.IOException {//GEN-BEGIN:|399-getter|0|399-preInit
         if (lv15 == null) {//GEN-END:|399-getter|0|399-preInit
             // write pre-init user code here
-            lv15 = Image.createImage("/picture/lv15.png");//GEN-BEGIN:|399-getter|1|399-postInit
+            lv15 = Image.createImage("/picture/lv2-way.png");//GEN-BEGIN:|399-getter|1|399-postInit
         }//GEN-END:|399-getter|1|399-postInit
         // write post-init user code here
         return this.lv15;//GEN-BEGIN:|399-getter|2|

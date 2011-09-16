@@ -46,9 +46,7 @@ public class Boss {
                     else
                         MoveDistance = zumaCanvas.getRand(0, 320 - Boss.getHeight() - Boss.getY());
                 }
-                System.out.println("Distance " + MoveDistance);
             }
-            System.out.println("X, Y " + Boss.getX() + " " + Boss.getY() );
             Step+=2;
             if ( Direction == 0 ) {
                 y -= 2;
@@ -64,7 +62,7 @@ public class Boss {
         } else {
             delay--;
         }
-        if ( zumaCanvas.Sball.Ball.collidesWith(Boss, true)) {
+        if ( zumaCanvas.Shoot && zumaCanvas.Sball.Ball.collidesWith(Boss, true)) {
             zumaCanvas.Sball.Ball.setVisible(false);
             BoHealth--;
         }

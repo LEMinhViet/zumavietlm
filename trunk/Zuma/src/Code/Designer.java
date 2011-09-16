@@ -12,7 +12,7 @@ public class Designer {
 
   private static byte[] dat_textFont;
     private static int[] pal_textFont;
-   
+    private static int end, index, startIndex, endIndex, lineLength, charCount, wordLength, width, memo, temp, length, num;
     private static String charIndex = "/0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!\"#$%&'()*+,-.:;<=>?@[\\]^_`{|}~̉´ˇĐđàáảãạăằắẳẵặâầấẩẫậèéẻẽẹêềếểễệìíỉĩịòóỏõọôồốổỗộơờớởỡợùúủũụưừứửữựÀÁẢÃẠĂẰẮẲẴẶÂẦẤẨẪẬÈÉẺẼẸÊỀẾỂỄỆÌÍỈĨỊÒÓỎÕỌÔỒỐỔỖỘƠỜỚỞỠỢÙÚỦŨỤƯỪỨỬỮỰͦ";
     private static byte[] textCharWidth = {
       6, 6, 5, 6, 6, 7, 6, 6, 6, 6, 6,
@@ -84,7 +84,7 @@ public class Designer {
     }
 
     public static final int toInt(byte[] b, int offset, int length){
-        int num = 0;
+        num = 0;
         for(int i = offset, j = offset + length; i < j; i++)
             if(b[i] < 0)
                 num = (num << 8) + 256 + b[i];
@@ -107,7 +107,7 @@ public class Designer {
     }
 
     public static final void toBytesIndex(String str, byte[] b){
-        int length = Math.min(str.length(), b.length);
+        length = Math.min(str.length(), b.length);
         for(int i = 0; i < length; i++)
             switch(str.charAt(i)){
                 case '\n':
@@ -137,7 +137,7 @@ public class Designer {
     }
 
     public static final int getStringWidth(byte[] b, int offset, int length, byte type){
-        int width = 0;
+        width = 0;
         for(int i = offset, l = Math.min(offset + length, b.length); i < l; i++)
             width += getCharWidth(b[i], type);
         return width;
@@ -180,9 +180,8 @@ public class Designer {
     }  
 
     public static final int drawString(Graphics g, byte[] b, int offset, int length, byte type, int colorType, int x, int y){
-        int width = 0;
-        int memo = x;
-        int temp;
+        width = 0;
+        memo = x;
         for(int i = offset, l = offset + Math.min(length, b.length); i < l; i++)
             if(b[i] == -128){
                 x = memo;
@@ -198,13 +197,13 @@ public class Designer {
     }
 
     public static final int drawString(Graphics g, byte[] b, int offset, int length, byte type, byte margin, boolean isWordSplit, int colorType, int x, int y, int width, int height){
-        int end = y + height - charTotalHeight[type];
-        int index = offset;
-        int startIndex;
-        int endIndex;
-        int lineLength = 0;
-        int charCount = 0;
-        int wordLength = 0;
+        end = y + height - charTotalHeight[type];
+        index = offset;
+        lineLength = 0;
+        charCount = 0;
+        wordLength = 0;
+
+
         length = Math.min(length + offset, b.length);
         while(y <= end && index < length){
             lineLength = 0;
@@ -297,7 +296,7 @@ public class Designer {
     }
 
     public static final int drawNumber(Graphics g, long num, byte type, int colorType, int x, int y){
-        int width = 0;
+        width = 0;
         byte c;
         while(num != 0){
             c = (byte)(num % 10 - 125);

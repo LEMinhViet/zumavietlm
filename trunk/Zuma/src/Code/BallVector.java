@@ -14,14 +14,14 @@ public class BallVector {
     ZumaCanvas zumaCanvas;
     int ColliX, ColliY, x, y;
     int NumOfBall = 0;
-    int j;
+    int i, j;
     int beginBreak, endBreak;
     int Distance = 0;
     // Điểm đầu cuối của vector
     int Begin, End;
     //int[] ballSeq = { 0, 1, 2, 3, 4, 5, 6, 7 };
-    int[] ballSeq = { 0, 1, 2, 3 };
-    int[] Level = new int [100];
+//    int[] ballSeq = { 0, 1, 2, 3 };
+    int[] Level = new int [500];
 //    int[] Level = { 2, 2, 0, 0, 0, 0, 0, 0, 0, 1,
 //                    1, 1, 0, 0, 0, 0, 0, 3, 3, 0,
 //                    0, 0, 0, 0, 0, 0, 0, 0, 0, 2,
@@ -34,6 +34,7 @@ public class BallVector {
 //                    1, 1, 1, 1, 1, 1, 3, 3, 3, 3,
 //                };
     Sprite Sball;
+    //BallinVector BiV = new BallinVector();
     Vector BVector = new Vector ( NumOfBall, 1 );
     int iColliTemp;
 
@@ -42,25 +43,46 @@ public class BallVector {
     }
 
     public void initBallVector () {
+//        for ( i = 0; i < zumaCanvas.Part; i++ ) {
+//            for ( j = 0; j < zumaCanvas.vBall[i].BVector.size(); j++ ) {
+//                 zumaCanvas.vBall[i].BVector.removeAllElements();
+//            }
+//        }
         if ( zumaCanvas.runningLevel != 2 ) createLv1();
         else if ( zumaCanvas.runningLevel == 2 ) createLv2();
+        if ( BVector != null ) {
+            BVector.removeAllElements();
+            Runtime.getRuntime().gc();
+            //BVector = null;
+        }
         for ( j = 0; j < NumOfBall; j++) {
-
             try {
-                /*if ( Level[j] == 0 )
-                    BVector.addElement(new Sprite(Image.createImage("/picture/bong_do.png"), 16, 16));
-                else if(Level[j] == 1)
-                    BVector.addElement(new Sprite(Image.createImage("/picture/bong_xanh2.png"), 16, 16));*/
                 BVector.addElement(new Sprite(Image.createImage("/picture/bi.png"), 16, 16));
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
-            ((Sprite)BVector.elementAt(j)).setFrameSequence(ballSeq);
+            
+//            ((Sprite)BVector.elementAt(j)).setFrameSequence(ballSeq);
             zumaCanvas.lm.insert((Sprite)BVector.elementAt(j), 0);
             ((Sprite)BVector.elementAt(j)).setPosition(-16, -16);
             ((Sprite)BVector.elementAt(j)).setFrame(Level[j]);
         }
        
+    }
+
+    public void addtoBallVector( int Num ) {
+        for ( j = 0; j < Num; j++) {
+            try {
+                BVector.addElement(new Sprite(Image.createImage("/picture/bi.png"), 16, 16));
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+
+//            ((Sprite)BVector.elementAt(j)).setFrameSequence(ballSeq);
+            zumaCanvas.lm.insert((Sprite)BVector.elementAt(BVector.size() - 1), 0);
+            ((Sprite)BVector.elementAt(BVector.size() - 1)).setPosition(-16, -16);
+            ((Sprite)BVector.elementAt(BVector.size() - 1)).setFrame(Level[BVector.size() - 1]);
+        }
     }
 
     public void InsertBall( int iColli, int partColli ) {
@@ -81,7 +103,7 @@ public class BallVector {
                     ex.printStackTrace();
                 }
 
-                ((Sprite)BVector.elementAt(0)).setFrameSequence(ballSeq);
+//                ((Sprite)BVector.elementAt(0)).setFrameSequence(ballSeq);
                 zumaCanvas.lm.insert((Sprite)BVector.elementAt(0), 0);
                 ((Sprite)BVector.elementAt(0)).setFrame(zumaCanvas.Sball.Ball.getFrame());
             }
@@ -126,7 +148,7 @@ public class BallVector {
                         ex.printStackTrace();
                     }
 
-                    ((Sprite)BVector.elementAt(End - Begin)).setFrameSequence(ballSeq);
+//                    ((Sprite)BVector.elementAt(End - Begin)).setFrameSequence(ballSeq);
                     zumaCanvas.lm.insert((Sprite)BVector.elementAt(End - Begin), 0);
                     ((Sprite)BVector.elementAt(End - Begin)).setFrame(zumaCanvas.Sball.Ball.getFrame());
                 }
@@ -168,7 +190,7 @@ public class BallVector {
                     } catch (IOException ex) {
                         ex.printStackTrace();
                     }
-                    ((Sprite)BVector.elementAt(iColliTemp+1)).setFrameSequence(ballSeq);
+//                    ((Sprite)BVector.elementAt(iColliTemp+1)).setFrameSequence(ballSeq);
                     zumaCanvas.lm.insert((Sprite)BVector.elementAt(iColliTemp +1), 0);
                     ((Sprite)BVector.elementAt(iColliTemp+1)).setFrame(zumaCanvas.Sball.Ball.getFrame());
                 }
@@ -433,7 +455,7 @@ public class BallVector {
                     
                 } else if ( zumaCanvas.Part == 0 ) {
 //                    System.out.println("End Of level");
-                    zumaCanvas.nextLevel();
+//                    zumaCanvas.nextLevel();
                     zumaCanvas.State0 = false;
                     zumaCanvas.State1 = false;
                     zumaCanvas.State2 = false;
@@ -614,19 +636,20 @@ public class BallVector {
         
     }
 
-
+int ranlv1, duplv1, iX;
 /////////////////////////////////////////////////////////////////////////////////////////////////
 // Hàm tạo đoàn bóng cho lv1 và lv3
 /////////////////////////////////////////////////////////////////////////////////////////////////
     public void createLv1 () {
-        int ranlv1, duplv1;
-        for ( int i = 0; i < 100; ++i ) {
+        for ( iX = 0; iX < 500; ++iX )
+            Level[iX] = 0;
+        for ( iX = 0; iX < 500; ++iX ) {
             ranlv1 = zumaCanvas.getRand(0, 4);
             duplv1 = zumaCanvas.getRand(0, 4);
             for ( int j = 0; j < duplv1; ++j ) {
-                if ( i + j < 100 )  Level[i+j] = ranlv1;
+                if ( iX + j < 500 )  Level[iX+j] = ranlv1;
             }
-            if ( duplv1 != 0 )  i += duplv1 - 1;
+            if ( duplv1 != 0 )  iX += duplv1 - 1;
         }
     }
 
@@ -634,14 +657,15 @@ public class BallVector {
     // Hàm tạo đoàn bóng cho lv1 và lv3
     /////////////////////////////////////////////////////////////////////////////////////////////////
     public void createLv2 () {
-        int ranlv1, duplv1;
-        for ( int i = 0; i < 100; ++i ) {
+        for ( iX = 0; iX < 500; ++iX )
+            Level[iX] = 0;
+        for ( iX = 0; iX < 500; ++iX ) {
             ranlv1 = zumaCanvas.getRand(0, 4);
             duplv1 = zumaCanvas.getRand(0, 3);
             for ( int j = 0; j < duplv1; ++j ) {
-                if ( i + j < 100 )  Level[i+j] = ranlv1;
+                if ( iX + j < 500 )  Level[iX+j] = ranlv1;
             }
-            if ( duplv1 != 0 )  i += duplv1 - 1;
+            if ( duplv1 != 0 )  iX += duplv1 - 1;
         }
     }
 
