@@ -152,7 +152,7 @@ public boolean isDisplay = true;
            // g.setColor(color3[0], color3[1], color3[2]);
             byte[] text = new byte[10];
             Designer.toBytesIndex("giới thiệu", text);
-            Designer.drawString(g,text, 0, 10, Designer.FONT_TEXT, 2, getWidth()/2-30, getHeight()/3);
+            Designer.drawString(g,text, 0, 10, 2, getWidth()/2-30, getHeight()/3);
             // CustomFont.drawString(g ,"Giới thiệu", 0, 400, color, CustomFont.SIZE_MEDIUM, CustomFont.STYLE_PLAIN,CustomFont.MARGIN_CENTER,0,getHeight()/2-40,getWidth(),getHeight());
            // g.drawString("Giới thiệu", (getWidth() - fontLarge.stringWidth("Giới thiệu")) / 2, getHeight() / 3, 0);
     }
@@ -168,7 +168,7 @@ public boolean isDisplay = true;
             g.setColor(255-color2[0], color2[1], color2[2]);
             byte[] text = new byte[4];
             Designer.toBytesIndex("Zuma", text);
-            Designer.drawString(g,text, 0, 4, Designer.FONT_TEXT, 1, getWidth()/2-13, getHeight()/2);
+            Designer.drawString(g,text, 0, 4, 1, getWidth()/2-13, getHeight()/2);
             
             //  CustomFont.drawString(g ,"ĐẢO GIẤU VÀNG", 0, 400, color, CustomFont.SIZE_MEDIUM, CustomFont.STYLE_BOLD,CustomFont.MARGIN_CENTER,0,getHeight()/2,getWidth(),getHeight());
            // g.drawString("PACMAN", (getWidth() - fontLarge.stringWidth("PACMAN")) / 2, getHeight() / 2, 0);
