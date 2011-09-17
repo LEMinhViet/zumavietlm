@@ -20,8 +20,6 @@ public class BallVector {
     // Điểm đầu cuối của vector
     int Begin, End;
     Sprite removeSprite;
-    //int[] ballSeq = { 0, 1, 2, 3, 4, 5, 6, 7 };
-//    int[] ballSeq = { 0, 1, 2, 3 };
     int[] Level = new int [500];
 //    int[] Level = { 2, 2, 0, 0, 0, 0, 0, 0, 0, 1,
 //                    1, 1, 0, 0, 0, 0, 0, 3, 3, 0,
@@ -35,7 +33,6 @@ public class BallVector {
 //                    1, 1, 1, 1, 1, 1, 3, 3, 3, 3,
 //                };
     Sprite Sball;
-    //BallinVector BiV = new BallinVector();
     Vector BVector = new Vector ( NumOfBall, 1 );
     int iColliTemp;
 
