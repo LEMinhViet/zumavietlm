@@ -12,7 +12,7 @@ import javax.microedition.lcdui.game.Sprite;
 public class ZumaCanvas extends GameCanvas implements Runnable {
     Random randomizer = new Random();
     Model model;
-    Sprite BGSpr, Level1, L1_way, L2_way, wayPoint, wayBall, Lv_patch1, Lv_patch2, Lv_patch3, Lv_patch4, Lv_patch5, FinishPoint;
+    Sprite BGSpr, Level1, L1_way, L2_way, wayPoint, wayBall, Lv_patch1, Lv_patch2, Lv_patch3, Lv_patch4, Lv_patch5, FinishPoint, removeSprite;
     Image Pause, Gauge, Gauge_full;
     byte[] Level = new byte[8];
     byte[] backmenu1 = new byte[18];
@@ -87,7 +87,7 @@ public class ZumaCanvas extends GameCanvas implements Runnable {
             }
 
             vBall[0] = new BallVector(this);
-            vBall[0].NumOfBall = 50;
+            vBall[0].NumOfBall = 100;
             NumB = 16*vBall[0].NumOfBall;
             
             runningLevel = 1;
@@ -129,7 +129,7 @@ public class ZumaCanvas extends GameCanvas implements Runnable {
             g.drawImage(Gauge, 0, 0, Graphics.TOP | Graphics.LEFT);
 
             drawGauge(gG);
-            Designer.drawNumber(g, score.Score, Designer.FONT_TEXT, 1, 70, 2);
+            Designer.drawNumber(g, score.Score, 2, 70, 2);
             
             if ( Shoot )    model.whenShoot(iCount);          
             
@@ -232,7 +232,7 @@ public class ZumaCanvas extends GameCanvas implements Runnable {
             } else if ( State2 ) {
                 if ( Divide ) {                    
                     ////////////////////////////////////////////////////////////////////////////////////
-                    // Tách làm 2 đoạn sau khi có khoảng trống
+                    // Tách làm 2 đoạn sau khi có khoảng trốngS
                     ////////////////////////////////////////////////////////////////////////////////////
                     vBall[Part] = new BallVector(this);
                     Part++;
@@ -250,7 +250,9 @@ public class ZumaCanvas extends GameCanvas implements Runnable {
                     /// Bỏ bóng
                     for ( m = vBall[partColliBack].beginBreak; m <= vBall[partColliBack].endBreak; m++ ) {
                         try {
+                            removeSprite = (Sprite)vBall[partColliBack].BVector.elementAt(vBall[partColliBack].beginBreak);
                             vBall[partColliBack].BVector.removeElementAt(vBall[partColliBack].beginBreak);
+                            removeSprite();
                         } catch ( ArrayIndexOutOfBoundsException ae ) {
                             //System.out.println("partColliBack " + partColliBack );
                         }
@@ -572,7 +574,9 @@ public class ZumaCanvas extends GameCanvas implements Runnable {
                     /// Bỏ bóng
                     for ( m = vBall[partColli].beginBreak; m <= vBall[partColli].endBreak; m++ ) {
                         try {
+                            removeSprite = (Sprite) vBall[partColli].BVector.elementAt(vBall[partColli].beginBreak);
                             vBall[partColli].BVector.removeElementAt(vBall[partColli].beginBreak);
+                            removeSprite();
                         } catch ( ArrayIndexOutOfBoundsException ae ) {
                             //System.out.println("partColli " + partColli );
                         }
@@ -684,6 +688,7 @@ public class ZumaCanvas extends GameCanvas implements Runnable {
                             Asm = false;
                             if ( !Shoot && InsertTime == 0 && Sball.Ball.isVisible() )  Asm = true;
                             if ( Asm ) {
+                                System.out.println("SCORE  " + score.drawTimes);
                                 //add = 0;
                                 //if ( partColli > 0 )    partColli --;
                                 /*for ( j = 0; j < Part - 1; j++ ) {
@@ -706,9 +711,9 @@ public class ZumaCanvas extends GameCanvas implements Runnable {
                                
                                 Part--;
                                 for ( i = 0; i < Part; i++ ) {
-//                                    System.out.println("Here4");
-//                                    System.out.println("Vector so " + i + " Begin " + vBall[i].Begin + " End " + vBall[i].End );
-//                                    System.out.println("Vector so " + i + " Size " + vBall[i].BVector.size() + " Distance " + vBall[i].Distance );
+                                    System.out.println("Here4");
+                                    System.out.println("Vector so " + i + " Begin " + vBall[i].Begin + " End " + vBall[i].End );
+                                    System.out.println("Vector so " + i + " Size " + vBall[i].BVector.size() + " Distance " + vBall[i].Distance );
                                 }
                                 Asm = false;
                             }
@@ -759,12 +764,12 @@ public class ZumaCanvas extends GameCanvas implements Runnable {
 //                State4 = true;
 
                 if ( iS5 == 10 && firstTime ) firstTime = false;
-                if ( iS5 == 10 ) Designer.toBytesIndex("Level " + runningLevel, Level);
+                if ( iS5 == 15 ) Designer.toBytesIndex("Level " + runningLevel, Level);
                 if ( iS5 > 100 ) iS5 = 0;
                 iS5++;
                 g.setColor(0x000000);
                 g.fillRect(0, 0, 240, 320);
-                Designer.drawCenterString(g, Level, 0, 6 + runningLevel/10 + 1, Designer.FONT_TEXT, 1, 120, 150);
+                Designer.drawCenterString(g, Level, 0, 6 + runningLevel/10 + 1, 1, 120, 150);
                 
                 if ( iS5 == 100 ) {
                     State0 = true;
@@ -781,18 +786,18 @@ public class ZumaCanvas extends GameCanvas implements Runnable {
                 else if ( submenu == 2 )    ibackmenu3 = 1;
                 if ( langID == 1) {
                     Designer.toBytesIndex("Thoát và save game", backmenu1);
-                    Designer.drawCenterString(g, backmenu1, 0, 18, Designer.FONT_TEXT, ibackmenu1, getWidth()/2, getHeight()/2 - 20);
+                    Designer.drawCenterString(g, backmenu1, 0, 18, ibackmenu1, getWidth()/2, getHeight()/2 - 20);
                     Designer.toBytesIndex("Thoát và không save", backmenu2);
-                    Designer.drawCenterString(g, backmenu2, 0, 19, Designer.FONT_TEXT, ibackmenu2, getWidth()/2, getHeight()/2);
+                    Designer.drawCenterString(g, backmenu2, 0, 19, ibackmenu2, getWidth()/2, getHeight()/2);
                     Designer.toBytesIndex("Trở về", backmenu3);
-                    Designer.drawCenterString(g, backmenu3, 0, 6, Designer.FONT_TEXT, ibackmenu3, getWidth()/2, getHeight()/2 + 20);
+                    Designer.drawCenterString(g, backmenu3, 0, 6, ibackmenu3, getWidth()/2, getHeight()/2 + 20);
                 } else {
                     Designer.toBytesIndex("Save and Quit", backmenu1);
-                    Designer.drawCenterString(g, backmenu1, 0, 13, Designer.FONT_TEXT, ibackmenu1, getWidth()/2, getHeight()/2 - 20);
+                    Designer.drawCenterString(g, backmenu1, 0, 13, ibackmenu1, getWidth()/2, getHeight()/2 - 20);
                     Designer.toBytesIndex("Quit without save", backmenu2);
-                    Designer.drawCenterString(g, backmenu2, 0, 17, Designer.FONT_TEXT, ibackmenu2, getWidth()/2, getHeight()/2);
+                    Designer.drawCenterString(g, backmenu2, 0, 17, ibackmenu2, getWidth()/2, getHeight()/2);
                     Designer.toBytesIndex("Return", backmenu3);
-                    Designer.drawCenterString(g, backmenu3, 0, 6, Designer.FONT_TEXT, ibackmenu3, getWidth()/2, getHeight()/2 + 20);
+                    Designer.drawCenterString(g, backmenu3, 0, 6, ibackmenu3, getWidth()/2, getHeight()/2 + 20);
                 }
             }
         }
@@ -911,6 +916,7 @@ public class ZumaCanvas extends GameCanvas implements Runnable {
             flushGraphics();
             lm.paint(g, 0, 0);
             timeSinceStart = System.currentTimeMillis()-timeLastCycle;
+            //System.out.println(timeSinceStart);
             sleep = MS_PER_SECOND-timeSinceStart;
             if(sleep < 0)
                 sleep = 0;
@@ -1391,6 +1397,11 @@ public class ZumaCanvas extends GameCanvas implements Runnable {
             case 13: ScoretoOver = 65000; break;
 
         }
+    }
+
+    public void removeSprite (  ) {
+        lm.remove(removeSprite);
+        removeSprite = null;
     }
     
     public int ChekBe_Af ( Sprite ball1, Sprite ball2, Sprite ball3 ) {
@@ -2138,8 +2149,16 @@ public class ZumaCanvas extends GameCanvas implements Runnable {
         wayBall.setVisible(false);
         wayPoint.setVisible(false);
 
+        for ( i = 0; i < Part; i++ ) {
+            for ( j = 0; j < vBall[i].BVector.size(); j++ ) {
+                removeSprite = (Sprite) vBall[i].BVector.elementAt(0);
+                vBall[i].BVector.removeElementAt(0);
+                removeSprite();
+            }
+
+        }
         
-        vBall[0].NumOfBall = 50;
+        vBall[0].NumOfBall = 100;
         vBall[0].initBallVector();
         vBall[0].Begin = 0;
         vBall[0].End = NumB/16-1;
@@ -2163,15 +2182,17 @@ public class ZumaCanvas extends GameCanvas implements Runnable {
     public void restartLevel() {        
         lm.remove(Level1);
         for ( i = 0; i < Part; i++ ) {
-            //for ( j = 0; j < vBall[i].BVector.size(); j++ ) {
-
-            vBall[i].BVector.removeAllElements();
-            //}
+            for ( j = 0; j < vBall[i].BVector.size(); j++ ) {
+                removeSprite = (Sprite) vBall[i].BVector.elementAt(0);
+                vBall[i].BVector.removeElementAt(0);
+                removeSprite();
+            }
+            
         }
         lm.insert(Level1, 0);
 
         //vBall[0] = new BallVector(this);
-        vBall[0].NumOfBall = 50;
+        vBall[0].NumOfBall = 100;
         vBall[0].initBallVector();
         vBall[0].Begin = 0;
         vBall[0].End = NumB/16-1;

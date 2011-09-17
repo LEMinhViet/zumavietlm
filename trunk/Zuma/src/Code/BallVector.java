@@ -19,6 +19,7 @@ public class BallVector {
     int Distance = 0;
     // Điểm đầu cuối của vector
     int Begin, End;
+    Sprite removeSprite;
     //int[] ballSeq = { 0, 1, 2, 3, 4, 5, 6, 7 };
 //    int[] ballSeq = { 0, 1, 2, 3 };
     int[] Level = new int [500];
@@ -42,6 +43,11 @@ public class BallVector {
         this.zumaCanvas = zumaCanvas;
     }
 
+    public void removeSprite() {
+        zumaCanvas.lm.remove(removeSprite);
+        removeSprite = null;
+    }
+
     public void initBallVector () {
 //        for ( i = 0; i < zumaCanvas.Part; i++ ) {
 //            for ( j = 0; j < zumaCanvas.vBall[i].BVector.size(); j++ ) {
@@ -51,16 +57,21 @@ public class BallVector {
         if ( zumaCanvas.runningLevel != 2 ) createLv1();
         else if ( zumaCanvas.runningLevel == 2 ) createLv2();
         if ( BVector != null ) {
-            BVector.removeAllElements();
+            for ( j = 0; j < BVector.size(); j++ ) {
+                removeSprite = ( Sprite )  zumaCanvas.vBall[i].BVector.elementAt(0);
+                zumaCanvas.vBall[i].BVector.removeElementAt(0);
+                removeSprite();
+            }
+            //BVector.removeAllElements();
             Runtime.getRuntime().gc();
             //BVector = null;
         }
         for ( j = 0; j < NumOfBall; j++) {
-            try {
-                BVector.addElement(new Sprite(Image.createImage("/picture/bi.png"), 16, 16));
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
+//            try {
+            BVector.addElement( new Sprite (zumaCanvas.Sball.returnBall(), 16, 16));
+//            } catch (IOException ex) {
+//                ex.printStackTrace();
+//            }
             
 //            ((Sprite)BVector.elementAt(j)).setFrameSequence(ballSeq);
             zumaCanvas.lm.insert((Sprite)BVector.elementAt(j), 0);
@@ -72,11 +83,11 @@ public class BallVector {
 
     public void addtoBallVector( int Num ) {
         for ( j = 0; j < Num; j++) {
-            try {
-                BVector.addElement(new Sprite(Image.createImage("/picture/bi.png"), 16, 16));
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
+//            try {
+            BVector.addElement(new Sprite( zumaCanvas.Sball.returnBall(), 16, 16));
+//            } catch (IOException ex) {
+//                ex.printStackTrace();
+//            }
 
 //            ((Sprite)BVector.elementAt(j)).setFrameSequence(ballSeq);
             zumaCanvas.lm.insert((Sprite)BVector.elementAt(BVector.size() - 1), 0);
@@ -96,12 +107,12 @@ public class BallVector {
             if ( zumaCanvas.InsertTime == 0 ) {
                 ColliX = Sball.getX();
                 ColliY = Sball.getY();
-
-                try {
-                    BVector.insertElementAt(new Sprite(Image.createImage("/picture/bi.png"), 16, 16), 0);
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                }
+//
+//                try {
+                    BVector.insertElementAt( new Sprite(zumaCanvas.Sball.returnBall(), 16, 16), 0);
+//                } catch (IOException ex) {
+//                    ex.printStackTrace();
+//                }
 
 //                ((Sprite)BVector.elementAt(0)).setFrameSequence(ballSeq);
                 zumaCanvas.lm.insert((Sprite)BVector.elementAt(0), 0);
@@ -337,7 +348,9 @@ public class BallVector {
 //                System.out.println("1");
                 if ( endBreak == End && beginBreak == Begin ) {
                     for ( j = beginBreak; j <=  endBreak; j++ ) {
+                        removeSprite = (Sprite) BVector.elementAt(beginBreak);
                         BVector.removeElementAt(beginBreak);
+                        removeSprite();
                         zumaCanvas.NumB -= 16;
                         if ( beginBreak == 0 )  zumaCanvas.ite -= 16;
                         End--;
@@ -352,7 +365,9 @@ public class BallVector {
                     zumaCanvas.Part ++;
 
                     for ( j = beginBreak; j <=  endBreak; j++ ) {
+                        removeSprite = (Sprite) BVector.elementAt(beginBreak);
                         BVector.removeElementAt(beginBreak);
+                        removeSprite();
                         zumaCanvas.NumB -= 16;
                         if ( beginBreak == 0 )  zumaCanvas.ite -= 16;
                         End--;
@@ -400,7 +415,9 @@ public class BallVector {
 
 
                 for ( j = beginBreak; j <= endBreak; j++ ) {
+                    removeSprite = (Sprite)BVector.elementAt(beginBreak);
                     BVector.removeElementAt(beginBreak);
+                    removeSprite();
                     zumaCanvas.NumB -= 16;
                     if ( zumaCanvas.partColli == zumaCanvas.Part - 1 ) zumaCanvas.ite -= 16;
                     if ( zumaCanvas.partColli >= 1 )
@@ -486,7 +503,9 @@ public class BallVector {
                         zumaCanvas.State3 = true;
                     }
                     for ( j = beginBreak; j <= endBreak; j++ ) {
+                        removeSprite = (Sprite) BVector.elementAt(beginBreak);
                         BVector.removeElementAt(beginBreak);
+                        removeSprite();
                         zumaCanvas.NumB-=16;
                         End--;
                         if ( zumaCanvas.partColli > 0 )   {
@@ -510,7 +529,9 @@ public class BallVector {
                     zumaCanvas.State2 = false;
                     zumaCanvas.State3 = false;
                     for ( int t = beginBreak; t <= endBreak; t++ ) {
+                        removeSprite = (Sprite) zumaCanvas.vBall[zumaCanvas.partColli].BVector.elementAt(zumaCanvas.vBall[zumaCanvas.partColli].beginBreak);
                         zumaCanvas.vBall[zumaCanvas.partColli].BVector.removeElementAt(zumaCanvas.vBall[zumaCanvas.partColli].beginBreak);
+                        removeSprite();
                         //zumaCanvas.ite -= 16;
                         zumaCanvas.NumB -= 16;
                     }
@@ -528,7 +549,9 @@ public class BallVector {
                         zumaCanvas.State3 = true;
                     }*/
                     for ( j = beginBreak; j <= endBreak; j++ ) {
+                        removeSprite = (Sprite)BVector.elementAt(beginBreak);
                         BVector.removeElementAt(beginBreak);
+                        removeSprite();
                         zumaCanvas.NumB-=16;
                         End--;
                     }
@@ -543,7 +566,9 @@ public class BallVector {
                     zumaCanvas.State3 = false;
                     for ( int t = beginBreak; t <= endBreak; t++ ) {
                         try {
+                            removeSprite = (Sprite) zumaCanvas.vBall[0].BVector.elementAt(0);
                             zumaCanvas.vBall[0].BVector.removeElementAt(0);
+                            removeSprite();
                         } catch ( ArrayIndexOutOfBoundsException n ) {
 //                            System.out.println("Bvector " + zumaCanvas.partColliBack + " " + zumaCanvas.vBall[zumaCanvas.partColliBack].BVector.size() +
 //                                 " " + zumaCanvas.vBall[zumaCanvas.partColliBack].beginBreak  );
@@ -570,7 +595,9 @@ public class BallVector {
                         zumaCanvas.State3 = true;
                     }
                     for ( j = beginBreak; j <= endBreak; j++ ) {
+                        removeSprite = (Sprite)BVector.elementAt(beginBreak);
                         BVector.removeElementAt(beginBreak);
+                        removeSprite();
                         zumaCanvas.NumB -= 16;
                         End--;
                         if ( zumaCanvas.partColli > 0 )   {
@@ -585,7 +612,9 @@ public class BallVector {
                         zumaCanvas.iColli = zumaCanvas.vBall[zumaCanvas.partColliBack + 1].End - zumaCanvas.vBall[zumaCanvas.partColliBack + 1].Begin;
                 }  else if ( zumaCanvas.partColli == zumaCanvas.Part - 1 ) {
                     for ( j = beginBreak; j <= endBreak; j++ ) {
+                        removeSprite = (Sprite)BVector.elementAt(beginBreak);
                         BVector.removeElementAt(beginBreak);
+                        removeSprite();
                         zumaCanvas.ite -= 16;
                         zumaCanvas.NumB -= 16;
                         End--;

@@ -52,12 +52,11 @@ public class Score {
             } catch ( ArrayIndexOutOfBoundsException abc ) {
 //                System.out.println("error " + partColli + " " + ibreak + " " + zumaCanvas.vBall[partColli].BVector.size());
             }
-//            System.out.println("ibreak " + ibreak + "part " + partColli);
         }
         if ( drawTimes < 15) {            
             Designer.toBytesIndex("+", add);
-            Designer.drawString( zumaCanvas.g, add, 0, 1, Designer.FONT_TEXT, 1, x1 - 20, y1 - y*(drawTimes/3));
-            Designer.drawNumber( zumaCanvas.g, addScore, Designer.FONT_TEXT, 1, x1, y1 - y*(drawTimes/3));
+            Designer.drawString( zumaCanvas.g, add, 0, 1, 1, x1 - 20, y1 - y*(drawTimes/3));
+            Designer.drawNumber( zumaCanvas.g, addScore, 1, x1, y1 - y*(drawTimes/3));
             drawTimes++;            
         } else {
             zumaCanvas.drawScore = false;

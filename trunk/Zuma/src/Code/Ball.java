@@ -24,12 +24,20 @@ public class Ball {
     int[] ballSeq = { 0, 1, 2, 3 };
     int ranColor;
     int nextColor, saveColor;
+    Image reBall;
+    Sprite sReBall;
     
     public Ball( ZumaCanvas zumaCanvas ) {
         this.zumaCanvas = zumaCanvas;
         ShootDistance = 15;
         ShootSpeed = 15;
-        //ShootAngle = zumaCanvas.iCount;
+        try {
+            reBall = Image.createImage("/picture/bi.png");
+//            sReBall = new Sprite( reBall, 16, 16);
+            //ShootAngle = zumaCanvas.iCount;
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }
 
     public void initBall() {
@@ -51,6 +59,14 @@ public class Ball {
         Ball.setFrame(zumaCanvas.getRandAmong(zumaCanvas.Color));
         nextColor = zumaCanvas.getRandAmong(zumaCanvas.Color);
         
+    }
+
+    public Image returnBall () {
+        return  reBall;
+    }
+
+    public Sprite returnSBall () {
+        return  sReBall;
     }
 
     public void shootBall( float ShootAngle ){
