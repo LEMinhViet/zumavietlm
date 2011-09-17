@@ -38,7 +38,6 @@ public class ZumaCanvas extends GameCanvas implements Runnable {
     BallVector[] vBall = new BallVector[10];
     BallVector[] vBallX = new BallVector[10];
     Ball Sball = new Ball(this);
-    ImageSet imaSet;
     Boss Boss;
     //Lưu điểm đầu
     int width, height;
@@ -103,8 +102,6 @@ public class ZumaCanvas extends GameCanvas implements Runnable {
             Sball.initBall();
 
             Pause = Image.createImage("/menu/pause.png");
-            imaSet = new ImageSet(this);
-            imaSet.gr = getGraphics();
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -129,7 +126,7 @@ public class ZumaCanvas extends GameCanvas implements Runnable {
             g.drawImage(Gauge, 0, 0, Graphics.TOP | Graphics.LEFT);
 
             drawGauge(gG);
-            Designer.drawNumber(g, score.Score, 2, 70, 2);
+            Designer.drawNumber(g, score.Score, 4, 70, 2);
             
             if ( Shoot )    model.whenShoot(iCount);          
             
@@ -769,7 +766,7 @@ public class ZumaCanvas extends GameCanvas implements Runnable {
                 iS5++;
                 g.setColor(0x000000);
                 g.fillRect(0, 0, 240, 320);
-                Designer.drawCenterString(g, Level, 0, 6 + runningLevel/10 + 1, 1, 120, 150);
+                Designer.drawCenterString(g, Level, 0, 6 + runningLevel/10 + 1, 2, 120, 150);
                 
                 if ( iS5 == 100 ) {
                     State0 = true;

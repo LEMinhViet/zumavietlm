@@ -27,7 +27,7 @@ public class SunnetCanvas extends Canvas implements MessageListener {
 
     private Timer timer1;
     private TimerTask timerTask;
-    public boolean isMenu = true;
+    public boolean isMenu = true, needHelp = false;
     int curMenu = 0, langId = 1, minMenu = 0;
     int xL = 0, yL = 0;
 //    public String[] menu,  menuViet = new String[]{"VÁN MỚI", "ÂM THANH", "ENGLISH", "TÙY CHỌN", "HƯỚNG DẪN", "ĐIỂM CAO", "QUAY LẠI", "THOÁT"};
@@ -38,9 +38,10 @@ public class SunnetCanvas extends Canvas implements MessageListener {
     MessageConnection serverConn;
     byte[] text;
     public static int DELAY_DEFAULT = 100;
-    private int color = 0;
+    private int color = 0, printHelp, levelHelp;
     Image bkImage = null, menuPic = null, menu1 = null, menu2 = null, menu3 = null, menu4 = null, menu5 = null;
     StartMidlet StartMidlet;
+    String helpString;
 
     public SunnetCanvas(StartMidlet StartMidlet) {
         this.setFullScreenMode(true);
@@ -66,6 +67,7 @@ public class SunnetCanvas extends Canvas implements MessageListener {
                         }
 
                         repaint(0, 0, getWidth(), getHeight());
+                        Runtime.getRuntime().gc();
                     }
                 }
             }
@@ -93,7 +95,7 @@ public class SunnetCanvas extends Canvas implements MessageListener {
         if(height > 320){
             height = 320;
         }
-        g.drawRegion(bkImage, (240-width)/2, (320-height)/2, width, height,0, Math.abs(getWidth()-240)/2, Math.abs(getHeight()-320)/2,  0);
+        g.drawRegion(bkImage, 0, 0, 240, 320,0, 0, 0, 0);
 
         if ( menuPic == null ) {
             try {
@@ -104,27 +106,87 @@ public class SunnetCanvas extends Canvas implements MessageListener {
         }
         g.drawRegion(menuPic, 0, 0, 209, 272, 0, 18, 25, 0);
 
-        menu1 = createImage ("/menu/1.png");
-        menu2 = createImage ("/menu/2.png");
-        menu3 = createImage ("/menu/3.png");
-        menu4 = createImage ("/menu/4.png");
-        menu5 = createImage ("/menu/5.png");
-        if ( curMenu == 0 ) {
-            menu1 = createImage ("/menu/1_p.png");
-        } else if ( curMenu == 1 ) {
-            menu2 = createImage ("/menu/2_p.png");
-        } else if ( curMenu == 2 ) {
-            menu3 = createImage ("/menu/3_p.png");
-        } else if ( curMenu == 3 ) {
-            menu4 = createImage ("/menu/4_p.png");
-        } else if ( curMenu == 4 ) {
-            menu5 = createImage ("/menu/5_p.png");
+        if ( !needHelp ) {
+            menu1 = createImage ("/menu/1.png");
+            menu2 = createImage ("/menu/2.png");
+            menu3 = createImage ("/menu/3.png");
+            menu4 = createImage ("/menu/4.png");
+            menu5 = createImage ("/menu/5.png");
+            if ( curMenu == 0 ) {
+                menu1 = createImage ("/menu/1_p.png");
+            } else if ( curMenu == 1 ) {
+                menu2 = createImage ("/menu/2_p.png");
+            } else if ( curMenu == 2 ) {
+                menu3 = createImage ("/menu/3_p.png");
+            } else if ( curMenu == 3 ) {
+                menu4 = createImage ("/menu/4_p.png");
+            } else if ( curMenu == 4 ) {
+                menu5 = createImage ("/menu/5_p.png");
+            }
+            g.drawImage(menu1, 240/2 - menu1.getWidth()/2, 80, Graphics.TOP | Graphics.LEFT);
+            g.drawImage(menu2, 240/2 - menu2.getWidth()/2, 100, Graphics.TOP | Graphics.LEFT);
+            g.drawImage(menu3, 240/2 - menu3.getWidth()/2, 120, Graphics.TOP | Graphics.LEFT);
+            g.drawImage(menu4, 240/2 - menu4.getWidth()/2, 140, Graphics.TOP | Graphics.LEFT);
+            g.drawImage(menu5, 240/2 - menu5.getWidth()/2, 160, Graphics.TOP | Graphics.LEFT);
+        } else if ( needHelp ) {
+            byte [] help = new byte[651];
+            if ( langId == 1 ) {
+                try {
+                    helpString =
+                          "Game Zuma:                        \n"
+                        + "Sử dụng các phím:                 \n"
+                        + "Trái - Phải để quay hoặc di chuyển "
+                        + "bọ cạp ( một số bài là dùng phím   "
+                        + "Lên - Xuống )                  \n\n"
+                        + "Lên để đổi bóng ( một số bài dùng  "
+                        + "phím Phải )                    \n\n"
+                        + "Xuống để quay ngược bọ cạp ( một số"
+                        + " bài dùng phím trái )          \n\n"
+                        + "3 quả bóng đồng màu trở lên sẽ nổ, "
+                        + "nếu 2 bóng ở 2 đầu cùng màu thì sẽ "
+                        + "được nối lại.                      "
+                        + "Càng nhiều combo thì sẽ được nhân  "
+                        + "lên càng nhiều điểm                "
+                        + "Xóa bỏ toàn bộ bóng trước khi chúng"
+                        + " đến điểm kết thúc của level !!!   "
+                        + "Có rất nhiều Item trong game để các bạn khám phá ... Chúc vui vẻ !!";
+                    Designer.toBytesIndex(helpString, help);
+                    Designer.drawString(g, help, levelHelp, printHelp, Designer.MARGIN_LEFT, false, true, 2, 64, 50, 96, 210);
+                    //StartMidlet.helpScreen = new HelpScreen (StartMidlet);
+                    //StartMidlet.display.setCurrent(StartMidlet.helpScreen);
+                    if ( printHelp < 641 - 4 )  printHelp+=4;
+                    Runtime.getRuntime().gc();
+                } catch ( Exception ex ) {
+                    ex.printStackTrace();
+                }
+                
+            } else if ( langId == 0 ) {
+                helpString =
+                          "One Two Three Game :             \n"
+                        + "Use :                            \n"
+                        + "LEFT - RIGHT for rotating the Scorp"
+                        + "ion ( UP-DOWN with some levels \n\n"
+                        + "UP for exchange the color of shoot "
+                        + "ball ( RIGHT with some levels )\n\n"
+                        + "DOWN for rotate the Scorpion 180 de"
+                        + "grees ( LEFT with some levels )\n\n"
+                        + "With 3 or more balls with same color,"
+                        + " they will disapear, if the ball at"
+                        + " left and the ball at right of them"
+                        + " have the same color, they will be "
+                        + "connected                      \n\n"
+                        + "The more combo you have, the more  "
+                        + "your Point will be rised           "
+                        + "Make all balls disapear before they"
+                        + " reach the finish point !!!        "
+                        + "A lots of Item are waitting for your adventure .... Have Fun !!";
+                Designer.toBytesIndex(helpString, help);
+                Designer.drawString(g, help, levelHelp, printHelp, Designer.MARGIN_LEFT, false, true, 2, 64, 50, 96, 210);
+                if ( printHelp < 651 - 4 )  printHelp+=4;
+                Runtime.getRuntime().gc();
+            }
+            
         }
-        g.drawImage(menu1, 240/2 - menu1.getWidth()/2, 80, Graphics.TOP | Graphics.LEFT);
-        g.drawImage(menu2, 240/2 - menu2.getWidth()/2, 100, Graphics.TOP | Graphics.LEFT);
-        g.drawImage(menu3, 240/2 - menu3.getWidth()/2, 120, Graphics.TOP | Graphics.LEFT);
-        g.drawImage(menu4, 240/2 - menu4.getWidth()/2, 140, Graphics.TOP | Graphics.LEFT);
-        g.drawImage(menu5, 240/2 - menu5.getWidth()/2, 160, Graphics.TOP | Graphics.LEFT);
         
 //        if (isMenu) {
 //            drawMenu(g);
@@ -214,21 +276,29 @@ public class SunnetCanvas extends Canvas implements MessageListener {
     }
 
     public void upKey() {
-
-        if (curMenu > 0) {
-            curMenu--;
-        } else {
-            curMenu = 4;
+        if ( !needHelp ) {
+            if (curMenu > 0) {
+                curMenu--;
+            } else {
+                curMenu = 4;
+            }
+        } else if ( needHelp) {
+            if ( levelHelp > 36 )   levelHelp -= 36;
+            else levelHelp = 0;
         }
 
     }
 
     public void downKey() {
-
-        if (curMenu < 4) {
-            curMenu++;
-        } else {
-            curMenu = 0;
+        if ( !needHelp )    {
+            if (curMenu < 4) {
+                curMenu++;
+            } else {
+                curMenu = 0;
+            }
+        } else if ( needHelp ) {
+            if ( levelHelp < 635 - 36)   levelHelp += 36;
+            else levelHelp = 635;
         }
     }
 
@@ -268,13 +338,7 @@ public class SunnetCanvas extends Canvas implements MessageListener {
 //                    return;
                 case 2:
                     //HelpScreen helpScreen;
-                    try {
-                        StartMidlet.helpScreen = new HelpScreen (StartMidlet);
-                        StartMidlet.display.setCurrent(StartMidlet.helpScreen);
-                        Runtime.getRuntime().gc();
-                    } catch ( Exception ex ) {
-                        ex.printStackTrace();
-                    }
+                    needHelp = true;
                     return;
                 case 5:
 //                    //HighScoreScreen highscoreScreen;
