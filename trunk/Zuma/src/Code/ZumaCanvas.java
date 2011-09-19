@@ -1,6 +1,7 @@
 package Code;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Random;
 import java.util.Vector;
 import javax.microedition.lcdui.Graphics;
@@ -8,13 +9,17 @@ import javax.microedition.lcdui.Image;
 import javax.microedition.lcdui.game.GameCanvas;
 import javax.microedition.lcdui.game.LayerManager;
 import javax.microedition.lcdui.game.Sprite;
+import javax.microedition.media.Manager;
+import javax.microedition.media.MediaException;
+import javax.microedition.media.Player;
 
 public class ZumaCanvas extends GameCanvas implements Runnable {
     Random randomizer = new Random();
     Model model;
     Sprite BGSpr, Level1, L1_way, L2_way, wayPoint, wayBall, Lv_patch1, Lv_patch2, Lv_patch3, Lv_patch4, Lv_patch5, FinishPoint, removeSprite;
+    Sprite Sound;
     Image Pause, Gauge, Gauge_full;
-    byte[] Level = new byte[8];
+    byte[] Level = new byte[18];
     byte[] backmenu1 = new byte[18];
     byte[] backmenu2 = new byte[19];
     byte[] backmenu3 = new byte [6];
@@ -29,6 +34,7 @@ public class ZumaCanvas extends GameCanvas implements Runnable {
     int iColliS2, ranA, keyPressed, angleAdd = 3, subDistance, check_1ball, resetBall;
     int Part = 1, langID, ibackmenu1, ibackmenu2, ibackmenu3, submenu, SubmenuState, SubColor;
     int ScoretoOver, gaugeCount;
+    Player player;
     Score score = new Score(this);
     Navigator N = new Navigator(this);
     Effect E1 = new Effect ( this, 1 );
@@ -62,7 +68,7 @@ public class ZumaCanvas extends GameCanvas implements Runnable {
     private long timeLastCycle = 0;
     Graphics g = getGraphics();
     Graphics gG = getGraphics();
-
+    
     public ZumaCanvas(StartMidlet Midlet) {
         super(false);
         this.Midlet = Midlet;
@@ -89,7 +95,7 @@ public class ZumaCanvas extends GameCanvas implements Runnable {
             vBall[0].NumOfBall = 100;
             NumB = 16*vBall[0].NumOfBall;
             
-            runningLevel = 3;
+            runningLevel = 1;
 
             vBall[0].initBallVector();
             vBall[0].Begin = 0;
@@ -102,6 +108,9 @@ public class ZumaCanvas extends GameCanvas implements Runnable {
             Sball.initBall();
 
             Pause = Image.createImage("/menu/pause.png");
+            Sound = new Sprite (Image.createImage("/menu/loa.png"), 13, 11);
+            lm.append(Sound);
+            Sound.setPosition( 5, getHeight() - Sound.getHeight() -5);
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -754,21 +763,28 @@ public class ZumaCanvas extends GameCanvas implements Runnable {
 // State5 : load level
 ////////////////////////////////////////////////////////////////////////////
             } else if ( State5 ) {
-                if ( iS5 == 10 && !firstTime )    //restartLevel();
+                if ( iS5 == 0 && !firstTime )    //restartLevel();
                 nextLevel();
 //                State0 = false;
 //                State1 = false;
 //                State4 = true;
 
-                if ( iS5 == 10 && firstTime ) firstTime = false;
-                if ( iS5 == 2 ) Designer.toBytesIndex("Level " + runningLevel, Level);
-                if ( iS5 > 100 ) iS5 = 0;
-                iS5++;
+                if ( iS5 == 0 && firstTime ) firstTime = false;
+                if ( iS5 == 0 ) {
+                    try {
+                        player.stop();
+                    } catch (MediaException ex) {
+                        ex.printStackTrace();
+                    }
+                    System.out.println("Running " + runningLevel );
+                    Designer.toBytesIndex("Level " + runningLevel + " . . . . . ", Level);
+                }
                 g.setColor(0x000000);
                 g.fillRect(0, 0, 240, 320);
-                Designer.drawCenterString(g, Level, 0, 6 + runningLevel/10 + 1, 2, 120, 150);
-                
+                Designer.drawCenterString(g, Level, 0, 6 + runningLevel/10 + 1 + 1 + iS5/10, 2, 120, 150);
+                iS5++;
                 if ( iS5 == 100 ) {
+                    iS5 = 0;
                     State0 = true;
                     State5 = false;
                 }
@@ -1628,11 +1644,38 @@ public class ZumaCanvas extends GameCanvas implements Runnable {
         }
     }
 
+ //////////////////////////////////////////////////////////////////////////////////
+// Hàm phát nhạc
+    private void getMusic() throws MediaException {
+        if( player != null ) {
+            try {
+                player.stop();
+            } catch (MediaException ex) {
+                ex.printStackTrace();
+            }
+            player=null;
+        }
+        InputStream in;
+        in = getClass().getResourceAsStream("/sound/track3.mid");
+        try {
+            player = Manager.createPlayer(in, "audio/midi");
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        player.setLoopCount(-1);
+        player.start();
+    }
+
 
 //////////////////////////////////////////////////////////////////////////////////
 // Hàm chọn level 
     public void chooseLevel ( int runningLevel ) {
         initOverScore();
+        try {
+            getMusic();
+        } catch (MediaException ex) {
+            ex.printStackTrace();
+        }
         for ( k = 0; k < 2560; k++ ) {
             lv[k][0] = 0;
             lv[k][1] = 0;
@@ -1712,6 +1755,7 @@ public class ZumaCanvas extends GameCanvas implements Runnable {
             wayPoint.setVisible(false);
 /////////////////////////////////////////////////////////////////////////////////////////////////
         } else if ( runningLevel == 4 ) {
+            Boss.clearBoss();
             lm.remove(Level1);
             Level1 = null;
            
@@ -2120,7 +2164,7 @@ public class ZumaCanvas extends GameCanvas implements Runnable {
         //Reset thanh gauge
         score.Score_level = 0;
         gaugeCount = 0;
-
+        System.out.println("nextLevel " + iS5);
         if ( runningLevel == 1 )    runningLevel = 2;
         else if(runningLevel == 2)    runningLevel = 3;
         else if(runningLevel == 3)    runningLevel = 4;
@@ -2326,7 +2370,6 @@ public class ZumaCanvas extends GameCanvas implements Runnable {
                 State0 = false;
                 break;
             case KeyCodeAdapter.SOFT_KEY_RIGHT:
-                System.out.println("Softkeyright");
                 if ( State0 )    { SubmenuState = 0;  State0 = false; }
                 else if ( State1 )    { SubmenuState = 1;  State1 = false; }
                 else if ( State2 )    { SubmenuState = 2;  State2 = false; }
@@ -2335,6 +2378,22 @@ public class ZumaCanvas extends GameCanvas implements Runnable {
                 else if ( State5 )    { SubmenuState = 5;  State5 = false; }
                 State6 = true;
                 break;
+
+            case KeyCodeAdapter.SOFT_KEY_LEFT:
+                Sound.nextFrame();
+                if ( Sound.getFrame() == 0 ){
+                    try {
+                        player.start();
+                    } catch (MediaException ex) {
+                        ex.printStackTrace();
+                    }
+                } else {
+                    try {
+                        player.stop();
+                    } catch (MediaException ex) {
+                        ex.printStackTrace();
+                    }
+                }
         }
     }
     

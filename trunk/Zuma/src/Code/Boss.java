@@ -28,7 +28,7 @@ public class Boss {
             x = 200; y = 120;
             try {
                 Shoot = zumaCanvas.Sball.returnBall();
-                Boss = new Sprite(Image.createImage("/picture/boss-1.png"), 39, 60);
+                Boss = new Sprite(Image.createImage("/picture/bosslv2.png"), 39, 60);
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
@@ -36,6 +36,12 @@ public class Boss {
         }
         zumaCanvas.lm.insert(Boss, 0);
         Boss.setPosition(x, y);
+    }
+
+    public void clearBoss () {
+        zumaCanvas.lm.remove(Boss);
+        Boss = null;
+        Shoot = null;
     }
 
     public void AIBoss1 () {
