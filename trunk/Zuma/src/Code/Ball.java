@@ -46,7 +46,7 @@ public class Ball {
                 Ball = new Sprite(Image.createImage("/picture/bong_do.png"), 16, 16);
             else if ( ranColor == 1 )
                 Ball = new Sprite(Image.createImage("/picture/bong_xanh2.png"), 16, 16);*/
-            if ( Ball == null ) Ball = new Sprite(Image.createImage("/picture/bi.png"), 16, 16);
+            if ( Ball == null ) Ball = new Sprite(returnBall(), 16, 16);
             if ( Pixel == null ) Pixel = new Sprite(Image.createImage("/picture/pixel.png"), 1, 1);
         } catch (IOException ex) {
             ex.printStackTrace();
