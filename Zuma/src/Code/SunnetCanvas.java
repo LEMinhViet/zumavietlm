@@ -37,11 +37,14 @@ public class SunnetCanvas extends Canvas implements MessageListener {
     String msgReceived = "no Message";
     MessageConnection serverConn;
     byte[] text;
+    byte [] help = new byte[651];
+    byte [] skip = new byte[6];
+    byte [] back = new byte[6];
     public static int DELAY_DEFAULT = 100;
     private int color = 0, printHelp, levelHelp;
     Image bkImage = null, menuPic = null, menu1 = null, menu2 = null, menu3 = null, menu4 = null, menu5 = null;
     StartMidlet StartMidlet;
-    String helpString;
+    String helpString, backString, skipString;
 
     public SunnetCanvas(StartMidlet StartMidlet) {
         this.setFullScreenMode(true);
@@ -97,16 +100,17 @@ public class SunnetCanvas extends Canvas implements MessageListener {
         }
         g.drawRegion(bkImage, 0, 0, 240, 320,0, 0, 0, 0);
 
-        if ( menuPic == null ) {
-            try {
-                menuPic = Image.createImage("/menu/bg-menu.png");
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
-        }
-        g.drawRegion(menuPic, 0, 0, 209, 272, 0, 18, 25, 0);
+        
 
         if ( !needHelp ) {
+            if ( menuPic == null ) {
+                try {
+                    menuPic = Image.createImage("/menu/bg-menu.png");
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
+            g.drawRegion(menuPic, 0, 0, 209, 272, 0, 18, 25, 0);
             menu1 = createImage ("/menu/1.png");
             menu2 = createImage ("/menu/2.png");
             menu3 = createImage ("/menu/3.png");
@@ -129,9 +133,13 @@ public class SunnetCanvas extends Canvas implements MessageListener {
             g.drawImage(menu4, 240/2 - menu4.getWidth()/2, 140, Graphics.TOP | Graphics.LEFT);
             g.drawImage(menu5, 240/2 - menu5.getWidth()/2, 160, Graphics.TOP | Graphics.LEFT);
         } else if ( needHelp ) {
-            byte [] help = new byte[651];
+            
             if ( langId == 1 ) {
                 try {
+                    skipString = "Bỏ qua";
+                    Designer.toBytesIndex(skipString, skip);
+                    backString = "Trở về";
+                    Designer.toBytesIndex(backString, back);
                     helpString =
                           "Game Zuma:                        \n"
                         + "Sử dụng các phím:                 \n"
@@ -151,16 +159,20 @@ public class SunnetCanvas extends Canvas implements MessageListener {
                         + " đến điểm kết thúc của level !!!   "
                         + "Có rất nhiều Item trong game để các bạn khám phá ... Chúc vui vẻ !!";
                     Designer.toBytesIndex(helpString, help);
-                    Designer.drawString(g, help, levelHelp, printHelp, Designer.MARGIN_LEFT, false, true, 2, 64, 50, 96, 210);
-                    //StartMidlet.helpScreen = new HelpScreen (StartMidlet);
-                    //StartMidlet.display.setCurrent(StartMidlet.helpScreen);
-                    if ( printHelp < 641 - 4 )  printHelp+=4;
+                    if ( printHelp < 622 - 4 )  printHelp+=4;
+                    Designer.drawString(g, help, levelHelp, printHelp, Designer.MARGIN_LEFT, false, true, 2, 5, 5, 230, 310 );
+                    Designer.drawString(g, skip, 0, 6, 2, 2, 300);
+                    Designer.drawString(g, back, 0, 6, 2, 200, 300);
                     Runtime.getRuntime().gc();
                 } catch ( Exception ex ) {
                     ex.printStackTrace();
                 }
                 
             } else if ( langId == 0 ) {
+                skipString = "Skip";
+                Designer.toBytesIndex(skipString, skip);
+                backString = "Back";
+                Designer.toBytesIndex(backString, back);
                 helpString =
                           "One Two Three Game :             \n"
                         + "Use :                            \n"
@@ -181,8 +193,10 @@ public class SunnetCanvas extends Canvas implements MessageListener {
                         + " reach the finish point !!!        "
                         + "A lots of Item are waitting for your adventure .... Have Fun !!";
                 Designer.toBytesIndex(helpString, help);
-                Designer.drawString(g, help, levelHelp, printHelp, Designer.MARGIN_LEFT, false, true, 2, 64, 50, 96, 210);
                 if ( printHelp < 651 - 4 )  printHelp+=4;
+                Designer.drawString(g, help, levelHelp, printHelp, Designer.MARGIN_LEFT, false, true, 2, 5, 5, 230, 310);
+                Designer.drawString(g, skip, 0, 4, 2, 2, 300);
+                    Designer.drawString(g, back, 0, 4, 2, 210, 300);
                 Runtime.getRuntime().gc();
             }
             
@@ -196,8 +210,6 @@ public class SunnetCanvas extends Canvas implements MessageListener {
 //            g.drawString(msgReceived, getWidth() / 29, getHeight() / 2, 0);
 //        }
     }
-    public static int VERTICAL = 1;
-    public static int HORIZONTAL = 0;
 
     public void drawMenu(Graphics g) {
         
@@ -340,7 +352,7 @@ public class SunnetCanvas extends Canvas implements MessageListener {
                     //HelpScreen helpScreen;
                     needHelp = true;
                     return;
-                case 5:
+                case 4:
 //                    //HighScoreScreen highscoreScreen;
 //                    try {
 //                        //highscoreScreen = new HighScoreScreen(midlet, midlet.score);
@@ -360,10 +372,19 @@ public class SunnetCanvas extends Canvas implements MessageListener {
 
     public void menuLeftKey() {
         //isMenu = !isMenu;
+        if ( needHelp ) {
+            if ( langId == 1 ){
+                printHelp = 622;
+            } else {
+                printHelp = 651;
+            }
+        }
     }
 
     public void menuRightKey() {
-        
+        if ( needHelp ) {
+            needHelp = false;
+        }
        
     }
 

@@ -6,6 +6,7 @@
 package Code;
 
 import java.io.IOException;
+import javax.microedition.lcdui.Graphics;
 import javax.microedition.lcdui.Image;
 import javax.microedition.lcdui.game.Sprite;
 
@@ -17,12 +18,16 @@ public class Boss {
     ZumaCanvas zumaCanvas;
     Sprite Boss = null;
     int MoveSpeed, MoveDistance, Direction, Step = 0, BoHealth;
-    int x, y, delay = 50;
+    int x, y, delay = 50, xModel, yModel, shootSpeed = 15, runTimes = 0, xD, yD;
+    Image Shoot;
+    boolean bShoot;
+
     public Boss ( ZumaCanvas zumaCanvas) {
         this.zumaCanvas = zumaCanvas;
         if ( zumaCanvas.runningLevel == 3 ) {
             x = 200; y = 120;
             try {
+                Shoot = zumaCanvas.Sball.returnBall();
                 Boss = new Sprite(Image.createImage("/picture/boss-1.png"), 39, 60);
             } catch (IOException ex) {
                 ex.printStackTrace();
@@ -34,6 +39,7 @@ public class Boss {
     }
 
     public void AIBoss1 () {
+        /////////////////////// Boss chuyen dong \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
         if ( delay == 0 ) {
             if ( Step == 0 ) {
                 Direction = zumaCanvas.getRand( 0, 2);
@@ -62,6 +68,24 @@ public class Boss {
         } else {
             delay--;
         }
+        /////////////////////// Boss ban' \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+        if ( delay == 0 && !bShoot) {
+            runTimes = 0;
+            xModel = zumaCanvas.model.Model.getX();
+            yModel = zumaCanvas.model.Model.getY();
+            xD = xModel - Boss.getX() - 6;
+            yD = yModel - Boss.getY() - 28;
+            xD = xD/40;
+            yD = yD/40;
+            bShoot = true;
+        }
+        if ( bShoot ) {
+            zumaCanvas.g.drawImage(Shoot, Boss.getX() + 6 + xD*runTimes, Boss.getY() + 28 + yD*runTimes, Graphics.TOP | Graphics.LEFT);
+            runTimes++;
+            if ( runTimes >= 55 ) bShoot = false;
+        }
+
+        /////////////////////// Boss mau' \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
         if ( zumaCanvas.Shoot && zumaCanvas.Sball.Ball.collidesWith(Boss, true)) {
             zumaCanvas.Sball.Ball.setVisible(false);
             BoHealth--;

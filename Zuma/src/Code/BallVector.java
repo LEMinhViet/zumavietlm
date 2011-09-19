@@ -14,7 +14,7 @@ public class BallVector {
     ZumaCanvas zumaCanvas;
     int ColliX, ColliY, x, y;
     int NumOfBall = 0;
-    int i, j;
+    int i, j, ilevel, jlevel;
     int beginBreak, endBreak;
     int Distance = 0;
     // Điểm đầu cuối của vector
@@ -51,8 +51,13 @@ public class BallVector {
 //                 zumaCanvas.vBall[i].BVector.removeAllElements();
 //            }
 //        }
-        if ( zumaCanvas.runningLevel != 2 ) createLv1();
+        if ( zumaCanvas.runningLevel == 1 || zumaCanvas.runningLevel == 3 ) createLv1();
         else if ( zumaCanvas.runningLevel == 2 ) createLv2();
+        else if ( zumaCanvas.runningLevel == 4 || zumaCanvas.runningLevel == 5
+                || zumaCanvas.runningLevel == 6 || zumaCanvas.runningLevel == 10 || zumaCanvas.runningLevel == 12 )   createLv4();
+        else if ( zumaCanvas.runningLevel == 7 || zumaCanvas.runningLevel == 8 
+                || zumaCanvas.runningLevel == 9 || zumaCanvas.runningLevel == 11 || zumaCanvas.runningLevel == 13 )   createLv7();
+        
         if ( BVector != null ) {
             for ( j = 0; j < BVector.size(); j++ ) {
                 removeSprite = ( Sprite )  zumaCanvas.vBall[i].BVector.elementAt(0);
@@ -672,15 +677,15 @@ int ranlv1, duplv1, iX;
         for ( iX = 0; iX < 500; ++iX ) {
             ranlv1 = zumaCanvas.getRand(0, 4);
             duplv1 = zumaCanvas.getRand(0, 4);
-            for ( int j = 0; j < duplv1; ++j ) {
-                if ( iX + j < 500 )  Level[iX+j] = ranlv1;
+            for ( jlevel = 0; jlevel < duplv1; ++jlevel ) {
+                if ( iX + jlevel < 500 )  Level[iX+jlevel] = ranlv1;
             }
             if ( duplv1 != 0 )  iX += duplv1 - 1;
         }
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////
-    // Hàm tạo đoàn bóng cho lv1 và lv3
+    // Hàm tạo đoàn bóng cho lv2
     /////////////////////////////////////////////////////////////////////////////////////////////////
     public void createLv2 () {
         for ( iX = 0; iX < 500; ++iX )
@@ -688,14 +693,48 @@ int ranlv1, duplv1, iX;
         for ( iX = 0; iX < 500; ++iX ) {
             ranlv1 = zumaCanvas.getRand(0, 4);
             duplv1 = zumaCanvas.getRand(0, 3);
-            for ( int j = 0; j < duplv1; ++j ) {
-                if ( iX + j < 500 )  Level[iX+j] = ranlv1;
+            for ( jlevel = 0; jlevel < duplv1; ++jlevel ) {
+                if ( iX + jlevel < 500 )  Level[iX+jlevel] = ranlv1;
             }
             if ( duplv1 != 0 )  iX += duplv1 - 1;
         }
     }
 
     public void createLv4 () {
-        
+        for ( iX = 0; iX < 500; ++iX )
+            Level[iX] = 0;
+        for ( iX = 0; iX < 500; ++iX ) {
+            ranlv1 = zumaCanvas.getRand(0, 4);
+            duplv1 = zumaCanvas.getRand(0, 2);
+            for ( jlevel = 0; jlevel < duplv1; ++jlevel ) {
+                if ( iX + jlevel < 500 )  Level[iX+jlevel] = ranlv1;
+            }
+            if ( duplv1 != 0 )  iX += duplv1 - 1;
+        }
+    }
+
+    public void createLv7 () {
+        ranlv1 = 1;
+        for ( iX = 0; iX < 500; ++iX )
+            Level[iX] = -1;
+        for ( iX = 0; iX < 500; ++iX ) {
+            if ( ranlv1 == 0 ) ranlv1 = zumaCanvas.getRand(1, 4);
+            else  {
+                ranlv1 = zumaCanvas.getRand(0, 4);
+                if ( ranlv1 != 0 )  ranlv1 = zumaCanvas.getRand(0, 4);
+            }
+            
+
+            if ( ranlv1 == 0 ) duplv1 = 1;
+            else duplv1 = zumaCanvas.getRand(1, 3);
+            for ( jlevel = 0; jlevel < duplv1; ++jlevel ) {
+                if ( iX + jlevel < 500 )  Level[iX+jlevel] = ranlv1;
+            }
+            if ( duplv1 != 0 )  iX += duplv1 - 1;
+            //System.out.println("+++" + Level[iX] + "++" + iX + "+" + duplv1 + " " + ranlv1);
+        }
+//        for ( iX = 0; iX < 500; ++iX ) {
+//            System.out.println("+++" + Level[iX]);
+//        }
     }
 }

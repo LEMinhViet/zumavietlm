@@ -89,7 +89,7 @@ public class ZumaCanvas extends GameCanvas implements Runnable {
             vBall[0].NumOfBall = 100;
             NumB = 16*vBall[0].NumOfBall;
             
-            runningLevel = 1;
+            runningLevel = 3;
 
             vBall[0].initBallVector();
             vBall[0].Begin = 0;
@@ -761,7 +761,7 @@ public class ZumaCanvas extends GameCanvas implements Runnable {
 //                State4 = true;
 
                 if ( iS5 == 10 && firstTime ) firstTime = false;
-                if ( iS5 == 15 ) Designer.toBytesIndex("Level " + runningLevel, Level);
+                if ( iS5 == 2 ) Designer.toBytesIndex("Level " + runningLevel, Level);
                 if ( iS5 > 100 ) iS5 = 0;
                 iS5++;
                 g.setColor(0x000000);
