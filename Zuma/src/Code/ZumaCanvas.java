@@ -44,7 +44,7 @@ public class ZumaCanvas extends GameCanvas implements Runnable {
     BallVector[] vBall = new BallVector[10];
     BallVector[] vBallX = new BallVector[10];
     Ball Sball = new Ball(this);
-    Boss Boss;
+    Boss Boss, BossFinal;
     //Lưu điểm đầu
     int width, height;
     // Zigzac để đảm bảo đoàn bi không bị chèn lên nhau
@@ -95,7 +95,7 @@ public class ZumaCanvas extends GameCanvas implements Runnable {
             vBall[0].NumOfBall = 100;
             NumB = 16*vBall[0].NumOfBall;
             
-            runningLevel = 1;
+            runningLevel = 13;
 
             vBall[0].initBallVector();
             vBall[0].Begin = 0;
@@ -141,7 +141,22 @@ public class ZumaCanvas extends GameCanvas implements Runnable {
             
             if ( runningLevel == 3 )    {
                 lm.insert(Boss.Boss, 0);
-                Boss.AIBoss1();
+                Boss.AIBoss1( );
+            } else if ( runningLevel == 6 ) {
+                lm.insert(Boss.Boss, 0);
+                Boss.AIBoss1( );
+            } else if ( runningLevel == 9 ) {
+                lm.insert(Boss.Boss, 0);
+                Boss.AIBoss1( );
+            } else if ( runningLevel == 12 ) {
+                lm.insert(Boss.Boss, 0);
+                Boss.AIBoss1( );
+            } else if ( runningLevel == 13 ) {
+                lm.insert(Boss.Boss, 0);
+                Boss.AIBoss2( );
+                
+                lm.insert(BossFinal.Boss, 0);
+                BossFinal.AIBoss2( );
             }
 
             // Các trạng thái tốc độ của đoàn bi
@@ -1863,10 +1878,10 @@ public class ZumaCanvas extends GameCanvas implements Runnable {
                 lv[k][2] = 1;
 /////////////////////////////////////////////////////////////////////////////////////////////////
         } else if ( runningLevel == 6 ) {
-            lm.remove(Level1);
-            lm.remove(Lv_patch1);
-            Level1 = null;
-            Lv_patch1 = null;
+//            lm.remove(Level1);
+//            lm.remove(Lv_patch1);
+//            Level1 = null;
+//            Lv_patch1 = null;
 
             wayBall.setVisible(true);
             wayPoint.setVisible(true);
@@ -1888,6 +1903,7 @@ public class ZumaCanvas extends GameCanvas implements Runnable {
 
 //            L1_way.setPosition(0, -16);
 //            lm.append(L1_way);
+            Boss = new Boss (this);
             widthLv = 0;    heightLv = 16;
             for ( k = 0; k < 2560; k++ )
                 move ( wayPoint, wayBall );
@@ -1978,6 +1994,7 @@ public class ZumaCanvas extends GameCanvas implements Runnable {
 
 //            L1_way.setPosition(0, -8);
 //            lm.append(L1_way);
+            Boss = new Boss (this);
             widthLv = 0;    heightLv = 8;
             for ( k = 0; k < 2560; k++ )
                 move ( wayPoint, wayBall );
@@ -2014,6 +2031,7 @@ public class ZumaCanvas extends GameCanvas implements Runnable {
 
 //            L1_way.setPosition(0, -16);
 //            lm.append(L1_way);
+            Boss = new Boss (this);
             widthLv = 0;    heightLv = 16;
             for ( k = 0; k < 2560; k++ )
                 move ( wayPoint, wayBall );
@@ -2085,8 +2103,8 @@ public class ZumaCanvas extends GameCanvas implements Runnable {
             wayPoint.setVisible(false);
 /////////////////////////////////////////////////////////////////////////////////////////////////      
         } else if ( runningLevel == 13 ) {
-            lm.remove(Level1);
-            Level1 = null;
+//            lm.remove(Level1);
+//            Level1 = null;
 
             wayBall.setVisible(true);
             wayPoint.setVisible(true);
@@ -2108,6 +2126,8 @@ public class ZumaCanvas extends GameCanvas implements Runnable {
 
 //            L1_way.setPosition(-16, 0);
 //            lm.append(L1_way);
+            Boss = new Boss (this);
+            BossFinal = new Boss ( this, 13);
             widthLv = 16;   heightLv = 0;
             for ( k = 0; k < 2560; k++ )
                 move ( wayPoint, wayBall );

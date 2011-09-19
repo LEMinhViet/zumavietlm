@@ -24,9 +24,6 @@ public class GameDesign {
     private Sprite Scop;
     public int Scopseq001Delay = 200;
     public int[] Scopseq001 = {8, 0, 0};
-    private Sprite x15;
-    public int x15seq001Delay = 200;
-    public int[] x15seq001 = {0, 0, 0, 0, 0};
     private Sprite fin;
     public int finseq001Delay = 200;
     public int[] finseq001 = {0, 0, 0, 0, 0};
@@ -68,11 +65,8 @@ public class GameDesign {
     public int x4seq001Delay = 200;
     public int[] x4seq001 = {0, 0, 0, 0, 0};
     private TiledLayer v1;
-    private Sprite x11;
-    public int x11seq001Delay = 200;
-    public int[] x11seq001 = {0, 0, 0, 0, 0};
-    private Image lv4_patch1;
     private Image lv11;
+    private Image lv4_patch1;
     private Image mod_2;
     private Image boss_1;
     private Sprite boss;
@@ -82,17 +76,22 @@ public class GameDesign {
     public int x3seq001Delay = 200;
     public int[] x3seq001 = {0, 0, 0, 0, 0};
     private Image lv14;
-    private Sprite x14;
-    public int x14seq001Delay = 200;
-    public int[] x14seq001 = {0, 0, 0, 0, 0};
     private Image lv13;
     private Image lv8;
     private Sprite x8;
     public int x8seq001Delay = 200;
     public int[] x8seq001 = {0, 0, 0, 0, 0};
-    private Sprite x13;
-    public int x13seq001Delay = 200;
-    public int[] x13seq001 = {0, 0, 0, 0, 0};
+    private Image boss_lv2;
+    private Sprite bos2;
+    public int bos2seq001Delay = 200;
+    public int[] bos2seq001 = {0, 0, 0, 0, 0};
+    private Sprite l13;
+    public int l13seq001Delay = 200;
+    public int[] l13seq001 = {0, 0, 0, 0, 0};
+    private Image boss_lv5;
+    private Sprite bos5;
+    public int bos5seq001Delay = 200;
+    public int[] bos5seq001 = {0, 0, 0, 0, 0};
     //</editor-fold>//GEN-END:|fields|0|
 
     //<editor-fold defaultstate="collapsed" desc=" Generated Methods ">//GEN-BEGIN:|methods|0|
@@ -100,7 +99,16 @@ public class GameDesign {
 
     public void updateLayerManagerForLm(LayerManager lm) throws java.io.IOException {//GEN-LINE:|1-updateLayerManager|0|1-preUpdate
         // write pre-update user code here
-        getScop().setPosition(51, 206);//GEN-BEGIN:|1-updateLayerManager|1|1-postUpdate
+        getBos5().setPosition(86, 276);//GEN-BEGIN:|1-updateLayerManager|1|1-postUpdate
+        getBos5().setVisible(true);
+        lm.append(getBos5());
+        getL13().setPosition(0, 0);
+        getL13().setVisible(true);
+        lm.append(getL13());
+        getBos2().setPosition(200, 117);
+        getBos2().setVisible(true);
+        lm.append(getBos2());
+        getScop().setPosition(51, 206);
         getScop().setVisible(true);
         lm.append(getScop());
         getNhgan().setPosition(131, 70);
@@ -108,10 +116,7 @@ public class GameDesign {
         lm.append(getNhgan());
         getLv1GD().setPosition(1, -6);
         getLv1GD().setVisible(true);
-        lm.append(getLv1GD());
-        getX10().setPosition(0, 0);
-        getX10().setVisible(true);
-        lm.append(getX10());//GEN-END:|1-updateLayerManager|1|1-postUpdate
+        lm.append(getLv1GD());//GEN-END:|1-updateLayerManager|1|1-postUpdate
         // write post-update user code here
     }//GEN-BEGIN:|1-updateLayerManager|2|
 //GEN-END:|1-updateLayerManager|2|
@@ -317,10 +322,7 @@ public class GameDesign {
 
     public void updateLayerManagerForLm2(LayerManager lm) throws java.io.IOException {//GEN-LINE:|275-updateLayerManager|0|275-preUpdate
         // write pre-update user code here
-        getX15().setPosition(104, 104);//GEN-BEGIN:|275-updateLayerManager|1|275-postUpdate
-        getX15().setVisible(true);
-        lm.append(getX15());
-        getFin().setPosition(111, 159);
+        getFin().setPosition(111, 159);//GEN-BEGIN:|275-updateLayerManager|1|275-postUpdate
         getFin().setVisible(true);
         lm.append(getFin());//GEN-END:|275-updateLayerManager|1|275-postUpdate
         // write post-update user code here
@@ -384,16 +386,7 @@ public class GameDesign {
     }
 //GEN-END:|323-getter|2|
 
-    public Sprite getX11() throws java.io.IOException {//GEN-BEGIN:|324-getter|0|324-preInit
-        if (x11 == null) {//GEN-END:|324-getter|0|324-preInit
-            // write pre-init user code here
-            x11 = new Sprite(getLv11(), 240, 320);//GEN-BEGIN:|324-getter|1|324-postInit
-            x11.setFrameSequence(x11seq001);//GEN-END:|324-getter|1|324-postInit
-            // write post-init user code here
-        }//GEN-BEGIN:|324-getter|2|
-        return x11;
-    }
-//GEN-END:|324-getter|2|
+
 
     public Image getLv12() throws java.io.IOException {//GEN-BEGIN:|341-getter|0|341-preInit
         if (lv12 == null) {//GEN-END:|341-getter|0|341-preInit
@@ -426,16 +419,7 @@ public class GameDesign {
     }
 //GEN-END:|359-getter|2|
 
-    public Sprite getX13() throws java.io.IOException {//GEN-BEGIN:|360-getter|0|360-preInit
-        if (x13 == null) {//GEN-END:|360-getter|0|360-preInit
-            // write pre-init user code here
-            x13 = new Sprite(getLv13(), 240, 320);//GEN-BEGIN:|360-getter|1|360-postInit
-            x13.setFrameSequence(x13seq001);//GEN-END:|360-getter|1|360-postInit
-            // write post-init user code here
-        }//GEN-BEGIN:|360-getter|2|
-        return x13;
-    }
-//GEN-END:|360-getter|2|
+
 
     public Image getLv14() throws java.io.IOException {//GEN-BEGIN:|377-getter|0|377-preInit
         if (lv14 == null) {//GEN-END:|377-getter|0|377-preInit
@@ -447,16 +431,7 @@ public class GameDesign {
     }
 //GEN-END:|377-getter|2|
 
-    public Sprite getX14() throws java.io.IOException {//GEN-BEGIN:|378-getter|0|378-preInit
-        if (x14 == null) {//GEN-END:|378-getter|0|378-preInit
-            // write pre-init user code here
-            x14 = new Sprite(getLv14(), 240, 320);//GEN-BEGIN:|378-getter|1|378-postInit
-            x14.setFrameSequence(x14seq001);//GEN-END:|378-getter|1|378-postInit
-            // write post-init user code here
-        }//GEN-BEGIN:|378-getter|2|
-        return x14;
-    }
-//GEN-END:|378-getter|2|
+
 
     public Image getLv15() throws java.io.IOException {//GEN-BEGIN:|399-getter|0|399-preInit
         if (lv15 == null) {//GEN-END:|399-getter|0|399-preInit
@@ -468,16 +443,7 @@ public class GameDesign {
     }
 //GEN-END:|399-getter|2|
 
-    public Sprite getX15() throws java.io.IOException {//GEN-BEGIN:|400-getter|0|400-preInit
-        if (x15 == null) {//GEN-END:|400-getter|0|400-preInit
-            // write pre-init user code here
-            x15 = new Sprite(getLv15(), 240, 320);//GEN-BEGIN:|400-getter|1|400-postInit
-            x15.setFrameSequence(x15seq001);//GEN-END:|400-getter|1|400-postInit
-            // write post-init user code here
-        }//GEN-BEGIN:|400-getter|2|
-        return x15;
-    }
-//GEN-END:|400-getter|2|
+
 
     public Image getLv2() throws java.io.IOException {//GEN-BEGIN:|417-getter|0|417-preInit
         if (lv2 == null) {//GEN-END:|417-getter|0|417-preInit
@@ -668,5 +634,58 @@ public class GameDesign {
         return fin;
     }
 //GEN-END:|675-getter|2|
+
+    public Image getBoss_lv2() throws java.io.IOException {//GEN-BEGIN:|916-getter|0|916-preInit
+        if (boss_lv2 == null) {//GEN-END:|916-getter|0|916-preInit
+            // write pre-init user code here
+            boss_lv2 = Image.createImage("/picture/boss-lv2.png");//GEN-BEGIN:|916-getter|1|916-postInit
+        }//GEN-END:|916-getter|1|916-postInit
+        // write post-init user code here
+        return this.boss_lv2;//GEN-BEGIN:|916-getter|2|
+    }
+//GEN-END:|916-getter|2|
+
+    public Sprite getBos2() throws java.io.IOException {//GEN-BEGIN:|917-getter|0|917-preInit
+        if (bos2 == null) {//GEN-END:|917-getter|0|917-preInit
+            // write pre-init user code here
+            bos2 = new Sprite(getBoss_lv2(), 39, 60);//GEN-BEGIN:|917-getter|1|917-postInit
+            bos2.setFrameSequence(bos2seq001);//GEN-END:|917-getter|1|917-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|917-getter|2|
+        return bos2;
+    }
+//GEN-END:|917-getter|2|
+
+    public Sprite getL13() throws java.io.IOException {//GEN-BEGIN:|1011-getter|0|1011-preInit
+        if (l13 == null) {//GEN-END:|1011-getter|0|1011-preInit
+            // write pre-init user code here
+            l13 = new Sprite(getLv13(), 240, 320);//GEN-BEGIN:|1011-getter|1|1011-postInit
+            l13.setFrameSequence(l13seq001);//GEN-END:|1011-getter|1|1011-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|1011-getter|2|
+        return l13;
+    }
+//GEN-END:|1011-getter|2|
+
+    public Image getBoss_lv5() throws java.io.IOException {//GEN-BEGIN:|1033-getter|0|1033-preInit
+        if (boss_lv5 == null) {//GEN-END:|1033-getter|0|1033-preInit
+            // write pre-init user code here
+            boss_lv5 = Image.createImage("/picture/boss-lv5.png");//GEN-BEGIN:|1033-getter|1|1033-postInit
+        }//GEN-END:|1033-getter|1|1033-postInit
+        // write post-init user code here
+        return this.boss_lv5;//GEN-BEGIN:|1033-getter|2|
+    }
+//GEN-END:|1033-getter|2|
+
+    public Sprite getBos5() throws java.io.IOException {//GEN-BEGIN:|1034-getter|0|1034-preInit
+        if (bos5 == null) {//GEN-END:|1034-getter|0|1034-preInit
+            // write pre-init user code here
+            bos5 = new Sprite(getBoss_lv5(), 60, 39);//GEN-BEGIN:|1034-getter|1|1034-postInit
+            bos5.setFrameSequence(bos5seq001);//GEN-END:|1034-getter|1|1034-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|1034-getter|2|
+        return bos5;
+    }
+//GEN-END:|1034-getter|2|
 
 }
