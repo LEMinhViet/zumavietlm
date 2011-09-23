@@ -1,5 +1,7 @@
 package Code;
 
+
+
 import java.io.InputStream;
 import javax.microedition.lcdui.Graphics;
 import javax.microedition.lcdui.game.Sprite;
@@ -29,6 +31,7 @@ public class Designer {
         8
     };
     public static byte space = 4;
+    static int endY;
     public static byte charTotalHeight = 15;
     public static final byte MARGIN_LEFT = 0;
     public static final byte MARGIN_CENTER = 1;
@@ -149,22 +152,28 @@ public class Designer {
     }
 
     public static int renderTextChar(Graphics g, int index, int colorType, int x, int y) {
+        //System.out.println("z");
         if (dat_textFont == null) {
             InputStream is = InputStream.class.getResourceAsStream("/Code/textFont.cmg");
             pal_textFont = readPal(is);
             dat_textFont = readData(is);
         }
-
+        //System.out.println("k");
         int shift = index * 120;
         int shift_color = colorType * 3;
         int temp;
         for (int i = 0; i < 15; i++) {
             for (int j = 0; j < 8; j++) {
                 temp = i * 8 + j;
+                //System.out.println(temp+" "+rgb[temp]);
+                //System.out.println(dat_textFont[temp + shift]+"a");
+                //System.out.println(pal_textFont[dat_textFont[temp + shift] + shift_color]+"b");
                 rgb[temp] = pal_textFont[dat_textFont[temp + shift] + shift_color];
             }
         }
+        //System.out.println("l");
         g.drawRGB(rgb, 0, 8, x, y, 8, 15, true);
+        //System.out.println("m");
         return textCharWidth[index];
     }
 
@@ -178,9 +187,11 @@ public class Designer {
      * @return
      */
     public static int drawChar(Graphics g, byte b, int colorType, int x, int y) {
+        //System.out.println("x");
         if (b == -127) {
             return space;
         }
+        //System.out.println("y");
         return renderTextChar(g, b + 126, colorType, x, y);
 
     }
@@ -205,7 +216,9 @@ public class Designer {
                 x = memo;
                 y += charTotalHeight;
             } else {
+                //System.out.println("ae");
                 temp = drawChar(g, b[i], colorType, x, y);
+                //System.out.println("af");
                 width += temp;
                 x += temp;
             }
@@ -332,7 +345,7 @@ public class Designer {
         if (start < offset || start >= offset + length) {
             return 0;
         }
-        int endY = y + height - charTotalHeight;
+        endY = y + height - charTotalHeight;
         int index = offset;
         int startIndex = offset;
         int endIndex = offset;
@@ -598,24 +611,24 @@ public class Designer {
         }
         return width;
     }
-//    public static int drawString(Graphics g,String str, int offset, int length, int colorType, int x, int y){
-//       byte[] b = new byte[str.length()];
-//       toBytesIndex(str, b);
-//       return drawString(g, b, offset, length, colorType, x, y);
-//    }
-//    public static int drawString(Graphics g,String str, int offset, int length, byte margin, boolean isWordSplit, boolean ignoreExcessSpace, int colorType, int x, int y, int width, int height){
-//       byte[] b = new byte[str.length()];
-//       toBytesIndex(str, b);
-//       return drawString(g, b, offset, length, margin, isWordSplit, ignoreExcessSpace, colorType, x, y, width, height);
-//
-//    }
+    public static int drawString(Graphics g,String str, int offset, int length, int colorType, int x, int y){
+       byte[] b = new byte[str.length()];
+       toBytesIndex(str, b);
+       return drawString(g, b, offset, length, colorType, x, y);
+    }
+    public static int drawString(Graphics g,String str, int offset, int length, byte margin, boolean isWordSplit, boolean ignoreExcessSpace, int colorType, int x, int y, int width, int height){
+       byte[] b = new byte[str.length()];
+       toBytesIndex(str, b);
+       return drawString(g, b, offset, length, margin, isWordSplit, ignoreExcessSpace, colorType, x, y, width, height);
+
+    }
 //
 ////
-//    public static int drawString(Graphics g, String str, int offset, int length, int start, int end, byte margin, boolean isWordSplit, boolean ignoreExcessSpace, int colorType, int x, int y, int width, int height){
-//       byte[] b = new byte[str.length()];
-//       toBytesIndex(str, b);
-//       return drawString(g, b, offset, length, start, end, margin, isWordSplit, ignoreExcessSpace, colorType, x, y, width, height);
-//    }
+    public static int drawString(Graphics g, String str, int offset, int length, int start, int end, byte margin, boolean isWordSplit, boolean ignoreExcessSpace, int colorType, int x, int y, int width, int height){
+       byte[] b = new byte[str.length()];
+       toBytesIndex(str, b);
+       return drawString(g, b, offset, length, start, end, margin, isWordSplit, ignoreExcessSpace, colorType, x, y, width, height);
+    }
 //
 //
 //    public static Image createThumbnail(Image image,int width) {

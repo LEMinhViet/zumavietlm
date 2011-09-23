@@ -60,6 +60,7 @@ public class ZumaCanvas extends GameCanvas implements Runnable {
     boolean headInsert = false, backWard = true, afterBack = false, addColor = false, Breaking = false, Breaked = false, restartLv = false;
     boolean OutOfBalls = false, unchangeColor = true, colliAfter = false, notBreak = false, Be_1ball = false, Af_1ball, nextLv = false;
     boolean isColli = false, isRotated = false, drawScore = false, ballReset, nextballreset, firstTime = true, BossInsert = false;
+    boolean slow = false;
     public LayerManager lm;
     StartMidlet Midlet;
     Thread t;
@@ -123,6 +124,8 @@ public class ZumaCanvas extends GameCanvas implements Runnable {
         wayBall.setVisible(false);
         wayPoint.setVisible(false);
         while ( run ) {
+            System.out.println(((Sprite)vBall[0].BVector.elementAt(vBall[0].BVector.size()-1)).getX()
+                        + " " + ((Sprite)vBall[0].BVector.elementAt(vBall[0].BVector.size()-1)).getY());
             timeLastCycle = System.currentTimeMillis();
             /////////////////////////////////
             // Model quay theo góc
@@ -135,8 +138,9 @@ public class ZumaCanvas extends GameCanvas implements Runnable {
             g.drawImage(Gauge, 0, 0, Graphics.TOP | Graphics.LEFT);
 
             drawGauge(gG);
-            Designer.drawNumber(g, score.Score, 4, 70, 2);
-            
+            Designer.drawNumber(g, score.Score, 0, 70, 2);
+//            Designer.drawNumber(g, score.Score, 1, 70, 2);
+
             if ( Shoot )    model.whenShoot(iCount);                      
             if ( runningLevel == 3 || runningLevel == 6 || runningLevel == 9 || runningLevel == 12 )    {
                 if ( !BossInsert )  {
@@ -193,6 +197,7 @@ public class ZumaCanvas extends GameCanvas implements Runnable {
 //State 0 : State chạy nhanh ban đầu lúc vừa vào level, sẽ không có bắn trong state này
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             if ( State0 ) { // Vừa vào - tốc độ nhanh cho đến khi đủ 8 bi
+                System.out.println("State0");
                 iteS0++;
                 ite += 24;
                 for ( k = 0; k < Number + 1; k++ ){
@@ -226,11 +231,11 @@ public class ZumaCanvas extends GameCanvas implements Runnable {
                     State0 = false;
                     State1 = true;
                 }
-                          
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //State 1 : State chính lúc đoàn bóng di chuyển tốc độ bình thường
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             } else if ( State1 ) {
+                System.out.println("State1");
                 //for ( i = 0; i < Part; i++ ) {
                     for ( j = 0; j < Number+1; j++ ) {
                         ((Sprite)vBall[0].BVector.elementAt(j)).setVisible(true);
@@ -238,7 +243,12 @@ public class ZumaCanvas extends GameCanvas implements Runnable {
                 //}
                 //System.out.println("Số ball ; " + vBall[0].BVector.size());
                 //vBall[0].End = Number;
-                if ( !Stop && !Back )    ite++;
+                if ( !Stop && !Back ) {
+                    if ( slow ) {
+                        ite++;
+//                        slow = false;
+                    } else slow = true;
+                }
                 else if ( Back ) ite--;
                 for ( k = 0; k < Number + 1; k++ ) {
                     try {
@@ -261,6 +271,7 @@ public class ZumaCanvas extends GameCanvas implements Runnable {
 //State 2 : bóng trước lùi về bóng sau nếu 2 đầu bóng cùng màu
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             } else if ( State2 ) {
+                System.out.println("State2");
                 if ( Divide ) {                    
                     ////////////////////////////////////////////////////////////////////////////////////
                     // Tách làm 2 đoạn sau khi có khoảng trốngS
@@ -583,6 +594,7 @@ public class ZumaCanvas extends GameCanvas implements Runnable {
 //State 3 : Bóng sau di chuyển để bắt kịp đoàn bóng trước nếu 2 đầu không cùng màu
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             } else if ( State3 ) {
+                System.out.println("State3");
                 score.multiNum = 1;
                 //ite++;
                 if ( Divide ) {
@@ -759,11 +771,13 @@ public class ZumaCanvas extends GameCanvas implements Runnable {
 // State4 : kết thúc level
 ////////////////////////////////////////////////////////////////////////////
             } else if ( State4 ) {
-//                System.out.println("Part " + Part + " " + vBall[0].BVector.size());
+                System.out.println("State4");
                 for ( i = 0; i < Part; i++ ) {
                     for ( k = 0; k < vBall[i].BVector.size(); k++ ){
                         if ( ite-16*k >= 0 && ite-16*k < 2560 )
                             ((Sprite) vBall[i].BVector.elementAt(k)).setPosition(lv[ite-16*k][0], lv[ite-16*k][1]);
+                        System.out.println(((Sprite)vBall[0].BVector.elementAt(vBall[0].BVector.size()-1)).getX()
+                        + " " + ((Sprite)vBall[0].BVector.elementAt(vBall[0].BVector.size()-1)).getY());
                         if ( ite-16*k >= 0 && ite-16*k < 2560 && lv[ite-16*k][2] == 1 )
                             ((Sprite) vBall[i].BVector.elementAt(k)).setVisible(false);
                         
@@ -787,6 +801,7 @@ public class ZumaCanvas extends GameCanvas implements Runnable {
 // State5 : load level
 ////////////////////////////////////////////////////////////////////////////
             } else if ( State5 ) {
+                System.out.println("State5");
                 if ( iS5 == 0 && !firstTime ) {   //restartLevel();
                     if ( nextLv ) {
                         nextLevel();
@@ -816,8 +831,10 @@ public class ZumaCanvas extends GameCanvas implements Runnable {
                 Designer.drawCenterString(g, Level, 0, 6 + runningLevel/10 + 1 + 1 + iS5/10, 2, 120, 150);
                 iS5++;
                 if ( iS5 == 100 ) {
+                    System.out.println("State5");
                     iS5 = 0;
                     State0 = true;
+                    System.out.println("State0 " + State0 );
                     State5 = false;
                     restartLv = false;
                     BreakingTime = 0;
@@ -863,9 +880,7 @@ public class ZumaCanvas extends GameCanvas implements Runnable {
                     State2 = false;
                     State3 = false;
                     State4 = true;
-                    System.out.println("reset");
                     restartLv = true;
-
                 }
             }
 
@@ -2244,11 +2259,11 @@ public class ZumaCanvas extends GameCanvas implements Runnable {
                 vBall[i].BVector.removeElementAt(0);
                 removeSprite();
             }
-
         }
         
         vBall[0].NumOfBall = 100;
         vBall[0].initBallVector();
+        vBall[0].BVector.setSize(100);
         vBall[0].Begin = 0;
         vBall[0].End = NumB/16-1;
 
@@ -2275,14 +2290,16 @@ public class ZumaCanvas extends GameCanvas implements Runnable {
                 removeSprite = (Sprite) vBall[i].BVector.elementAt(0);
                 vBall[i].BVector.removeElementAt(0);
                 removeSprite();
+                
             }
-            
         }
         lm.insert(Level1, 0);
-
+        
         //vBall[0] = new BallVector(this);
         vBall[0].NumOfBall = 100;
+
         vBall[0].initBallVector();
+        vBall[0].BVector.setSize(100);
         vBall[0].Begin = 0;
         vBall[0].End = NumB/16-1;
 
@@ -2376,6 +2393,10 @@ public class ZumaCanvas extends GameCanvas implements Runnable {
                         else if ( SubmenuState == 3 )    State3 = true;
                         else if ( SubmenuState == 4 )    State4 = true;
                         else if ( SubmenuState == 5 )    State5 = true;
+                    } else if ( submenu == 1 ) {
+                        Midlet.sunnetCanvas.isMenu = true;
+                        stop();
+                        this.Midlet.SunnetCanvasShow();
                     }
                 }
                 break;

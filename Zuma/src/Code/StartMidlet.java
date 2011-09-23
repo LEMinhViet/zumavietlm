@@ -19,7 +19,7 @@ public class StartMidlet extends MIDlet {
     
     public void startApp() {
         sunnetFlash = new SunnetFlash(this);
-//        STNcanvas = new ZumaCanvas(this);
+        STNcanvas = new ZumaCanvas(this);
 //        STNcanvas.start();
         display = Display.getDisplay(this);
         display.setCurrent(sunnetFlash);
@@ -37,5 +37,9 @@ public class StartMidlet extends MIDlet {
     public void gameScreenShow() {
         STNcanvas.start();
         display.setCurrent(STNcanvas);
+    }
+
+    public void SunnetCanvasShow() {
+        display.setCurrent(sunnetCanvas);
     }
 }
