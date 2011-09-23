@@ -215,9 +215,10 @@ public class SunnetCanvas extends Canvas {
                         + "A lots of Item are waitting for your adventure .... Have Fun !!";
                 Designer.toBytesIndex(helpString, help);
                 if ( printHelp < 650 - 4 )  printHelp+=4;
+//                Designer.drawString(g, back, height, langId, type, color, xL, yL);
                 Designer.drawString(g, help, levelHelp, printHelp, Designer.MARGIN_LEFT, false, true, 2, 5, 5, 230, 310);
                 Designer.drawString(g, skip, 0, 4, 2, 2, 300);
-                    Designer.drawString(g, back, 0, 4, 2, 210, 300);
+                Designer.drawString(g, back, 0, 4, 2, 210, 300);
                 Runtime.getRuntime().gc();
             }
             
@@ -271,6 +272,7 @@ public class SunnetCanvas extends Canvas {
                 return;
             case KeyCodeAdapter.CENTER_KEY:
                 fireKey();
+                System.out.println("CenterKey");
                 repaint();
                 return;
 
@@ -332,12 +334,20 @@ public class SunnetCanvas extends Canvas {
             switch (curMenu) {
                 case 0:
                     isMenu = false;
-                    StartMidlet.STNcanvas = new ZumaCanvas(StartMidlet);
+                    //if ( StartMidlet == null ) {
+                       // StartMidlet.STNcanvas = new ZumaCanvas(StartMidlet);
                     StartMidlet.STNcanvas.start();
+                    StartMidlet.STNcanvas.State0 = false;
+                    StartMidlet.STNcanvas.State1 = false;
+                    StartMidlet.STNcanvas.State2 = false;
+                    StartMidlet.STNcanvas.State3 = false;
+                    StartMidlet.STNcanvas.State4 = false;
+                    StartMidlet.STNcanvas.State5 = true;
+                    StartMidlet.STNcanvas.State6 = false;
+                    StartMidlet.STNcanvas.restartLv = true;
                     StartMidlet.display.setCurrent(StartMidlet.STNcanvas);
                     StartMidlet.STNcanvas.langID = langId;
-                    Runtime.getRuntime().gc();                  
-
+                    StartMidlet.STNcanvas.iS5 = 0;
                     return;
                 case 1:
                     return;
@@ -404,4 +414,6 @@ public class SunnetCanvas extends Canvas {
         }
        
     }
+
+    
 }
