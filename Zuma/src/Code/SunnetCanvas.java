@@ -39,7 +39,7 @@ public class SunnetCanvas extends Canvas {
     Image bkImage = null, menuPic = null, menu1 = null, menu2 = null, menu3 = null, menu4 = null, menu5 = null;
     StartMidlet StartMidlet;
     String helpString, backString, skipString;
-    boolean createImage;
+    boolean createImage, firstTime = true;
 
     public SunnetCanvas(StartMidlet StartMidlet) {
         this.setFullScreenMode(true);
@@ -333,6 +333,7 @@ public class SunnetCanvas extends Canvas {
         if (isMenu) {
             switch (curMenu) {
                 case 0:
+                    
                     isMenu = false;
                     //if ( StartMidlet == null ) {
                        // StartMidlet.STNcanvas = new ZumaCanvas(StartMidlet);
@@ -344,10 +345,12 @@ public class SunnetCanvas extends Canvas {
                     StartMidlet.STNcanvas.State4 = false;
                     StartMidlet.STNcanvas.State5 = true;
                     StartMidlet.STNcanvas.State6 = false;
-                    StartMidlet.STNcanvas.restartLv = true;
+                    if ( !firstTime )    StartMidlet.STNcanvas.restartLv = true;
+                    else firstTime = false;
                     StartMidlet.display.setCurrent(StartMidlet.STNcanvas);
                     StartMidlet.STNcanvas.langID = langId;
                     StartMidlet.STNcanvas.iS5 = 0;
+                    System.out.println(StartMidlet.STNcanvas.lv[24][0]);
                     return;
                 case 1:
                     return;

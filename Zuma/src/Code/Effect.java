@@ -5,6 +5,10 @@
 
 package Code;
 
+import java.io.IOException;
+import javax.microedition.lcdui.Image;
+import javax.microedition.lcdui.game.Sprite;
+
 /**
  *
  * @author Admin
@@ -13,22 +17,39 @@ public class Effect {
     int EffectType;
     ZumaCanvas zumaCanvas;
     int Slowite = 0;
-    
-    public Effect( ZumaCanvas zumaCanvas, int EffectType ) {
+    Sprite Item;
+    boolean issetItem = false;
+    int partItem = 0, iItem = 10, sttItem = 0, makeItem;
+
+    public Effect( ZumaCanvas zumaCanvas ) {
         this.zumaCanvas = zumaCanvas;
-        this.EffectType = EffectType;
-        //if ( EffectType == 1 )  SlowEf();
-        //else if ( EffectType == 2 ) BackEf();
+        try {
+            Item = new Sprite(Image.createImage("/picture/item.png"), 16, 16);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        makeItem = 300;
     }
 
-    public void SlowEf() {
-        System.out.println(" " + Slowite );
-        if ( Slowite % 3 == 0 || Slowite % 3 == 2 ) zumaCanvas.Stop = false;
-        else if ( Slowite % 3 == 1 ) zumaCanvas.Stop = true;
-        Slowite++;
+
+    public void setItem ( ) {
+        if ( !issetItem ) {
+            zumaCanvas.lm.insert(Item, 0);
+            issetItem = true;
+        }
+        Item.setVisible(true);
+        Item.setFrame(this.sttItem);
+        Item.setPosition(((Sprite)zumaCanvas.vBall[this.partItem].BVector.elementAt(this.iItem)).getX(),
+                ((Sprite)zumaCanvas.vBall[this.partItem].BVector.elementAt(this.iItem)).getY());
     }
 
-    public void BackEf() {
-        zumaCanvas.Back = true;
+    public void newlevelItem () {
+        zumaCanvas.lm.remove(Item);
+        issetItem = false;
+    }
+
+    public void callEffect ( ) {
+        Item.setVisible(false);
+        makeItem = 300;
     }
 }

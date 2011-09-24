@@ -100,6 +100,7 @@ public class BallVector {
 
     public void InsertBall( int iColli, int partColli ) {
         Sball = zumaCanvas.Sball.Ball;
+       
         // Insert vào đầu vector
         iColliTemp = iColli;
         if (iColli == 0 && zumaCanvas.headInsert && ( !zumaCanvas.Be_1ball 
@@ -235,6 +236,13 @@ public class BallVector {
                 
             }
         }
+        if ( zumaCanvas.InsertTime == 1 ) {
+            if ( partColli == zumaCanvas.E1.partItem )  {
+                if ( iColli < zumaCanvas.E1.iItem   )   zumaCanvas.E1.iItem++;
+            } else if ( partColli <= zumaCanvas.E1.partItem ) {
+                
+            }
+        }
     }
 
     public void testBreak ( int iColli ) {
@@ -315,6 +323,11 @@ public class BallVector {
         /////////////////////////////////////////////////////////////////////////////////////////////////
         // Nếu số bóng cùng màu >= 2 => Xóa các viên bi cùng màu với bóng bắn vào
         } else if(endBreak - beginBreak >= 2) {
+            if ( zumaCanvas.partColli == zumaCanvas.E1.partItem ) {
+                if ( endBreak >= zumaCanvas.E1.iItem && zumaCanvas.E1.iItem >= beginBreak ) {
+                    zumaCanvas.E1.callEffect();
+                }
+            }
             zumaCanvas.score.addScore(beginBreak, endBreak);
 //            System.out.println("Score " + zumaCanvas.score.Score + " " + zumaCanvas.score.multiNum);
             zumaCanvas.drawScore = true;
